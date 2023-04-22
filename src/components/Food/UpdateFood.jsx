@@ -1,29 +1,52 @@
-
+import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
+import { db, storage } from '../../firebase';
 import Sidebar from '../sidebar/Sidebar'
-import React, { useState, useEffect} from 'react';
-import {db} from '../../firebase'
-import {  collection, getDocs , doc} from 'firebase/firestore';
-
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ref as refUploadImgs, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { toast } from 'react-toastify'
 function UpdateFood() {
-    const [name, setName] = useState("")
-    const [categori, setCategori] = useState("")
-    const [price, setPrice] = useState(0)
-    const [desc, setDesc] = useState("")
-    const [image, setImage] = useState();
-    const [products, setProducts] = useState([])
-    const productCollectionRef = collection (db,"products")
-    useEffect(() =>{
-        const getProduct = async () =>{
-            const data = await getDocs(productCollectionRef)
-            setProducts(data.docs.map((doc)=> ({...doc.data(), id:doc.id})))
+    const [formInput, setFormInput] = useState()
+    const [image, setImage] = useState()
+    const { id } = useParams()
+    const navigation = useNavigate()
+    const productCollectionRef = collection(db, "products")
+
+    const handleImageChange = (e) => {
+        if (e.target.files[0]) {
+            const imageRef = refUploadImgs(storage, "/imageFood/image/");
+            uploadBytes(imageRef, e.target.files[0])
+                .then(() => {
+                    getDownloadURL(imageRef).then((url) => {
+                        setImage(url);
+
+                    }).catch(error => {
+                        console.log(error.message, "err");
+                    });
+                })
         }
-          getProduct()
-      },[])
-      const editProduct = async (id, age) =>{
-        const productDoc = doc(db, "products", id)
-        const newFields ={age: age +1}
-        // await editDoc(productDoc,newFields)
-      }
+
+    }
+    const getProduct = async () => {
+        const data = await getDocs(productCollectionRef)
+        const products = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        setFormInput(products.find((e) => e.id == id))
+        setImage(products.find((e) => e.id == id).image)
+    }
+    useEffect(() => {
+        getProduct()
+    }, [])
+
+    useEffect(() => {
+        console.log(formInput);
+    }, [formInput])
+
+    const editProduct = async () => {
+        const newRef = doc(db, "products", id);
+        await updateDoc(newRef, { ...formInput, image: image }).then(() => { navigation("/food"); toast.success("Update product success") }).catch((error) => toast.success("Something wrong:", error));
+
+    }
+
     return (
         <div className='w-full'>
             <div className='flex'>
@@ -33,35 +56,39 @@ function UpdateFood() {
                 <div className=' text-black w-full'>
                     <div className='h-[70px] fixed text-[#09132C] w-full px-6 py-4 bg-[#fafafa] flex items-center' >
                         <div className='font-normal flex justify-between gap-[700px]'>
-                            <p className="font-bold text-2xl mx-3"> Update Food</p>
-                            <button className=" rounded-lg bg-[#F5FAFC] border h-10 w-[80px] font-semibold mr-2 " 
-                            onClick={editProduct}
+                            <p className="font-bold text-2xl mx-3"  > Update Food</p>
+                            <button className=" rounded-lg bg-[#F5FAFC] border h-10 w-[80px] font-semibold mr-2 "
+                                onClick={() => editProduct()}
                             >
                                 Submit
                             </button>
                         </div>
                     </div>
-
                     <div className=' pt-[100px] h-screen ml-5 mr-5'>
                         <div className=''>
                             <p className=' font-semibold uppercase'>category</p>
-                            <input type="number" name="" id="" className=' border p-2 w-full' />
+                            <input type="category" defaultValue={formInput?.nameCategory} onChange={(e) => setFormInput({ ...formInput, nameCategory: e.target.value })} className=' border p-2 w-full' />
                         </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>name</p>
-                            <input type="name" className=' border p-2 w-full' />
+                            <input type="name" defaultValue={formInput?.name} onChange={(e) => setFormInput({ ...formInput, name: e.target.value })} className=' border p-2 w-full' />
                         </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>image</p>
-                            <img src="/afood.jpg" alt="" className='h-[150px] w-[250px]' />
+                            <input required type="file" onChange={(e) => handleImageChange(e)} />
+                            {
+                                image && (
+                                    <img src={image} alt="" className='h-[150px] w-[250px]' />
+                                )
+                            }
                         </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>price</p>
-                            <input type="price" className=' border p-2 w-full' />
+                            <input type="price" defaultValue={formInput?.price} onChange={(e) => setFormInput({ ...formInput, price: e.target.value })} className=' border p-2 w-full' />
                         </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>description</p>
-                            <textarea name="" id="" className=' border h-[100px]  p-2 w-full' ></textarea>
+                            <textarea name="" id="" defaultValue={formInput?.description} onChange={(e) => setFormInput({ ...formInput, description: e.target.value })} className=' border h-[100px]  p-2 w-full' ></textarea>
                         </div>
                     </div>
                 </div>

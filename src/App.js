@@ -14,7 +14,7 @@ function App() {
             <Route index path='/'  element={<Dashboard/>} />
             <Route  path='/food'  element={<Food/>} />
             <Route path='/food/add' element={<AddFood/>}/>
-            {/* <Route path='/food/update' element={<UpdateFood/>}/> */}
+            <Route path='/food/update/:id' element={<UpdateFood/>}/>
             <Route path='/store' element={<Store/>}/>
         </Routes>
       </Router>

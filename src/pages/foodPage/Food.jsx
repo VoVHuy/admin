@@ -1,33 +1,25 @@
 import Sidebar from '../../components/sidebar/Sidebar'
 import { HiOutlineSelector } from "react-icons/hi";
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {db} from '../../firebase'
-import { collection, deleteDoc, doc, getDocs, productDoc } from 'firebase/firestore';
+import { useNavigate} from 'react-router-dom';
+import { db } from '../../firebase'
+import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
+import { toast } from 'react-toastify'
 function Food() {
   const [products, setProducts] = useState([])
-  const productCollectionRef = collection (db,"products")
-  const deleteProduct = async (id) =>{
-    const productDoc = doc(db, "products", id);
-    await deleteDoc(productDoc)
-  }
-  useEffect(() =>{
-    const getProduct = async () =>{
-        const data = await getDocs(productCollectionRef)
-        setProducts(data.docs.map((doc)=> ({...doc.data(), id:doc.id})))
-    }
-      getProduct()
-  },[])
- 
+  const productCollectionRef = collection(db, "products")
+  const navigate = useNavigate()
+  
   const [currentPage, setCurrenPage] = useState(1)
   const [records, setRecords] = useState([])
   const [numbers, setNumbers] = useState([])
+  // const router = useRoutes()
   const recordsPerPage = 4;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
 
   useEffect(() => {
-    if (products.length >0) {
+    if (products.length > 0) {
       let npage = Math.ceil(products.length / recordsPerPage)
       const arr = []
       for (let index = 0; index < npage; index++) {
@@ -41,15 +33,23 @@ function Food() {
     setRecords(products?.slice(firstIndex, lastIndex))
   }, [currentPage, products]);
 
-  const navigate = useNavigate()
-  const handleAdd  = (e)=>{
+  const deleteProduct = async (id) => {
+    const productDoc = doc(db, "products", id);
+    await deleteDoc(productDoc).then(() => { getProduct(); toast.error("Delete product success") }).catch((error) => toast.error("Something wrong:", error))
+  }
+  const getProduct = async () => {
+    const data = await getDocs(productCollectionRef)
+    setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+  }
+  useEffect(() => {
+    getProduct()
+  }, [])
+
+  const handleAdd = (e) => {
     e.preventDefault();
     navigate('/food/add')
   }
-  const handleUpdate  = (e)=>{
-    e.preventDefault();
-    navigate(`/food/update`)
-  }
+
   return (
     <div className='w-full'>
       <div className='flex'>
@@ -86,28 +86,28 @@ function Food() {
                   <p>Action</p>
                 </div>
               </div>
-              {records?.map((product)=>{
-                  return(
-              <div className=" py-2 flex justify-between">
-                <div className='flex items-center gap-[30px] mx-5'>
-                  <p className='w-[90px]'>{product.id.slice(-5)}</p>
-                  <p className='w-[110px]'>{product.name}</p>
-                  <img src={product.image} alt="" className='h-[70px] w-[115px]' />
-                  <p className='w-[102px]'>{product.price}</p>
-                  <p className='w-[160px]'>{product.description}</p>
-                  <p className='w-[100px]'>{product.idUser.slice(-5)}</p>
-                </div>
-                <div className="flex gap-2 mr-3 items-center">
-                  <button className=" rounded-lg bg-[#F5FAFC] border h-7 w-[70px] font-semibold  " 
-                  onClick={handleUpdate}
-                  >Update</button>
-                  <button className=" rounded-lg bg-[#f86060] border h-7 w-[70px] font-semibold "
-                  onClick={() =>{deleteProduct()}}
-                  >Delete</button>
-                </div>
-              </div>
-              );
-            })}
+              {records?.map((product) => {
+                return (
+                  <div className=" py-2 flex justify-between">
+                    <div className='flex items-center gap-[30px] mx-5'>
+                      <p className='w-[90px]'>{product.id.slice(-5)}</p>
+                      <p className='w-[110px]'>{product.name}</p>
+                      <img src={product.image} alt="" className='h-[70px] w-[115px]' />
+                      <p className='w-[102px]'>{product.price}</p>
+                      <p className='w-[160px]'>{product.description}</p>
+                      <p className='w-[100px]'>{product?.idUser ? product?.idUser.slice(-5) : "Null"}</p>
+                    </div>
+                    <div className="flex gap-2 mr-3 items-center">
+                      <button className=" rounded-lg bg-[#F5FAFC] border h-7 w-[70px] font-semibold  "
+                        onClick={() => navigate(`/food/update/${product.id}`)}
+                      >Update</button>
+                      <button className=" rounded-lg bg-[#f86060] border h-7 w-[70px] font-semibold "
+                        onClick={() => { deleteProduct(product.id) }}
+                      >Delete</button>
+                    </div>
+                  </div>
+                );
+              })}
               <div className="flex justify-between py-3">
                 <div className="mx-10">
                   <a href="#" onClick={prePage}>Previous</a>
