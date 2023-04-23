@@ -5,7 +5,7 @@ import { addDoc, collection} from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { ref as refUploadImgs, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { toast } from 'react-toastify'
-
+import { v4 as uuidv4 } from 'uuid';
 function AddFood() {
     const [formInput, setFormInput] = useState()
     const [image, setImage] = useState()
@@ -14,7 +14,8 @@ function AddFood() {
 
     const handleImageChange = (e) => {
         if (e.target.files[0]) {
-            const imageRef = refUploadImgs(storage, "/imageFood/image/");
+            const id = uuidv4()
+            const imageRef = refUploadImgs(storage, "/imageFood/" + id);
             uploadBytes(imageRef, e.target.files[0])
                 .then(() => {
                     getDownloadURL(imageRef).then((url) => {

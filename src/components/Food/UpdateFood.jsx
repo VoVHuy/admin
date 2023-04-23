@@ -14,7 +14,7 @@ function UpdateFood() {
 
     const handleImageChange = (e) => {
         if (e.target.files[0]) {
-            const imageRef = refUploadImgs(storage, "/imageFood/image/");
+            const imageRef = refUploadImgs(storage, "/imageFood/image/"+ id);
             uploadBytes(imageRef, e.target.files[0])
                 .then(() => {
                     getDownloadURL(imageRef).then((url) => {
@@ -43,7 +43,7 @@ function UpdateFood() {
 
     const editProduct = async () => {
         const newRef = doc(db, "products", id);
-        await updateDoc(newRef, { ...formInput, image: image }).then(() => { navigation("/food"); toast.success("Update product success") }).catch((error) => toast.success("Something wrong:", error));
+        await updateDoc(newRef, { ...formInput, image: image }).then(() => { navigation("/food"); toast.success("Update product success") }).catch((error) => alert("Something wrong:", error));
 
     }
 
