@@ -8,13 +8,27 @@ import { toast } from 'react-toastify'
 function UpdateFood() {
     const [formInput, setFormInput] = useState()
     const [image, setImage] = useState()
+    const [categories, setCategories] = useState()
     const { id } = useParams()
     const navigation = useNavigate()
     const productCollectionRef = collection(db, "products")
 
+    const categoryCollectionRef = collection(db, "categorys")
+
+    useEffect(() => {
+        getCategory()
+    }, [])
+
+    const getCategory = async () => {
+        const data = await getDocs(categoryCollectionRef)
+        setCategories(data.docs.map((doc) => {
+            return { ...doc.data(), id: doc.id }
+        }));
+    }
+
     const handleImageChange = (e) => {
         if (e.target.files[0]) {
-            const imageRef = refUploadImgs(storage, "/imageFood/image/"+ id);
+            const imageRef = refUploadImgs(storage, "/imageFood/image/" + id);
             uploadBytes(imageRef, e.target.files[0])
                 .then(() => {
                     getDownloadURL(imageRef).then((url) => {
@@ -37,9 +51,6 @@ function UpdateFood() {
         getProduct()
     }, [])
 
-    useEffect(() => {
-        console.log(formInput);
-    }, [formInput])
 
     const editProduct = async () => {
         const newRef = doc(db, "products", id);
@@ -65,14 +76,21 @@ function UpdateFood() {
                         </div>
                     </div>
                     <div className=' pt-[100px] h-screen ml-5 mr-5'>
+
                         <div className=''>
-                            <p className=' font-semibold uppercase'>category</p>
-                            <input type="category" defaultValue={formInput?.nameCategory} onChange={(e) => setFormInput({ ...formInput, nameCategory: e.target.value })} className=' border p-2 w-full' />
-                        </div>
-                        <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>name</p>
                             <input type="name" defaultValue={formInput?.name} onChange={(e) => setFormInput({ ...formInput, name: e.target.value })} className=' border p-2 w-full' />
                         </div>
+                        <div className=' pt-2'>
+                            <p className=' font-semibold uppercase'>category</p>
+                            {
+                                formInput?.nameCategory ? (<select defaultValue={formInput?.nameCategory} id="" onChange={e => setFormInput({ ...formInput, nameCategory: e.target.value })} className=' border p-2 w-[20%]' >
+                                    {categories?.map(cate => (
+                                        <option key={cate.id} value={cate.name}>{cate.name}</option>
+                                    ))}
+                                </select>) : ""
+                            }
+                        </div> 
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>image</p>
                             <input required type="file" onChange={(e) => handleImageChange(e)} />

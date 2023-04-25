@@ -6,6 +6,7 @@ import Store from './pages/storePage/Store';
 import AddFood from './components/Food/AddFood';
 import UpdateFood from './components/Food/UpdateFood';
 import Login from './pages/login/Login';
+import UpdateStore from './components/Store/UpdateStore';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path='/food/add' element={<AddFood/>}/>
             <Route path='/food/update/:id' element={<UpdateFood/>}/>
             <Route path='/store' element={<Store/>}/>
+            <Route path='/store/update' element={<UpdateStore/>}/>
             <Route path='/login' element={<Login/>}/>
         </Routes>
       </Router>

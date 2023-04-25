@@ -1,7 +1,7 @@
 import Sidebar from '../sidebar/Sidebar'
-import React, { useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { db, storage } from '../../firebase'
-import { addDoc, collection} from 'firebase/firestore';
+import { addDoc, collection, getDocs } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { ref as refUploadImgs, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { toast } from 'react-toastify'
@@ -9,8 +9,21 @@ import { v4 as uuidv4 } from 'uuid';
 function AddFood() {
     const [formInput, setFormInput] = useState()
     const [image, setImage] = useState()
+    const [categories, setCategories] = useState()
     const productCollectionRef = collection(db, "products")
     const navigation = useNavigate()
+    const categoryCollectionRef = collection(db, "categorys")
+
+    useEffect(() => {
+        getCategory()
+    }, [])
+
+    const getCategory = async () => {
+        const data = await getDocs(categoryCollectionRef)
+        setCategories(data.docs.map((doc) => {
+            return { ...doc.data(), id: doc.id }
+        }));
+    }
 
     const handleImageChange = (e) => {
         if (e.target.files[0]) {
@@ -28,8 +41,10 @@ function AddFood() {
         }
 
     }
+
+
     const createProduct = async () => {
-        await addDoc(productCollectionRef, { ...formInput, image: image }).then(() => { navigation("/food"); toast.success("Add product success") }).catch((error) => toast.success("Something wrong:", error));
+        await addDoc(productCollectionRef, { ...formInput, image: image , idUser:JSON.parse(localStorage.getItem('user')).id}).then(() => { navigation("/food"); toast.success("Add product success") }).catch((error) => toast.success("Something wrong:", error));
     }
     return (
         <div className='w-full'>
@@ -51,12 +66,16 @@ function AddFood() {
 
                     <div className=' pt-[100px] h-screen ml-5 mr-5'>
                         <div className=''>
-                            <p className=' font-semibold uppercase'>category</p>
-                            <input type="category" defaultValue={formInput?.nameCategory} onChange={(e) => setFormInput({ ...formInput, nameCategory: e.target.value })} className=' border p-2 w-full' />
-                        </div>
-                        <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>name</p>
                             <input type="name" defaultValue={formInput?.name} onChange={(e) => setFormInput({ ...formInput, name: e.target.value })} className=' border p-2 w-full' />
+                        </div>
+                        <div className='pt-2'>
+                            <p className=' font-semibold uppercase'>category</p>
+                            <select id="" onChange={e => setFormInput({ ...formInput, nameCategory: e.target.value })} className=' border p-2 w-[20%]' >
+                                {categories?.map(cate => (
+                                    <option key={cate.id} value={cate.name}>{cate.name}</option>
+                                ))}
+                            </select>
                         </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>image</p>

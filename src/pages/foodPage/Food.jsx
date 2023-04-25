@@ -1,15 +1,17 @@
 import Sidebar from '../../components/sidebar/Sidebar'
+import { AiOutlineSearch } from "react-icons/ai";
 import { HiOutlineSelector } from "react-icons/hi";
 import React, { useState, useEffect } from 'react';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { db } from '../../firebase'
 import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { toast } from 'react-toastify'
 function Food() {
   const [products, setProducts] = useState([])
+  const [currentUser, setCurrentUser]= useState()
   const productCollectionRef = collection(db, "products")
   const navigate = useNavigate()
-  
+
   const [currentPage, setCurrenPage] = useState(1)
   const [records, setRecords] = useState([])
   const [numbers, setNumbers] = useState([])
@@ -25,6 +27,7 @@ function Food() {
       for (let index = 0; index < npage; index++) {
         arr.push(index + 1)
       }
+
       setNumbers(arr)
     }
   }, [products]);
@@ -39,15 +42,35 @@ function Food() {
   }
   const getProduct = async () => {
     const data = await getDocs(productCollectionRef)
-    setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+    const docData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    setProducts(docData.filter((e)=> e.idUser === currentUser.id))
   }
   useEffect(() => {
-    getProduct()
+    setCurrentUser(JSON.parse(localStorage.getItem('user')))
   }, [])
+
+  useEffect(()=>{
+    if (currentUser) {
+      getProduct()
+    }
+   
+  },[currentUser])
 
   const handleAdd = (e) => {
     e.preventDefault();
     navigate('/food/add')
+  }
+
+  const handleSearch = (e) => { 
+    let searchText = e.target.value;
+    const filterProduct = products.filter(item => {
+      let name = item.name.toUpperCase();
+      if (name.includes(searchText.toUpperCase())) {
+        return item;
+      }
+    })
+    setRecords(filterProduct)
+
   }
 
   return (
@@ -64,7 +87,10 @@ function Food() {
           </div>
           <div className='pt-24 h-screen'>
             <div className='flex justify-between'>
-              <p></p>
+              <div className=" rounded-full ml-5 bg-slate-200 flex py-2 h-10 w-[300px] text-gray-400">
+                <AiOutlineSearch size={24} className="mx-2 " />
+                <input type="text" placeholder="Search" className=" bg-slate-200 text-black w-[250px]" onChange={handleSearch} />
+              </div>
               <button className=" rounded-lg bg-[#F5FAFC] border h-10 w-[80px] font-semibold mr-2 " onClick={handleAdd}>
                 Create
               </button>
@@ -80,7 +106,7 @@ function Food() {
                   <p>images</p>
                   <p>price</p>
                   <p>description</p>
-                  <p>Store</p>
+                  <p>ID Store</p>
                 </div>
                 <div className="mr-[100px]">
                   <p>Action</p>
@@ -95,7 +121,7 @@ function Food() {
                       <img src={product.image} alt="" className='h-[70px] w-[115px]' />
                       <p className='w-[102px]'>{product.price}</p>
                       <p className='w-[160px]'>{product.description}</p>
-                      <p className='w-[100px]'>{product?.idUser ? product?.idUser.slice(-5) : "Null"}</p>
+                      <p className='w-[100px]'>{product?.idUser.slice(-5)}</p>
                     </div>
                     <div className="flex gap-2 mr-3 items-center">
                       <button className=" rounded-lg bg-[#F5FAFC] border h-7 w-[70px] font-semibold  "
