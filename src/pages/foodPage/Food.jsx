@@ -89,7 +89,7 @@ function Food() {
             <div className='flex justify-between'>
               <div className=" rounded-full ml-5 bg-slate-200 flex py-2 h-10 w-[300px] text-gray-400">
                 <AiOutlineSearch size={24} className="mx-2 " />
-                <input type="text" placeholder="Search" className=" bg-slate-200 text-black w-[250px]" onChange={handleSearch} />
+                <input type="text" placeholder="Search" className=" bg-slate-200 text-black w-[250px] outline-none" onChange={handleSearch} />
               </div>
               <button className=" rounded-lg bg-[#F5FAFC] border h-10 w-[80px] font-semibold mr-2 " onClick={handleAdd}>
                 Create
@@ -97,7 +97,7 @@ function Food() {
             </div>
             <div className=" bg-white text-gray-800 pt-2">
               <div className="font-semibold uppercase flex justify-between bg-[#F5FAFC] h-[40px] py-2">
-                <div className="flex gap-[90px] mx-5">
+                <div className="flex gap-[120px] mx-5 ">
                   <div className="flex items-center">
                     <p>id</p>
                     <HiOutlineSelector size={15} />
@@ -106,7 +106,7 @@ function Food() {
                   <p>images</p>
                   <p>price</p>
                   <p>description</p>
-                  <p>ID Store</p>
+                  {/* <p>ID Store</p> */}
                 </div>
                 <div className="mr-[100px]">
                   <p>Action</p>
@@ -115,13 +115,13 @@ function Food() {
               {records?.map((product) => {
                 return (
                   <div className=" py-2 flex justify-between">
-                    <div className='flex items-center gap-[30px] mx-5'>
+                    <div className='flex items-center gap-[60px] mx-5'>
                       <p className='w-[90px]'>{product.id.slice(-5)}</p>
-                      <p className='w-[110px]'>{product.name}</p>
-                      <img src={product.image} alt="" className='h-[70px] w-[115px]' />
+                      <p className='w-[120px]'>{product.name}</p>
+                      <img src={product.image} alt="" className='h-[70px] w-[115px] object-cover' />
                       <p className='w-[102px]'>{product.price}</p>
-                      <p className='w-[160px]'>{product.description}</p>
-                      <p className='w-[100px]'>{product?.idUser.slice(-5)}</p>
+                      <p className='w-[160px] truncate'>{product.description}</p>
+                      {/* <p className='w-[100px]'>{product?.idUser.slice(-5)}</p> */}
                     </div>
                     <div className="flex gap-2 mr-3 items-center">
                       <button className=" rounded-lg bg-[#F5FAFC] border h-7 w-[70px] font-semibold  "

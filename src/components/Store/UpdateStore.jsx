@@ -49,7 +49,7 @@ function UpdateStore() {
                                 <div><img src="/afood.jpg" alt="" className=' rounded-full w-[80%]' /></div>
                                 <div className='w-[20%] pt-[90px] ml-[50px]'>
                                     <button onClick={handleUpdate} type="submit" className=' bg-[#F5FAFC] border rounded-lg py-2  w-20 font-semibold'>
-                                        Update
+                                        Submit
                                     </button>
                                 </div>
                             </div>

@@ -1,4 +1,5 @@
 import { createContext, useEffect, useReducer } from "react"
+import AuthReducer from "./AuthReducer"
 const INITTAL_STATE = {
     currentUser: JSON.parse(localStorage.getItem("user" || null))
     
@@ -11,6 +12,7 @@ export const AuthContextProvider = ({children}) => {
         localStorage.setItem('user', JSON.stringify(state.currentUser))
     }, [state.currentUser])
 
+    
     return(
         <AuthContext.Provider value={{currentUser:state.currentUser, dispatch}}>{children}</AuthContext.Provider>
     )

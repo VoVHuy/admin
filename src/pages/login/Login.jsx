@@ -13,9 +13,9 @@ function Login() {
     const getUser = async () => {
         const data = await getDocs(userCollectionRef)
         const Users = (data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        const user = Users.find((u) => u.phone == phone)
+        const user = Users.find((u) => u.phone === phone)
         if (user) {
-            if (user.passWord == password) {
+            if (user.passWord === password) {
                 toast.success('Login is fucking success!')
                 localStorage.setItem("user",JSON.stringify(user))
                 navigate("/")
