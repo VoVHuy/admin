@@ -285,17 +285,17 @@ useEffect(() => {
         <div className='ml-[300px] pt-5 gap-10 flex '>
           <div className=''>
               <label>Từ Ngày</label>
-              <input type="date" className='ml-5 border py-2 p-2 border-black' value={dateFrom} onChange={(e) => setDateFrom(e.target.value)}/>
+              <input type="date" className='ml-5 border py-2 p-2 outline-none border-black' value={dateFrom} onChange={(e) => setDateFrom(e.target.value)}/>
           </div>
           <div className='date-input'>
               <label>Đến Ngày</label>
-              <input type="date" className='ml-5 border py-2 p-2 border-black' value={dataTo} onChange={(e) => setDateTo(e.target.value)}/>
+              <input type="date" className='ml-5 border py-2 p-2 border-black outline-none' value={dataTo} onChange={(e) => setDateTo(e.target.value)}/>
           </div>
         </div>
       </form>
-      <div className='select-container flex flex-col ml-[300px] text-black'>
+      <div className='select-container flex pt-2 ml-[300px] gap-4 text-black'>
         <label>Lọc Theo</label>
-        <select className='date-select pt-5px pb-10px w-[180px]'  onChange={(e) => handleFilterByDate(e.target.value)}>
+        <select className='date-select pt-5px pb-10px w-[120px] border border-black py-2 p-2 outline-none'  onChange={(e) => handleFilterByDate(e.target.value)}>
             <option value="homnay">Hôm nay</option>
             <option value="thangnay">Tháng Này</option>
             <option value="namnay">Năm nay</option>

@@ -1,10 +1,11 @@
-import React from 'react'
+
 import Sidebar from '../../components/sidebar/Sidebar'
 import { MdOutlineFastfood, MdMonetizationOn } from 'react-icons/md'
 import { FaStore } from 'react-icons/fa'
 import Chart from '../../components/chart/Chart'
 
 function Dashboard() {
+  
   return (
     <div>
       <div className='w-full'>

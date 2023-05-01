@@ -56,23 +56,23 @@ function UpdateStore() {
                             <div className='w-[80%] pt-[20px]'>
                                 <div className='flex' >
                                     <label className='w-24 py-4 font-semibold'>Name</label>
-                                    <input type="name" defaultValue={currentUser?.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} className=' border border-black h-10 m-2 w-[60%] p-3 ' />
+                                    <input type="name" defaultValue={currentUser?.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} className=' border outline-none h-10 m-2 w-[60%] p-3 ' />
                                 </div>
                                 <div className='pt-2 flex '>
                                     <label className='w-24 py-4 font-semibold'>Email</label>
-                                    <input type="email" defaultValue={currentUser?.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className=' border border-black h-10 m-2 w-[60%] p-3' />
+                                    <input type="email" defaultValue={currentUser?.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className=' border outline-none h-10 m-2 w-[60%] p-3' />
                                 </div>
                                 <div className='pt-2 flex' >
                                     <label className='w-24 py-4 font-semibold'>Address</label>
-                                    <input type="address" defaultValue={currentUser?.address} onChange={(e) => setForm({ ...form, address: e.target.value })} className=' border border-black h-10 m-2 w-[60%] p-3' />
+                                    <input type="address" defaultValue={currentUser?.address} onChange={(e) => setForm({ ...form, address: e.target.value })} className=' border outline-none h-10 m-2 w-[60%] p-3' />
                                 </div>
                                 <div className='pt-2 flex'>
                                     <label className='w-24 py-4 font-semibold'>OpenHour</label>
-                                    <input type="openHour" defaultValue={currentUser?.openHour} onChange={(e) => setForm({ ...form, openHour: e.target.value })} className=' border border-black h-10 m-2 w-[60%] p-3' />
+                                    <input type="openHour" defaultValue={currentUser?.openHour} onChange={(e) => setForm({ ...form, openHour: e.target.value })} className=' border outline-none h-10 m-2 w-[60%] p-3' />
                                 </div>
                                 <div className='pt-2 flex' >
                                     <label className='w-24 py-4 font-semibold'>CloseHour</label>
-                                    <input type="closeHour" defaultValue={currentUser?.closeHour} onChange={(e) => setForm({ ...form, closeHour: e.target.value })} className=' border border-black h-10 m-2 w-[60%] p-3' />
+                                    <input type="closeHour" defaultValue={currentUser?.closeHour} onChange={(e) => setForm({ ...form, closeHour: e.target.value })} className=' border outline-none h-10 m-2 w-[60%] p-3' />
                                 </div>
                             </div>
                         </div>

@@ -8,7 +8,7 @@ import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
 import { toast } from 'react-toastify'
 function Food() {
   const [products, setProducts] = useState([])
-  const [currentUser, setCurrentUser]= useState()
+  const [currentUser, setCurrentUser] = useState()
   const productCollectionRef = collection(db, "products")
   const navigate = useNavigate()
 
@@ -16,7 +16,7 @@ function Food() {
   const [records, setRecords] = useState([])
   const [numbers, setNumbers] = useState([])
   // const router = useRoutes()
-  const recordsPerPage = 4;
+  const recordsPerPage = 5;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
 
@@ -38,30 +38,34 @@ function Food() {
 
   const deleteProduct = async (id) => {
     const productDoc = doc(db, "products", id);
-    await deleteDoc(productDoc).then(() => { getProduct(); toast.error("Delete product success") }).catch((error) => toast.error("Something wrong:", error))
+    await deleteDoc(productDoc)
+      .then(() => {
+        getProduct(); toast.error("Delete product success")
+      }).catch((error) =>
+        toast.error("Something wrong:", error))
   }
   const getProduct = async () => {
     const data = await getDocs(productCollectionRef)
     const docData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    setProducts(docData.filter((e)=> e.idUser === currentUser.id))
+    setProducts(docData.filter((e) => e.idUser === currentUser.id))
   }
   useEffect(() => {
     setCurrentUser(JSON.parse(localStorage.getItem('user')))
   }, [])
 
-  useEffect(()=>{
+  useEffect(() => {
     if (currentUser) {
       getProduct()
     }
-   
-  },[currentUser])
+
+  }, [currentUser])
 
   const handleAdd = (e) => {
     e.preventDefault();
     navigate('/food/add')
   }
 
-  const handleSearch = (e) => { 
+  const handleSearch = (e) => {
     let searchText = e.target.value;
     const filterProduct = products.filter(item => {
       let name = item.name.toUpperCase();
@@ -95,9 +99,9 @@ function Food() {
                 Create
               </button>
             </div>
-            <div className=" bg-white text-gray-800 pt-2">
+            <div className=" bg-white text-gray-800 pt-2 [&>*:nth-child(odd)]:bg-[#F2f2f2] mx-3 ">
               <div className="font-semibold uppercase flex justify-between bg-[#F5FAFC] h-[40px] py-2">
-                <div className="flex gap-[120px] mx-5 ">
+                <div className="flex gap-[112px] mx-5 ">
                   <div className="flex items-center">
                     <p>id</p>
                     <HiOutlineSelector size={15} />
@@ -112,9 +116,9 @@ function Food() {
                   <p>Action</p>
                 </div>
               </div>
-              {records?.map((product) => {
+              {records?.map((product, idx) => {
                 return (
-                  <div className=" py-2 flex justify-between">
+                  <div key={idx} className=" py-2 flex justify-between ">
                     <div className='flex items-center gap-[60px] mx-5'>
                       <p className='w-[90px]'>{product.id.slice(-5)}</p>
                       <p className='w-[120px]'>{product.name}</p>
@@ -134,14 +138,14 @@ function Food() {
                   </div>
                 );
               })}
-              <div className="flex justify-between py-3">
-                <div className="mx-10">
+              <div className="flex gap-[10px] justify-center py-3">
+                <div className="ml-10">
                   <a href="#" onClick={prePage}>Previous</a>
                 </div>
                 {
                   numbers?.map((n, i) => (
                     <div className={`${currentPage === n ? 'active' : ''}`} key={i}>
-                      <a href="#" className="page-link border"
+                      <a href="#" className={currentPage === n ? `font-bold` : ''}
                         onClick={() => changePage(n)}>{n}</a>
                     </div>
                   ))
