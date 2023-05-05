@@ -1,8 +1,8 @@
 
-import Sidebar from '../../components/sidebar/Sidebar'
-import { MdOutlineFastfood, MdMonetizationOn } from 'react-icons/md'
 import { FaStore } from 'react-icons/fa'
+import { MdMonetizationOn, MdOutlineFastfood } from 'react-icons/md'
 import Chart from '../../components/chart/Chart'
+import Sidebar from '../../components/sidebar/Sidebar'
 
 function Dashboard() {
   

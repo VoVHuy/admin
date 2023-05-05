@@ -101,15 +101,17 @@ function Food() {
             </div>
             <div className=" bg-white text-gray-800 pt-2 [&>*:nth-child(odd)]:bg-[#F2f2f2] mx-3 ">
               <div className="font-semibold uppercase flex justify-between bg-[#F5FAFC] h-[40px] py-2">
-                <div className="flex gap-[112px] mx-5 ">
+                <div className="flex gap-[115px] ml-3">
                   <div className="flex items-center">
                     <p>id</p>
                     <HiOutlineSelector size={15} />
                   </div>
                   <p>name</p>
                   <p>images</p>
+                  <div className='flex gap-[105px] ml-4'>
                   <p>price</p>
                   <p>description</p>
+                  </div>
                   {/* <p>ID Store</p> */}
                 </div>
                 <div className="mr-[100px]">
@@ -119,10 +121,10 @@ function Food() {
               {records?.map((product, idx) => {
                 return (
                   <div key={idx} className=" py-2 flex justify-between ">
-                    <div className='flex items-center gap-[60px] mx-5'>
+                    <div className='flex items-center gap-[60px] ml-3'>
                       <p className='w-[90px]'>{product.id.slice(-5)}</p>
                       <p className='w-[120px]'>{product.name}</p>
-                      <img src={product.image} alt="" className='h-[70px] w-[115px] object-cover' />
+                      <img src={product.image} alt="" className='h-[70px] w-[19%] object-cover' />
                       <p className='w-[102px]'>{product.price}</p>
                       <p className='w-[160px] truncate'>{product.description}</p>
                       {/* <p className='w-[100px]'>{product?.idUser.slice(-5)}</p> */}

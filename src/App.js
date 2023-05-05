@@ -14,19 +14,19 @@ function App() {
   const RequireAuth = ({children}) => {
     return currentUser.currentUser ? (children) : <Navigate to="/login"/>
   };
-  console.log(currentUser.currentUser);
+  console.log(currentUser.currentUser ,);
 
   return (
     <div>
       <Router>
         <Routes>
-            <Route index path='/'  element={<RequireAuth><Dashboard/></RequireAuth>} />
             <Route  path='/food'  element={<RequireAuth> <Food/> </RequireAuth>} />
             <Route path='/food/add' element={<RequireAuth> <AddFood/> </RequireAuth>}/>
             <Route path='/food/update/:id' element={<RequireAuth><UpdateFood/></RequireAuth>}/>
             <Route path='/store' element={<RequireAuth><Store/></RequireAuth>}/>
             <Route path='/store/update' element={<RequireAuth><UpdateStore/></RequireAuth>}/>
             <Route path='/login' element={<Login/>}/>
+            <Route index path='/'  element={<RequireAuth><Dashboard/></RequireAuth>} />
         </Routes>
       </Router>
     </div>

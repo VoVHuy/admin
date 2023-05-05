@@ -39,9 +39,22 @@ function AddFood() {
         }
     }
     const createProduct = async () => {
+        if (document.getElementById('name').value === '') {
+            toast.error("You have not entered all the information!")
+        } else if (document.getElementById('image').value === '') {
+            toast.error("You have not entered all the information!")
+
+        }
+        else if (document.getElementById('price').value === '') {
+            toast.error("You have not entered all the information!")
+
+        }
+        else if (document.getElementById('desc').value === '') {
+            toast.error("You have not entered all the information!")
+        }
+       else{
         try {
             const newProductRef = await addDoc(productCollectionRef, {
-                ...formInput,
                 sold: 0,
                 quantity: 1,
                 price: Number(formInput.price),
@@ -51,11 +64,13 @@ function AddFood() {
             const newProductId = newProductRef.id;
             await updateDoc(doc(productCollectionRef, newProductId), { id: newProductId });
             navigation("/food");
-            toast.success("Add product success");
+            toast.success("Add product success")
         } catch (error) {
-            toast.success("Something wrong:", error);
+            toast.error("Something wrong", error);
         }
+       }
     }
+
     return (
         <div className='w-full'>
             <div className='flex'>
@@ -77,20 +92,20 @@ function AddFood() {
                     <div className=' pt-[100px] h-screen ml-5 mr-5 '>
                         <div className=''>
                             <p className=' font-semibold uppercase'>name</p>
-                            <input type="name" defaultValue={formInput?.name} onChange={(e) => setFormInput({ ...formInput, name: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input type="name" id='name' defaultValue={formInput?.name} onChange={(e) => setFormInput({ ...formInput, name: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className='pt-2'>
                             <p className=' font-semibold uppercase'>category</p>
-                            <select id="" onChange={e => setFormInput({ ...formInput, nameCategory: e.target.value })} className=' border p-2 w-[20%] outline-none' >
-                                {categories?.map(cate => (
-                                    <option key={cate.id} value={cate.name}>{cate.name}</option>
+                            <select onChange={e => setFormInput({ ...formInput, nameCategory: e.target.value })} className=' border p-2 w-[20%] outline-none' >
+                                {categories?.filter(cate => cate.isDeleted === false)?.map(cate => (
+                                    <option key={cate.id} value={cate.name} >{cate.name}</option>
                                 ))}
                             </select>
                         </div>
                         <div className=' pt-2 flex'>
                             <div>
                                 <p className=' font-semibold uppercase'>image</p>
-                                <input required type="file" onChange={(e) => handleImageChange(e)} />
+                                <input id='image' type="file" onChange={(e) => handleImageChange(e)} />
                             </div>
                             {
                                 images &&
@@ -101,11 +116,11 @@ function AddFood() {
                         </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>price</p>
-                            <input type="price" defaultValue={formInput?.price} onChange={(e) => setFormInput({ ...formInput, price: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input id='price' type="price" defaultValue={formInput?.price} onChange={(e) => setFormInput({ ...formInput, price: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>description</p>
-                            <textarea name="" id="" defaultValue={formInput?.description} onChange={(e) => setFormInput({ ...formInput, description: e.target.value })} className=' border h-[100px]  p-2 w-full outline-none' ></textarea>
+                            <textarea name="" id="desc" defaultValue={formInput?.description} onChange={(e) => setFormInput({ ...formInput, description: e.target.value })} className=' border h-[100px]  p-2 w-full outline-none' ></textarea>
                         </div>
                     </div>
                 </div>

@@ -295,7 +295,7 @@ useEffect(() => {
       </form>
       <div className='select-container flex pt-2 ml-[300px] gap-4 text-black'>
         <label>Lọc Theo</label>
-        <select className='date-select pt-5px pb-10px w-[120px] border border-black py-2 p-2 outline-none'  onChange={(e) => handleFilterByDate(e.target.value)}>
+        <select className='date-select pt-5px pb-10px w-[120px] border border-[#e9f8ff] py-2 p-2 outline-none'  onChange={(e) => handleFilterByDate(e.target.value)}>
             <option value="homnay">Hôm nay</option>
             <option value="thangnay">Tháng Này</option>
             <option value="namnay">Năm nay</option>

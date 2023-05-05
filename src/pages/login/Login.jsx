@@ -4,24 +4,22 @@ import {  db } from '../../firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 function Login() {
-    const [phone, setPhone] = useState("")
+    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-
     const navigate = useNavigate()
-
     const userCollectionRef = collection(db, "users")
+    var bcrypt = require('bcryptjs');
     const getUser = async () => {
         const data = await getDocs(userCollectionRef)
         const Users = (data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        const user = Users.find((u) => u.phone === phone)
-        if (user) {
-            if (user.passWord === password) {
+        const user = Users.find((u) => u.email === email)
+        if (user && user.typeUser ==='STORE') {
+            if (bcrypt.compareSync(password, user.passWord) && user.typeUser ==='STORE') 
                 toast.success('Login is fucking success!')
                 localStorage.setItem("user",JSON.stringify(user))
                 navigate("/")
-            } else toast.warning('Wrong password!')
         } else {
-            toast.warning('Phone not found')
+            toast.warning('You have entered the wrong email or password!!!')
         }
     }
     const handleLogin = (e) => {
@@ -54,14 +52,14 @@ function Login() {
                     <div className='w-[60%] h-[90%] flex justify-center '>
                         <div className=' w-[100%]'>
                             <div className='w-[100%] flex flex-wrap justify-center font-bold text-[20px] font-sans items-center max-md:gap-4 max-md:flex-col max-md:w-[80%]  mb-3'>
-                                <p>Login with phone number</p>
+                                <p>Login with email</p>
                             </div>
                             <form onSubmit={handleLogin}>
-                                {/* input phone */}
+                                {/* input email */}
                                 <div className='w-[100%] flex justify-center mb-4'>
-                                    <input type="phone" placeholder='Phone'
-                                        value={phone}
-                                        onChange={(e) => setPhone(e.target.value)}
+                                    <input type="phone" placeholder='Email'
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
                                         className='h-10 text-black gap-3 flex justify-center items-center w-[215px] py-3  border-[1px] border-slate-400  bg-white focus:outline-none pl-4 rounded-[12px] max-md:w-[100%] max-md:py-0 max-lg:py-2'
                                     />
                                 </div>

@@ -5,6 +5,7 @@ import { RiLogoutBoxRLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 import { db } from "../../firebase";
 import { collection, getDocs, setDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
 function Sidebar() {
     const navigate = useNavigate()
     const userCollectionRef = collection(db, "users")
@@ -14,8 +15,9 @@ function Sidebar() {
         setDoc(Users[0])
     }
     const handleLogout = (e) =>{
-        localStorage.removeItem("user")
+        localStorage.setItem("user", null)
         navigate("/login")
+        toast.success('Logout is fucking success!')
     }
     return (
         <div className=" h-screen bg-[#F5FAFC] fixed w-[20%]">
@@ -23,15 +25,15 @@ function Sidebar() {
                 <img src="/afood.jpg" alt="" className=" rounded-full w-[50%] mx-[70px]" />
             </div>
             <div className="ml-[60px] pt-[50px] h-[50%]">
-                <div className="flex gap-2 py-7 h-10  cursor-pointer  hover:text-cyan-600 draft:text-sky-500">
-                    <HiViewGrid size={24} />
+                <div className="flex gap-2 py-7 h-10 cursor-pointer hover:text-cyan-600 draft:text-sky-500">
+                    <HiViewGrid size={24} className="duration-[700ms]" />
                    <Link to='/'> <h1>Dashboards</h1></Link>
                 </div>
-                <div className=" flex gap-2 py-7 h-10 cursor-pointer  hover:text-cyan-600 draft:text-sky-500">
+                <div className=" flex gap-2 py-7 h-10 cursor-pointer ease-in duration-300 hover:text-cyan-600 draft:text-sky-500">
                     <MdNoFood size={24} />
                     <Link to='/food'><p>Food</p></Link>   
                 </div>
-                <div className=" flex gap-2 py-7 h-10 cursor-pointer  hover:text-cyan-600 draft:text-sky-500">
+                <div className=" flex gap-2 py-7 h-10 cursor-pointer ease-in duration-300  hover:text-cyan-600 draft:text-sky-500">
                     <BiStore size={24} />
                     <Link to='/store'><p>Store</p></Link> 
                 </div>
