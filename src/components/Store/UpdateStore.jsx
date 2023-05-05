@@ -8,6 +8,7 @@ function UpdateStore() {
     const [currentUser, setCurrentUser] = useState()
     const [form, setForm] = useState()
     const navigation = useNavigate()
+    console.log(currentUser);
 
     useEffect(() => {
         setCurrentUser(JSON.parse(localStorage.getItem('user')))
@@ -28,23 +29,14 @@ function UpdateStore() {
     //
 
     const handleUpdate = async () => {
-    
-        if (document.getElementById('txt_fullname').value === '') {
+        if (form.fullName ==="") {
             toast.error("You have not entered all the information!")
-        } else if (document.getElementById('txt_email').value === '') {
+        }else if ( form.email ==="") {
             toast.error("You have not entered all the information!")
-
-        }
-        else if (document.getElementById('txt_address').value === '') {
+        }else if (form.openHour ==="") {
             toast.error("You have not entered all the information!")
-
-        }
-        else if (document.getElementById('txt_openhour').value === '') {
+        }else if (form.closeHour ==="") {
             toast.error("You have not entered all the information!")
-
-        } else if (document.getElementById('txt_closehour').value === '') {
-            toast.error("You have not entered all the information!")
-
         }
         else {
             const newRef = doc(db, "users", currentUser.id);
@@ -90,7 +82,7 @@ function UpdateStore() {
                                 </div>
                                 <div className='pt-2 flex' >
                                     <label className='w-24 py-4 font-semibold'>Address</label>
-                                    <input type="address" id='txt_address' defaultValue={currentUser?.address} onChange={(e) => setForm({ ...form, address: e.target.value })} className=' border outline-none h-10 m-2 w-[60%] p-3' />
+                                    <input type="address" id='txt_address' value={currentUser?.address} onChange={(e) => setForm({ ...form, address: e.target.value })} className=' outline-none h-10 m-2 w-[60%] p-3' />
                                 </div>
                                 <div className='pt-2 flex'>
                                     <label className='w-24 py-4 font-semibold'>OpenHour</label>

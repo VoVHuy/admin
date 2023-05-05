@@ -45,7 +45,7 @@ function UpdateFood() {
         const products = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
         setFormInput(products.find((e) => e.id === id))
         const image = products.find(product => {
-            if (product.id == id) {
+            if (product.id === id) {
                 return product.image
             }
         })
@@ -63,28 +63,29 @@ function UpdateFood() {
     }, [])
 
     const editProduct = async () => {
-        if (document.getElementById('name').value === '') {
+        if (formInput.name ==="") {
             toast.error("You have not entered all the information!")
-        } else if (document.getElementById('image').value === '') {
+        }else if ( formInput.price ==="") {
             toast.error("You have not entered all the information!")
-
-        }
-        else if (document.getElementById('price').value === '') {
-            toast.error("You have not entered all the information!")
-
-        }
-        else if (document.getElementById('desc').value === '') {
+        }else if (formInput.description ==="") {
             toast.error("You have not entered all the information!")
         }
         else {
-        const newRef = doc(db, "products", id);
-        await updateDoc(newRef, { ...formInput, price: Number(formInput.price), image: image })
-            .then(() => {
-                navigation("/food");
-                toast.success("Update product success")
-            })
-            .catch((error) => alert("Something wrong:", error));
+            const newRef = doc(db, "products", id);
+            await updateDoc(newRef, { ...formInput, price: Number(formInput.price), image: image })
+                .then(() => {
+                    navigation("/food");
+                    toast.success("Update product success")
+                })
+                .catch((error) => alert("Something wrong:", error));
         }
+    }
+
+    const handleChangeCategory = (e) => {
+        const item = categories.find(ctg => ctg.id === e.target.value);
+        setFormInput({ ...formInput, nameCategory: item.name, idCategory: item.id })
+        console.log(formInput);
+
     }
     return (
         <div className='w-full'>
@@ -107,22 +108,26 @@ function UpdateFood() {
 
                         <div className=''>
                             <p className=' font-semibold uppercase'>name</p>
-                            <input type="name" id='name' defaultValue={formInput?.name} onChange={(e) => setFormInput({ ...formInput, name: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input type="name" defaultValue={formInput?.name} onChange={(e) => setFormInput({ ...formInput, name: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=' pt-2'>
-                            <p className=' font-semibold uppercase'>category</p>
+                            <p className=' font-semibold uppercase'>category</p>{
+                                console.log(formInput)
+                            }
                             {
-                                formInput?.nameCategory ? (<select defaultValue={formInput?.nameCategory} id="" onChange={e => setFormInput({ ...formInput, nameCategory: e.target.value })} className=' border p-2 w-[20%] outline-none' >
-                                    {categories?.filter(cate => cate.isDeleted === false)?.map(cate => (
-                                        <option key={cate.id} value={cate.name}>{cate.name}</option>
-                                    ))}
-                                </select>) : ""
+
+                                formInput?.nameCategory ? (
+                                    <select defaultValue={formInput?.idCategory} onChange={e => handleChangeCategory(e)} className=' border p-2 w-[20%] outline-none' >
+                                        {categories?.filter(cate => cate.isDeleted === false)?.map(cate => (
+                                            <option key={cate.id} value={cate.id}>{cate.name}</option>
+                                        ))}
+                                    </select>) : ""
                             }
                         </div>
                         <div className=' pt-2 flex'>
                             <div>
-                            <p className=' font-semibold uppercase'>image</p>
-                            <input id='image' type="file" onChange={(e) => handleImageChange(e)} className='w-[200px]' />
+                                <p className=' font-semibold uppercase'>image</p>
+                                <input  type="file" onChange={(e) => handleImageChange(e)} className='w-[200px]' />
                             </div>
                             {
                                 image &&
@@ -137,11 +142,11 @@ function UpdateFood() {
                         </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>price</p>
-                            <input id='price' type="price" defaultValue={formInput?.price} onChange={(e) => setFormInput({ ...formInput, price: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input type="price" defaultValue={formInput?.price} onChange={(e) => setFormInput({ ...formInput, price: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>description</p>
-                            <textarea name="" id="desc" defaultValue={formInput?.description} onChange={(e) => setFormInput({ ...formInput, description: e.target.value })} className=' border h-[100px]  p-2 w-full outline-none' ></textarea>
+                            <textarea name="" defaultValue={formInput?.description} onChange={(e) => setFormInput({ ...formInput, description: e.target.value })} className=' border h-[100px]  p-2 w-full outline-none' ></textarea>
                         </div>
                     </div>
                 </div>

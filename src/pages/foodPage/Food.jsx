@@ -11,7 +11,7 @@ function Food() {
   const [currentUser, setCurrentUser] = useState()
   const productCollectionRef = collection(db, "products")
   const navigate = useNavigate()
-
+  const categoryCollectionRef = collection(db, "categorys")
   const [currentPage, setCurrenPage] = useState(1)
   const [records, setRecords] = useState([])
   const [numbers, setNumbers] = useState([])
@@ -68,15 +68,14 @@ function Food() {
   const handleSearch = (e) => {
     let searchText = e.target.value;
     const filterProduct = products.filter(item => {
-      let name = item.name.toUpperCase();
-      if (name.includes(searchText.toUpperCase())) {
+      let nameCategory = item.nameCategory.toUpperCase();
+      if (nameCategory.includes(searchText.toUpperCase())) {
         return item;
       }
     })
     setRecords(filterProduct)
 
   }
-
   return (
     <div className='w-full'>
       <div className='flex'>
@@ -106,28 +105,25 @@ function Food() {
                     <p>id</p>
                     <HiOutlineSelector size={15} />
                   </div>
+                  <p>category</p>
                   <p>name</p>
-                  <p>images</p>
                   <div className='flex gap-[105px] ml-4'>
-                  <p>price</p>
-                  <p>description</p>
+                    <p>images</p>
+                    <p>price</p>
                   </div>
-                  {/* <p>ID Store</p> */}
                 </div>
                 <div className="mr-[100px]">
                   <p>Action</p>
                 </div>
               </div>
-              {records?.map((product, idx) => {
-                return (
+              {records?.map((product, idx) => (
                   <div key={idx} className=" py-2 flex justify-between ">
                     <div className='flex items-center gap-[60px] ml-3'>
                       <p className='w-[90px]'>{product.id.slice(-5)}</p>
                       <p className='w-[120px]'>{product.name}</p>
                       <img src={product.image} alt="" className='h-[70px] w-[19%] object-cover' />
                       <p className='w-[102px]'>{product.price}</p>
-                      <p className='w-[160px] truncate'>{product.description}</p>
-                      {/* <p className='w-[100px]'>{product?.idUser.slice(-5)}</p> */}
+                      <p className='w-[160px] '>{product.nameCategory}</p>
                     </div>
                     <div className="flex gap-2 mr-3 items-center">
                       <button className=" rounded-lg bg-[#F5FAFC] border h-7 w-[70px] font-semibold  "
@@ -138,8 +134,8 @@ function Food() {
                       >Delete</button>
                     </div>
                   </div>
-                );
-              })}
+                )
+              )}
               <div className="flex gap-[10px] justify-center py-3">
                 <div className="ml-10">
                   <a href="#" onClick={prePage}>Previous</a>

@@ -1,7 +1,7 @@
 import Sidebar from '../sidebar/Sidebar'
 import React, { useEffect, useState } from 'react';
 import { db, storage } from '../../firebase'
-import { addDoc, collection, doc, getDocs, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { ref as refUploadImgs, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { toast } from 'react-toastify'
@@ -52,23 +52,62 @@ function AddFood() {
         else if (document.getElementById('desc').value === '') {
             toast.error("You have not entered all the information!")
         }
-       else{
-        try {
-            const newProductRef = await addDoc(productCollectionRef, {
-                sold: 0,
-                quantity: 1,
-                price: Number(formInput.price),
-                image: images,
-                idUser: JSON.parse(localStorage.getItem('user')).id,
-            });
-            const newProductId = newProductRef.id;
-            await updateDoc(doc(productCollectionRef, newProductId), { id: newProductId });
-            navigation("/food");
-            toast.success("Add product success")
-        } catch (error) {
-            toast.error("Something wrong", error);
+        else {
+            try {
+                const newProductRef = doc(productCollectionRef);
+                await setDoc(newProductRef, {
+                    ...formInput,
+                    id: newProductRef.id,
+                    sold: 0,
+                    quantity: 1,
+                    price: Number(formInput.price),
+                    image: images,
+                    idUser: JSON.parse(localStorage.getItem('user')).id,
+                });
+                navigation("/food");
+                toast.success("Add product success")
+            } catch (error) {
+                toast.error("Something wrong", error);
+            }
         }
-       }
+    }
+    // const createProduct = async () => {
+    //     if (document.getElementById('name').value === '') {
+    //         toast.error("You have not entered all the information!")
+    //     } else if (document.getElementById('image').value === '') {
+    //         toast.error("You have not entered all the information!")
+
+    //     }
+    //     else if (document.getElementById('price').value === '') {
+    //         toast.error("You have not entered all the information!")
+
+    //     }
+    //     else if (document.getElementById('desc').value === '') {
+    //         toast.error("You have not entered all the information!")
+    //     }
+    //     else {
+    //         try {
+    //             const newProductRef = await addDoc(productCollectionRef, {
+    //                 ...formInput,
+    //                 sold: 0,
+    //                 quantity: 1,
+    //                 price: Number(formInput.price),
+    //                 image: images,
+    //                 idUser: JSON.parse(localStorage.getItem('user')).id,
+    //             });
+    //             const newProductId = newProductRef.id;
+    //             await updateDoc(doc(productCollectionRef, newProductId), { id: newProductId });
+    //             navigation("/food");
+    //             toast.success("Add product success")
+    //         } catch (error) {
+    //             toast.error("Something wrong", error);
+    //         }
+    //     }
+    // }
+
+    const handleChangeCategory = (e) => {
+        const item = categories.find(ctg => ctg.id === e.target.value);
+        setFormInput({ ...formInput, nameCategory: item.name, idCategory: item.id })
     }
 
     return (
@@ -96,9 +135,9 @@ function AddFood() {
                         </div>
                         <div className='pt-2'>
                             <p className=' font-semibold uppercase'>category</p>
-                            <select onChange={e => setFormInput({ ...formInput, nameCategory: e.target.value })} className=' border p-2 w-[20%] outline-none' >
+                            <select onChange={e => handleChangeCategory(e)} className=' border p-2 w-[20%] outline-none' >
                                 {categories?.filter(cate => cate.isDeleted === false)?.map(cate => (
-                                    <option key={cate.id} value={cate.name} >{cate.name}</option>
+                                    <option key={cate.id} value={cate.id} >{cate.name}</option>
                                 ))}
                             </select>
                         </div>
