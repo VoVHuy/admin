@@ -120,15 +120,10 @@ function AddFood() {
                     <div className='h-[70px] fixed text-[#09132C] w-full px-6 py-4 bg-[#fafafa] flex items-center' >
                         <div className='font-normal flex justify-between gap-[700px]'>
                             <p className="font-bold text-2xl mx-3"> Add Food</p>
-                            <button className=" rounded-lg bg-[#F5FAFC] border h-10 w-[80px] font-semibold mr-2 "
-                                onClick={createProduct}
-                            >
-                                Add Food
-                            </button>
                         </div>
                     </div>
 
-                    <div className=' pt-[100px] h-screen ml-5 mr-5 '>
+                    <div className=' pt-[80px] h-screen ml-5 mr-5 '>
                         <div className=''>
                             <p className=' font-semibold uppercase'>name</p>
                             <input type="name" id='name' defaultValue={formInput?.name} onChange={(e) => setFormInput({ ...formInput, name: e.target.value })} className=' border p-2 w-full outline-none' />
@@ -144,12 +139,12 @@ function AddFood() {
                         <div className=' pt-2 flex'>
                             <div>
                                 <p className=' font-semibold uppercase'>image</p>
-                                <input id='image' type="file" onChange={(e) => handleImageChange(e)} />
+                                <input id='image' type="file" onChange={(e) => handleImageChange(e)} className='w-[200px]' />
                             </div>
                             {
                                 images &&
                                 images.map((img, index) => (
-                                    <span key={index}> <img src={img} alt="" className='h-[120px] w-[200px] flex ' /></span>
+                                    <span key={index} className=' w-36'> <img src={img} alt="" className='h-[90px] w-[130px] object-cover flex ' /></span>
                                 ))
                             }
                         </div>
@@ -160,6 +155,13 @@ function AddFood() {
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>description</p>
                             <textarea name="" id="desc" defaultValue={formInput?.description} onChange={(e) => setFormInput({ ...formInput, description: e.target.value })} className=' border h-[100px]  p-2 w-full outline-none' ></textarea>
+                        </div>
+                        <div className=' pt-2 justify-end flex mr-10'>
+                            <button className=" rounded-lg bg-[#F5FAFC] border h-10 w-[80px] font-semibold mr-2 "
+                                onClick={createProduct}
+                            >
+                                Add Food
+                            </button>
                         </div>
                     </div>
                 </div>

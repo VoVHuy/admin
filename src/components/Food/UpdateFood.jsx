@@ -97,14 +97,9 @@ function UpdateFood() {
                     <div className='h-[70px] fixed text-[#09132C] w-full px-6 py-4 bg-[#fafafa] flex items-center' >
                         <div className='font-normal flex justify-between gap-[700px]'>
                             <p className="font-bold text-2xl mx-3"  > Update Food</p>
-                            <button className=" rounded-lg bg-[#F5FAFC] border h-10 w-[80px] font-semibold mr-2 "
-                                onClick={() => editProduct()}
-                            >
-                                Submit
-                            </button>
                         </div>
                     </div>
-                    <div className=' pt-[100px] h-screen ml-5 mr-5'>
+                    <div className=' pt-[80px] h-screen ml-5 mr-5'>
 
                         <div className=''>
                             <p className=' font-semibold uppercase'>name</p>
@@ -132,9 +127,9 @@ function UpdateFood() {
                             {
                                 image &&
                                 image?.map((img, index) => (
-                                    <span key={index} className='relative w-40 block'>
-                                        <span onClick={e => handleDeleteImage(img)} className=' rounded-lg cursor-pointer bg-white absolute top-3 right-7'>X</span>
-                                        <img src={img} alt="" className='w-[100%] h-[100px]' />
+                                    <span key={index} className='relative w-36 block'>
+                                        <span onClick={e => handleDeleteImage(img)} className=' rounded-lg cursor-pointer  absolute top-3 right-7'>X</span>
+                                        <img src={img} alt="" className='w-[130px] h-[90px] object-cover' />
                                     </span>
                                 ))
 
@@ -148,6 +143,13 @@ function UpdateFood() {
                             <p className=' font-semibold uppercase'>description</p>
                             <textarea name="" defaultValue={formInput?.description} onChange={(e) => setFormInput({ ...formInput, description: e.target.value })} className=' border h-[100px]  p-2 w-full outline-none' ></textarea>
                         </div>
+                    <div className='pt-2 justify-end flex mr-10'>
+                    <button className=" rounded-lg bg-[#F5FAFC] border h-10 w-[80px] font-semibold"
+                                onClick={() => editProduct()}
+                            >
+                                Submit
+                    </button>
+                    </div>
                     </div>
                 </div>
             </div>

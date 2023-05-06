@@ -26,7 +26,7 @@ function Sidebar() {
             </div>
             <div className="ml-[60px] pt-[50px] h-[50%]">
                 <div className="flex gap-2 py-7 h-10 cursor-pointer hover:text-cyan-600 draft:text-sky-500">
-                    <HiViewGrid size={24} className="duration-[700ms]" />
+                    <HiViewGrid size={24} className="transition delay-150" />
                    <Link to='/'> <h1>Dashboards</h1></Link>
                 </div>
                 <div className=" flex gap-2 py-7 h-10 cursor-pointer ease-in duration-300 hover:text-cyan-600 draft:text-sky-500">
@@ -39,9 +39,9 @@ function Sidebar() {
                 </div>
             </div>
             <div className="h-[20%] py-10 ml-10">
-                <div className="flex cursor-pointer gap-3 font-bold rounded-lg border border-black hover:text-cyan-600 draft:text-sky-500 w-[50%] py-2 h-10 justify-center">
+                <div  onClick={handleLogout} className="flex cursor-pointer gap-3 font-bold rounded-lg border border-black hover:text-cyan-600 draft:text-sky-500 w-[50%] py-2 h-10 justify-center">
                 <RiLogoutBoxRLine size={24}/>
-                <p onClick={handleLogout}>Logout</p>
+                <p>Logout</p>
                 </div>
             </div>
         </div>
