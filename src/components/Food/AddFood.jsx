@@ -1,7 +1,7 @@
 import Sidebar from '../sidebar/Sidebar'
 import React, { useEffect, useState } from 'react';
 import { db, storage } from '../../firebase'
-import { addDoc, collection, doc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
+import {  collection, doc, getDocs, setDoc} from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { ref as refUploadImgs, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { toast } from 'react-toastify'
@@ -51,7 +51,11 @@ function AddFood() {
         }
         else if (document.getElementById('desc').value === '') {
             toast.error("You have not entered all the information!")
-        }
+        } if (formInput.priceDiscount && formInput.priceDiscount >= formInput.price) {
+            toast.warning("Price discount cannot be greater than or equal to product price");
+          } if (formInput.price <= 0 || formInput.priceDiscount && formInput.priceDiscount <= 0) {
+            toast.warning("Product price and discount must be greater than 0");
+          }
         else {
             try {
                 const newProductRef = doc(productCollectionRef);
@@ -60,6 +64,8 @@ function AddFood() {
                     id: newProductRef.id,
                     sold: 0,
                     quantity: 1,
+                    priceDiscount: Number(formInput.priceDiscount),
+                    priceDiscount: formInput.priceDiscount ? Number(formInput.priceDiscount) : 0,
                     price: Number(formInput.price),
                     image: images,
                     idUser: JSON.parse(localStorage.getItem('user')).id,
@@ -119,7 +125,7 @@ function AddFood() {
                 <div className=' text-black w-full'>
                     <div className='h-[70px] fixed text-[#09132C] w-full px-6 py-4 bg-[#fafafa] flex items-center' >
                         <div className='font-normal flex justify-between gap-[700px]'>
-                            <p className="font-bold text-2xl mx-3"> Add Food</p>
+                            <p className="font-bold text-2xl mx-3"> Create Food</p>
                         </div>
                     </div>
 
@@ -152,15 +158,21 @@ function AddFood() {
                             <p className=' font-semibold uppercase'>price</p>
                             <input id='price' type="price" defaultValue={formInput?.price} onChange={(e) => setFormInput({ ...formInput, price: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
+                        <div>
+                        <div className=' pt-2'>
+                            <p className=' font-semibold uppercase'>priceDiscount</p>
+                            <input id='priceDis' type="priceDiscound" defaultValue={formInput?.priceDiscount} onChange={(e) => setFormInput({ ...formInput, priceDiscount: e.target.value })} className=' border p-2 w-full outline-none' />
+                        </div>
+                        </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>description</p>
                             <textarea name="" id="desc" defaultValue={formInput?.description} onChange={(e) => setFormInput({ ...formInput, description: e.target.value })} className=' border h-[100px]  p-2 w-full outline-none' ></textarea>
                         </div>
                         <div className=' pt-2 justify-end flex mr-10'>
-                            <button className=" rounded-lg bg-[#F5FAFC] border h-10 w-[80px] font-semibold mr-2 "
+                            <button className=" rounded-lg bg-[#d0f2ff] text-gray-700  border h-10 w-[170px] font-semibold mr-2 "
                                 onClick={createProduct}
                             >
-                                Add Food
+                                Create New Food
                             </button>
                         </div>
                     </div>

@@ -58,7 +58,7 @@ function UpdateStore() {
                 <div className=''>
                     <div className='h-[70px] fixed text-[#09132C] w-full px-6 py-4 bg-[#fafafa] flex items-center' >
                         <div className='font-normal max-md:text-sm max-w-[400px]'>
-                            <p className="font-bold text-2xl mx-3">Store</p>
+                            <p className="font-bold text-2xl mx-3">Update Store</p>
                         </div>
                     </div>
                     <div className=' text-black w-full flex  justify-center mx-10 pt-[80px]'>
@@ -66,8 +66,8 @@ function UpdateStore() {
                             <div className='pt-[20px]'>
                                 <div><img src="/afood.jpg" alt="" className=' rounded-full w-[80%]' /></div>
                                 <div className='w-[20%] pt-[90px] ml-[50px]'>
-                                    <button onClick={handleUpdate} type="submit" className=' bg-[#F5FAFC] border rounded-lg py-2  w-20 font-semibold'>
-                                        Submit
+                                    <button onClick={handleUpdate} type="submit" className=' bg-[#d0f2ff] text-gray-700 border rounded-lg py-2 w-[150px] font-semibold'>
+                                            Update Profile
                                     </button>
                                 </div>
                             </div>

@@ -281,7 +281,7 @@ useEffect(() => {
   console.log(data);
   return (
     <div className=''>
-      <form >
+      {/* <form >
         <div className='ml-[300px] pt-5 gap-10 flex '>
           <div className=''>
               <label>Từ Ngày</label>
@@ -292,7 +292,7 @@ useEffect(() => {
               <input type="date" className='ml-5 border py-2 p-2 border-black outline-none' value={dataTo} onChange={(e) => setDateTo(e.target.value)}/>
           </div>
         </div>
-      </form>
+      </form> */}
       <div className='select-container flex pt-2 ml-[300px] gap-4 text-black'>
         <label>Lọc Theo</label>
         <select className='date-select pt-5px pb-10px w-[120px] border border-[#e9f8ff] py-2 p-2 outline-none'  onChange={(e) => handleFilterByDate(e.target.value)}>

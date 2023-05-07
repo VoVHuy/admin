@@ -1,5 +1,5 @@
 import { HiViewGrid} from "react-icons/hi";
-import { MdNoFood } from "react-icons/md";
+import { MdNoFood, MdOutlineDiscount } from "react-icons/md";
 import { BiStore } from "react-icons/bi";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
@@ -32,6 +32,10 @@ function Sidebar() {
                 <div className=" flex gap-2 py-7 h-10 cursor-pointer ease-in duration-300 hover:text-cyan-600 draft:text-sky-500">
                     <MdNoFood size={24} />
                     <Link to='/food'><p>Food</p></Link>   
+                </div>
+                <div className=" flex gap-2 py-7 h-10 cursor-pointer ease-in duration-300  hover:text-cyan-600 draft:text-sky-500">
+                    <MdOutlineDiscount size={24} />
+                    <Link to='/voucher'><p>Voucher</p></Link> 
                 </div>
                 <div className=" flex gap-2 py-7 h-10 cursor-pointer ease-in duration-300  hover:text-cyan-600 draft:text-sky-500">
                     <BiStore size={24} />

@@ -70,9 +70,17 @@ function UpdateFood() {
         }else if (formInput.description ==="") {
             toast.error("You have not entered all the information!")
         }
+        else if (formInput.priceDiscount && formInput.priceDiscount >= formInput.price) {
+            toast.warning("Price discount cannot be greater than or equal to product price");
+          }
         else {
             const newRef = doc(db, "products", id);
-            await updateDoc(newRef, { ...formInput, price: Number(formInput.price), image: image })
+            await updateDoc(newRef, { 
+                ...formInput, 
+                price: Number(formInput.price),
+                priceDiscount: Number(formInput.priceDiscount), 
+                priceDiscount: formInput.priceDiscount ? Number(formInput.priceDiscount) : 0,
+                image: image })
                 .then(() => {
                     navigation("/food");
                     toast.success("Update product success")
@@ -106,9 +114,7 @@ function UpdateFood() {
                             <input type="name" defaultValue={formInput?.name} onChange={(e) => setFormInput({ ...formInput, name: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=' pt-2'>
-                            <p className=' font-semibold uppercase'>category</p>{
-                                console.log(formInput)
-                            }
+                            <p className=' font-semibold uppercase'>category</p>
                             {
 
                                 formInput?.nameCategory ? (
@@ -140,14 +146,18 @@ function UpdateFood() {
                             <input type="price" defaultValue={formInput?.price} onChange={(e) => setFormInput({ ...formInput, price: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=' pt-2'>
+                            <p className=' font-semibold uppercase'>priceDiscount</p>
+                            <input id='price' type="price" defaultValue={formInput?.priceDiscount} onChange={(e) => setFormInput({ ...formInput, priceDiscount: e.target.value })} className=' border p-2 w-full outline-none' />
+                        </div>
+                        <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>description</p>
                             <textarea name="" defaultValue={formInput?.description} onChange={(e) => setFormInput({ ...formInput, description: e.target.value })} className=' border h-[100px]  p-2 w-full outline-none' ></textarea>
                         </div>
                     <div className='pt-2 justify-end flex mr-10'>
-                    <button className=" rounded-lg bg-[#F5FAFC] border h-10 w-[80px] font-semibold"
+                    <button className=" rounded-lg bg-[#d0f2ff] text-gray-700 border h-10 w-[150px] font-semibold"
                                 onClick={() => editProduct()}
                             >
-                                Submit
+                                Update Food
                     </button>
                     </div>
                     </div>
