@@ -3,7 +3,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../../firebase'
-import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify'
 function Voucher() {
     const [vouchers, setVouchers] = useState([])
@@ -13,7 +13,6 @@ function Voucher() {
     const [currentPage, setCurrenPage] = useState(1)
     const [records, setRecords] = useState([])
     const [numbers, setNumbers] = useState([])
-    // const router = useRoutes()
     const recordsPerPage = 5;
     const lastIndex = currentPage * recordsPerPage;
     const firstIndex = lastIndex - recordsPerPage;
@@ -66,14 +65,32 @@ function Voucher() {
     const handleSearch = (e) => {
         let searchText = e.target.value;
         const filterProduct = vouchers.filter(item => {
-            let nameCategory = item.nameCategory.toUpperCase();
-            if (nameCategory.includes(searchText.toUpperCase())) {
+            let name = item.name.toUpperCase();
+            if (name.includes(searchText.toUpperCase())) {
                 return item;
             }
         })
         setRecords(filterProduct)
-
     }
+    const handleShow = async (e) => {
+        const isUpdateShow = doc(db, 'vouchers', e.id);
+        if (e.isShow) {
+            await updateDoc(isUpdateShow, {
+                isShow: false
+            });
+            toast.success("Open Show Voucher Success");
+            getVoucher();
+
+        } else {
+            await updateDoc(isUpdateShow, {
+                isShow: true
+            });
+            toast.success("Open Show Voucher Success");
+            getVoucher();
+
+        }
+    }
+    console.log('recoders', records)
     return (
         <div className='w-full'>
             <div className='flex'>
@@ -98,41 +115,41 @@ function Voucher() {
                         </div>
                         <div className=" bg-white text-gray-800 pt-2 [&>*:nth-child(odd)]:bg-[#F2f2f2] mx-3 ">
                             <div className="font-semibold flex justify-between bg-[#F5FAFC] h-[40px] py-2">
-                                <div className="flex ml-3 gap-[80px]">
-                                    <div className="flex items-center gap-[85px]">
+                                <div className="flex ml-3 gap-[70px]">
+                                    <div className="flex items-center gap-[75px]">
                                         <label >Id</label>
-                                        <label >Name</label> 
+                                        <label >Name</label>
                                     </div>
-                                    <div className='flex gap-[90px]'>
-                                    <label >Code</label>
-                                    <label >EndDate</label>
-                                    <div>
                                     <div className='flex gap-[80px]'>
-                                    <label >Image</label>
-                                    <label >Description</label>
+                                        <label >Code</label>
+                                        <label >EndDate</label>
+                                        <div>
+                                            <div className='flex gap-[70px]'>
+                                                <label >Image</label>
+                                                <label >Description</label>
+                                            </div>
+                                        </div>
                                     </div>
-                                    </div>
-                                    </div>     
                                 </div>
-                                <div className="mr-[110px]">
+                                <div className="mr-[220px]">
                                     <p>Action</p>
                                 </div>
                             </div>
                             {records?.map((voucher, idx) => (
                                 <div key={idx} className=" py-2 flex justify-between ">
-                                    <div className='flex items-center gap-[50px] ml-3'>
+                                    <div className='flex items-center gap-[40px] ml-3'>
                                         <p className='w-[50px] truncate'>{voucher.id}</p>
                                         <p className='w-[70px] truncate '>{voucher.name}</p>
                                         <p className='w-[80px] '>{voucher.code}</p>
                                         <p className='w-[100px] truncate'>{voucher.endDate}</p>
-                                        <img src={voucher.image} alt="" className=' h-[50px] w-[80px] object-cover' />
+                                        <img src={voucher.image} alt="" className=' h-[50px] w-[80px] ' />
                                         <p className='w-[70px] truncate'>{voucher.description}</p>
 
                                     </div>
                                     <div className="flex gap-2 mr-3 items-center">
                                         <button className=" rounded-lg bg-[#F5FAFC] border h-7 w-[100px] font-semibold "
-
-                                        >Not</button>
+                                            onClick={() => handleShow(voucher)}
+                                        >{voucher.isShow ? "Not Show" : "Show"}</button>
                                         <button className=" rounded-lg bg-[#F5FAFC] border h-7 w-[70px] font-semibold  "
                                             onClick={() => navigate(`/voucher/update/${voucher.id}`)}
                                         >Update</button>

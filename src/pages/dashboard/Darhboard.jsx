@@ -14,6 +14,8 @@ function Dashboard() {
   const [product, setProduct] = useState(JSON.parse(localStorage.getItem('user')));
   const [topSeller, setTopSeller] = useState();
   const [topuser, setTopUser] = useState();
+  const [users, setUsers] = useState();
+  const [totalRevenue, setTotalRevenue] = useState();
 
   const getProduct = async () => {
     const data = await getDocs(productCollectionRef)
@@ -26,30 +28,71 @@ function Dashboard() {
   }
   useEffect(() => {
     getProduct();
+  }, [])
+  useEffect(() => {
+    getUsers();
+
+  }, [])
+
+  useEffect(() => {
     getOrder();
   }, [])
+
+
+  const getUsers = async () => {
+    const data = await getDocs(userCollectionRef)
+    const docData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    setUsers(docData)
+  }
 
   const getOrder = async () => {
     const order = await getDocs(orderCollectionRef)
     const docOrder = order.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     const orderInshop = docOrder.filter((e) => e);
-    const formatOrder = orderInshop.reduce(function (r, a) {
-      r[a.idCustomer] = r[a.idCustomer] || [];
-      r[a.idCustomer].push(a);
-      return r;
-    }, []);
-    setTopUser(formatOrder.slice(0, 3));
+
+    // const formatOrder = orderInshop.reduce(function (r, a) {
+    //   r[a.idCustomer] = r[a.idCustomer] || [];
+    //   r[a.idCustomer].push(a);
+    //   return r;
+    // }, []);
+    // let ordersWithCusomer = Object.keys(formatOrder).map((item, index) => {
+    //   return {
+    //     id: Object.keys(formatOrder)[index],
+    //     value: Object.values(formatOrder)[index]
+    //   }
+    // })
+
+
+    // const formatDataFilter = users?.filter(
+    //   (item) => ordersWithCusomer.some((itemUsr) => itemUsr.id == item.id)
+    // );
+
+    // const isSold = ordersWithCusomer?.map((item, index) => {
+    //   let totalSold = 0;
+    //   console.log(item);
+    //   item?.value.map(sold => {
+    //     totalSold += +sold;
+    //   })
+    //   return {
+    //     idUser: item.id,
+    //     name: formatDataFilter[index]?.name,
+    //     totalPay: totalSold
+    //   }
+    // }) 
+
+    // setTopUser(formatOrder.slice(0, 3));
+
+    const currentUser = JSON.parse(localStorage.getItem('user'))
+    const listOrderInShop = orderInshop.filter(orderIn => orderIn.listProduct[0].idUser === currentUser.id);
+
+    let totalRevenueShop = 0;
+    listOrderInShop.map(item => {
+      if (item.statusOrder === 'DONE') {
+        totalRevenueShop += +item.totalPrice;
+      }
+    })
+    setTotalRevenue(totalRevenueShop)
   }
-
-  // const getUsers =  () => {
-  //   //const users = await getDocs(userCollectionRef)
-  //   //const allUser = users?.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-  //   console.log(topuser)
-  //   topuser?.map(topUsr => {
-  //     console.log(topUsr[0]);
-  //   })
-  // }
-
   return (
     <div>
       <div className='w-full'>
@@ -99,7 +142,7 @@ function Dashboard() {
               <div className='w-[40%] h-[150px]  font-semibold'>
                 <div className='flex justify-between pt-7 mx-10 bg-[#F5FAFC] h-[150px] rounded-lg border'>
                   <div className='mx-5'>
-                    <p className='text-2xl'>$ <span>250000</span></p>
+                    <p className='text-2xl'>$ <span>{totalRevenue ? totalRevenue : ""}</span></p>
                     <p className='py-2'>Revenue</p>
                   </div>
                   <MdMonetizationOn size={24} className='mx-5' />
