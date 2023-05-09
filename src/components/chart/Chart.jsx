@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { BarChart,Bar,LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { database } from '../../firebase'
-import { getDatabase, onValue, ref, set, remove, update } from 'firebase/database';
 import moment from 'moment/moment';
+import { onValue } from 'firebase/database';
+import { ref } from 'firebase/storage';
 
 
 const Chart = () => {
@@ -13,7 +14,7 @@ const Chart = () => {
 
   const [data, setData] = useState([])
   const handleReadData = () => {
-    onValue(ref(database, '/History'), (snapshot) => {
+    onValue(ref(database, '/orders'), (snapshot) => {
         setRevenueData([])
         const data = snapshot.val();
         if(data !==null){

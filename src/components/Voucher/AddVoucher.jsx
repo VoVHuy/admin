@@ -1,9 +1,9 @@
 import Sidebar from '../sidebar/Sidebar'
 import React, {  useState } from 'react';
 import { db, storage } from '../../firebase'
-import {  collection, doc, getDocs, setDoc} from 'firebase/firestore';
+import {  collection, doc, setDoc} from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-import { ref as refUploadImgs, uploadBytes, getDownloadURL, ref } from 'firebase/storage'
+import {  uploadBytes, getDownloadURL, ref } from 'firebase/storage'
 import { toast } from 'react-toastify'
 import { v1 as uuidv1 } from 'uuid';
 function AddVoucher() {
@@ -26,6 +26,24 @@ function AddVoucher() {
         }
     }
     const createVoucher = async () => {
+        if (document.getElementById('name').value === '') {
+            toast.error("You have not entered all the information!")
+        }else if (document.getElementById('code').value === '') {
+            toast.error("You have not entered all the information!")
+        }else if (document.getElementById('enddate').value === '') {
+            toast.error("You have not entered all the information!")
+        }else if (document.getElementById('discount').value === '') {
+            toast.error("You have not entered all the information!")
+        }else if (document.getElementById('minorder').value === '') {
+            toast.error("You have not entered all the information!")
+        }else if (document.getElementById('litmitmax').value === '') {
+            toast.error("You have not entered all the information!")
+        }else if (document.getElementById('desc').value === '') {
+            toast.error("You have not entered all the information!")
+        }else if (document.getElementById('image').value === '') {
+            toast.error("You have not entered all the information!")
+        }
+        else {
             try {
                 const newProductRef = doc(voucherCollectionRef);
                 await setDoc(newProductRef, {
@@ -48,6 +66,7 @@ function AddVoucher() {
 
             }
         }
+    }
     return (
         <div className='w-full'>
             <div className='flex'>
@@ -68,23 +87,23 @@ function AddVoucher() {
                         </div>
                         <div className=''>
                             <p className=' font-semibold uppercase'>Code</p>
-                            <input type="name" id='name' defaultValue={voucher?.code} onChange={(e) => setVoucher({ ...voucher, code: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input type="name" id='code' defaultValue={voucher?.code} onChange={(e) => setVoucher({ ...voucher, code: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=''>
                             <p className=' font-semibold uppercase'>End Date</p>
-                            <input type="datetime-local" name="" id=""  defaultValue={voucher?.endDate} onChange={(e) => setVoucher({ ...voucher, endDate: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input type="datetime-local" name="" id="enddate"  defaultValue={voucher?.endDate} onChange={(e) => setVoucher({ ...voucher, endDate: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=''>
                             <p className=' font-semibold uppercase'>Discount Money</p>
-                            <input type="name" id='name' defaultValue={voucher?.discountMoney} onChange={(e) => setVoucher({ ...voucher, discountMoney: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input type="name" id='discount' defaultValue={voucher?.discountMoney} onChange={(e) => setVoucher({ ...voucher, discountMoney: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=''>
                             <p className=' font-semibold uppercase'>Min Order Price</p>
-                            <input type="name" id='name' defaultValue={voucher?.minOrderPrice} onChange={(e) => setVoucher({ ...voucher, minOrderPrice: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input type="name" id='minorder' defaultValue={voucher?.minOrderPrice} onChange={(e) => setVoucher({ ...voucher, minOrderPrice: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=''>
                             <p className=' font-semibold uppercase'>Limit Max</p>
-                            <input type="name" id='name' defaultValue={voucher?.limitMax} onChange={(e) => setVoucher({ ...voucher, limitMax: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input type="name" id='litmitmax' defaultValue={voucher?.limitMax} onChange={(e) => setVoucher({ ...voucher, limitMax: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>description</p>
@@ -92,7 +111,7 @@ function AddVoucher() {
                         </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>image</p>
-                            <input required type="file" onChange={(e) => handleImageChange(e)} />
+                            <input id='image' type="file" onChange={(e) => handleImageChange(e)} />
                                     <img src={image} alt="" className='h-[80px] w-[120px]' />
                         </div>
                         <div className=' pt-2 justify-end flex mr-10'>

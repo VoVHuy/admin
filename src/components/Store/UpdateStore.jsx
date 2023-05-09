@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../../firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify';
+import validator from 'validator';
 function UpdateStore() {
     const [currentUser, setCurrentUser] = useState()
     const [form, setForm] = useState()
@@ -37,7 +38,9 @@ function UpdateStore() {
             toast.error("You have not entered all the information!")
         }else if (form.closeHour ==="") {
             toast.error("You have not entered all the information!")
-        }
+        }else if (!validator.isEmail(form.email)) {
+            toast.warning("Please enter a valid email address.");
+          }
         else {
             const newRef = doc(db, "users", currentUser.id);
             await updateDoc(newRef, form).then((e) => {

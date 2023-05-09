@@ -64,13 +64,13 @@ function Voucher() {
 
     const handleSearch = (e) => {
         let searchText = e.target.value;
-        const filterProduct = vouchers.filter(item => {
+        const filterVoucher = vouchers.filter(item => {
             let name = item.name.toUpperCase();
             if (name.includes(searchText.toUpperCase())) {
                 return item;
             }
         })
-        setRecords(filterProduct)
+        setRecords(filterVoucher)
     }
     const handleShow = async (e) => {
         const isUpdateShow = doc(db, 'vouchers', e.id);

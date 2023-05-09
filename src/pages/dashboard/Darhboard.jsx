@@ -26,22 +26,11 @@ function Dashboard() {
     setTopSeller(result.slice(0, 3));
 
   }
-  useEffect(() => {
-    getProduct();
-  }, [])
-  useEffect(() => {
-    getUsers();
-
-  }, [])
-
-  useEffect(() => {
-    getOrder();
-  }, [])
 
 
   const getUsers = async () => {
-    const data = await getDocs(userCollectionRef)
-    const docData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    const users = await getDocs(userCollectionRef)
+    let docData= users.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
     setUsers(docData)
   }
 
@@ -50,37 +39,34 @@ function Dashboard() {
     const docOrder = order.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     const orderInshop = docOrder.filter((e) => e);
 
-    // const formatOrder = orderInshop.reduce(function (r, a) {
-    //   r[a.idCustomer] = r[a.idCustomer] || [];
-    //   r[a.idCustomer].push(a);
-    //   return r;
-    // }, []);
-    // let ordersWithCusomer = Object.keys(formatOrder).map((item, index) => {
-    //   return {
-    //     id: Object.keys(formatOrder)[index],
-    //     value: Object.values(formatOrder)[index]
-    //   }
-    // })
+    const formatOrder = orderInshop?.reduce(function (r, a) {
+      r[a.idCustomer] = r[a.idCustomer] || [];
+      r[a.idCustomer].push(a);
+      return r;
+    }, []);
+    let ordersWithCusomer = Object.keys(formatOrder)?.map((item, index) => {
+      return {
+        id: Object.keys(formatOrder)[index],
+        value: Object.values(formatOrder)[index]
+      }
+    })
 
+    const formatDataFilter = users?.filter(
+      (item) => ordersWithCusomer.some((itemUsr) => itemUsr.id == item.id)
+    );
 
-    // const formatDataFilter = users?.filter(
-    //   (item) => ordersWithCusomer.some((itemUsr) => itemUsr.id == item.id)
-    // );
-
-    // const isSold = ordersWithCusomer?.map((item, index) => {
-    //   let totalSold = 0;
-    //   console.log(item);
-    //   item?.value.map(sold => {
-    //     totalSold += +sold;
-    //   })
-    //   return {
-    //     idUser: item.id,
-    //     name: formatDataFilter[index]?.name,
-    //     totalPay: totalSold
-    //   }
-    // }) 
-
-    // setTopUser(formatOrder.slice(0, 3));
+    const isSold = ordersWithCusomer?.map((item, index) => {
+      let totalSold = 0;
+      item?.value.map(sold => {
+        totalSold += +sold.totalPrice;
+      })
+      return {
+        idUser: item.id,
+        name: formatDataFilter?.length > 0 ? formatDataFilter[index]?.fullName : true,
+        totalPay: totalSold
+      }
+    })
+    setTopUser(isSold.slice(0, 3));
 
     const currentUser = JSON.parse(localStorage.getItem('user'))
     const listOrderInShop = orderInshop.filter(orderIn => orderIn.listProduct[0].idUser === currentUser.id);
@@ -88,11 +74,18 @@ function Dashboard() {
     let totalRevenueShop = 0;
     listOrderInShop.map(item => {
       if (item.statusOrder === 'DONE') {
-        totalRevenueShop += +item.totalPrice;
+        totalRevenueShop += +item.totalPrice - item.shipPrice;
       }
     })
     setTotalRevenue(totalRevenueShop)
   }
+
+  useEffect(() => {
+    getProduct();
+    getUsers()
+    getOrder()
+  }, []);
+
   return (
     <div>
       <div className='w-full'>
@@ -123,6 +116,7 @@ function Dashboard() {
                 <div className='flex justify-between items-center'>
                   <div className='mx-3'>
                     {topSeller?.map(item => (
+
                       <div key={item.id} className='flex gap-[20px]'>
                         <div className='w-[150px]'>{item.name}</div>
                         <img src={item.image} alt="" className='w-[50px] object-cover h-[30px]' />
@@ -133,16 +127,21 @@ function Dashboard() {
                 </div>
               </div>
               <div className='w-[40%] h-[150px]  font-semibold'>
-                <div className='flex justify-between pt-7 mx-10 bg-[#F5FAFC] h-[150px] rounded-lg border'>
-                  <div className='mx-5'>
-                  </div>
-                  <FaUserAlt size={24} className='mx-5' />
+                <div className='flex justify-between pt-7 mx-10  h-[150px] rounded-lg border'>
+                  {topuser?.map(item => (
+                    <div className=''>
+                      <div key={item?.id} className='flex gap-[20px]'>
+                        <div className=''>{item?.name}</div>
+                        <div className=''>{item?.totalPay}</div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
               <div className='w-[40%] h-[150px]  font-semibold'>
                 <div className='flex justify-between pt-7 mx-10 bg-[#F5FAFC] h-[150px] rounded-lg border'>
                   <div className='mx-5'>
-                    <p className='text-2xl'>$ <span>{totalRevenue ? totalRevenue : ""}</span></p>
+                    <p className='text-2xl'>$ {totalRevenue ? totalRevenue : ""}</p>
                     <p className='py-2'>Revenue</p>
                   </div>
                   <MdMonetizationOn size={24} className='mx-5' />
@@ -152,7 +151,7 @@ function Dashboard() {
           </div>
         </div>
         <div className='text-black w-full'>
-          <Chart />
+          {/* <Chart /> */}
         </div>
       </div>
     </div>
