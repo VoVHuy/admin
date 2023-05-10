@@ -16,7 +16,6 @@ function Dashboard() {
   const [topuser, setTopUser] = useState();
   const [users, setUsers] = useState();
   const [totalRevenue, setTotalRevenue] = useState();
-
   const getProduct = async () => {
     const data = await getDocs(productCollectionRef)
     const docData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
@@ -30,7 +29,7 @@ function Dashboard() {
 
   const getUsers = async () => {
     const users = await getDocs(userCollectionRef)
-    let docData= users.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+    let docData = users.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
     setUsers(docData)
   }
 
@@ -38,7 +37,6 @@ function Dashboard() {
     const order = await getDocs(orderCollectionRef)
     const docOrder = order.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
     const orderInshop = docOrder.filter((e) => e);
-
     const formatOrder = orderInshop?.reduce(function (r, a) {
       r[a.idCustomer] = r[a.idCustomer] || [];
       r[a.idCustomer].push(a);
@@ -54,7 +52,7 @@ function Dashboard() {
     const formatDataFilter = users?.filter(
       (item) => ordersWithCusomer.some((itemUsr) => itemUsr.id == item.id)
     );
-
+      console.log(formatDataFilter);
     const isSold = ordersWithCusomer?.map((item, index) => {
       let totalSold = 0;
       item?.value.map(sold => {
@@ -62,7 +60,7 @@ function Dashboard() {
       })
       return {
         idUser: item.id,
-        name: formatDataFilter?.length > 0 ? formatDataFilter[index]?.fullName : true,
+        name: formatDataFilter[index]?.fullName ,
         totalPay: totalSold
       }
     })
@@ -83,8 +81,11 @@ function Dashboard() {
   useEffect(() => {
     getProduct();
     getUsers()
-    getOrder()
   }, []);
+
+  useEffect(() => {
+    getOrder()
+  },[users])
 
   return (
     <div>
@@ -127,15 +128,24 @@ function Dashboard() {
                 </div>
               </div>
               <div className='w-[40%] h-[150px]  font-semibold'>
-                <div className='flex justify-between pt-7 mx-10  h-[150px] rounded-lg border'>
+                <div className='ml-3 '>
+                  <label>Top users who put the most</label>
+                </div>
+                <div className='flex gap-[125px] bg-[#F2f2f2] items-center'>
+                  <div className='ml-3'>
+                    <label>Name</label>
+                    <label >Sold</label>
+                  </div>
+                </div>
+                <div className=' justify-between items-center'>
+                  <div className='mx-3'>
                   {topuser?.map(item => (
-                    <div className=''>
-                      <div key={item?.id} className='flex gap-[20px]'>
-                        <div className=''>{item?.name}</div>
-                        <div className=''>{item?.totalPay}</div>
-                      </div>
+                    <div key={item?.id} className=' flex  gap-[10px]'>
+                      <div className='w-[150px]'>{item?.name}</div>
+                      <div className='w-[20px]'>{item?.totalPay}</div>
                     </div>
                   ))}
+                  </div>
                 </div>
               </div>
               <div className='w-[40%] h-[150px]  font-semibold'>
