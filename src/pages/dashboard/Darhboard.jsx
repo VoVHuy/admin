@@ -1,5 +1,5 @@
 
-import { FaUserAlt } from 'react-icons/fa'
+
 import { MdMonetizationOn, MdOutlineFastfood } from 'react-icons/md'
 import Chart from '../../components/chart/Chart'
 import Sidebar from '../../components/sidebar/Sidebar'
@@ -23,7 +23,6 @@ function Dashboard() {
     setProduct(productInshop);
     const result = productInshop?.sort(function (a, b) { return b.sold - a.sold });
     setTopSeller(result.slice(0, 3));
-
   }
 
 
@@ -47,12 +46,11 @@ function Dashboard() {
         id: Object.keys(formatOrder)[index],
         value: Object.values(formatOrder)[index]
       }
-    })
+    }) 
 
     const formatDataFilter = users?.filter(
       (item) => ordersWithCusomer.some((itemUsr) => itemUsr.id == item.id)
     );
-      console.log(formatDataFilter);
     const isSold = ordersWithCusomer?.map((item, index) => {
       let totalSold = 0;
       item?.value.map(sold => {
@@ -63,12 +61,11 @@ function Dashboard() {
         name: formatDataFilter[index]?.fullName ,
         totalPay: totalSold
       }
+      
     })
     setTopUser(isSold.slice(0, 3));
-
     const currentUser = JSON.parse(localStorage.getItem('user'))
     const listOrderInShop = orderInshop.filter(orderIn => orderIn.listProduct[0].idUser === currentUser.id);
-
     let totalRevenueShop = 0;
     listOrderInShop.map(item => {
       if (item.statusOrder === 'DONE') {
@@ -127,29 +124,29 @@ function Dashboard() {
                   </div>
                 </div>
               </div>
-              <div className='w-[40%] h-[150px]  font-semibold'>
+              <div className='w-[27%] border rounded-lg h-[150px]  font-semibold'>
                 <div className='ml-3 '>
                   <label>Top users who put the most</label>
                 </div>
-                <div className='flex gap-[125px] bg-[#F2f2f2] items-center'>
-                  <div className='ml-3'>
+                <div className='flex bg-[#F2f2f2] items-center'>
+                  <div className='ml-3 flex gap-[136px]'>
                     <label>Name</label>
-                    <label >Sold</label>
+                    <label >Total</label>
                   </div>
                 </div>
                 <div className=' justify-between items-center'>
                   <div className='mx-3'>
                   {topuser?.map(item => (
-                    <div key={item?.id} className=' flex  gap-[10px]'>
-                      <div className='w-[150px]'>{item?.name}</div>
-                      <div className='w-[20px]'>{item?.totalPay}</div>
+                    <div key={item?.id} className=' flex pt-[5px]  gap-[30px]'>
+                      <div className='w-[170px]'>{item?.name}</div>
+                      <div className='w-[70px]'>{item?.totalPay}</div>
                     </div>
                   ))}
                   </div>
                 </div>
               </div>
               <div className='w-[40%] h-[150px]  font-semibold'>
-                <div className='flex justify-between pt-7 mx-10 bg-[#F5FAFC] h-[150px] rounded-lg border'>
+                <div className='flex justify-between pt-7 mx-10  h-[150px] rounded-lg border'>
                   <div className='mx-5'>
                     <p className='text-2xl'>$ {totalRevenue ? totalRevenue : ""}</p>
                     <p className='py-2'>Revenue</p>

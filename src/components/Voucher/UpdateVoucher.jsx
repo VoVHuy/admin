@@ -59,7 +59,7 @@ function UpdateVoucher() {
 
         }
     }
-    const getProduct = async () => {
+    const getVoucher = async () => {
         const data = await getDocs(voucherCollectionRef)
         const vouchers = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
         setVoucher(vouchers.find((e) => e.id === id))
@@ -71,7 +71,7 @@ function UpdateVoucher() {
         setImage(image.image)
     }
     useEffect(() => {
-        getProduct()
+        getVoucher()
     }, [])
     return (
         <div className='w-full'>
@@ -89,11 +89,11 @@ function UpdateVoucher() {
                     <div className=' pt-[80px] h-screen ml-5 mr-5 '>
                         <div className=''>
                             <p className=' font-semibold uppercase'>name</p>
-                            <input type="name" id='name' defaultValue={voucher?.name} onChange={(e) => setVoucher({ ...voucher, name: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input  defaultValue={voucher?.name} onChange={(e) => setVoucher({ ...voucher, name: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=''>
                             <p className=' font-semibold uppercase'>Code</p>
-                            <input type="name" id='name' defaultValue={voucher?.code} onChange={(e) => setVoucher({ ...voucher, code: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input   defaultValue={voucher?.code} onChange={(e) => setVoucher({ ...voucher, code: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=''>
                             <p className=' font-semibold uppercase'>End Date</p>
@@ -101,19 +101,19 @@ function UpdateVoucher() {
                         </div>
                         <div className=''>
                             <p className=' font-semibold uppercase'>Discount Money</p>
-                            <input type="name" id='name' defaultValue={voucher?.discountMoney} onChange={(e) => setVoucher({ ...voucher, discountMoney: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input  defaultValue={voucher?.discountMoney} onChange={(e) => setVoucher({ ...voucher, discountMoney: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=''>
                             <p className=' font-semibold uppercase'>Min Order Price</p>
-                            <input type="name" id='name' defaultValue={voucher?.minOrderPrice} onChange={(e) => setVoucher({ ...voucher, minOrderPrice: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input defaultValue={voucher?.minOrderPrice} onChange={(e) => setVoucher({ ...voucher, minOrderPrice: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=''>
                             <p className=' font-semibold uppercase'>Limit Max</p>
-                            <input type="name" id='name' defaultValue={voucher?.limitMax} onChange={(e) => setVoucher({ ...voucher, limitMax: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input  defaultValue={voucher?.limitMax} onChange={(e) => setVoucher({ ...voucher, limitMax: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>description</p>
-                            <textarea name="" id="desc" defaultValue={voucher?.description} onChange={(e) => setVoucher({ ...voucher, description: e.target.value })} className=' border h-[100px]  p-2 w-full outline-none' ></textarea>
+                            <textarea  defaultValue={voucher?.description} onChange={(e) => setVoucher({ ...voucher, description: e.target.value })} className=' border h-[100px]  p-2 w-full outline-none' ></textarea>
                         </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>image</p>

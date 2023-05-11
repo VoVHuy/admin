@@ -51,9 +51,9 @@ function AddFood() {
         }
         else if (document.getElementById('desc').value === '') {
             toast.error("You have not entered all the information!")
-        } if (formInput.priceDiscount && formInput.priceDiscount >= formInput.price) {
+        } else if (formInput.priceDiscount && formInput.priceDiscount >= formInput.price) {
             toast.warning("Price discount cannot be greater than or equal to product price");
-          } if (formInput.price <= 0 || formInput.priceDiscount && formInput.priceDiscount <= 0) {
+          }else if (formInput.price <= 0 || formInput.priceDiscount && formInput.priceDiscount <= 0) {
             toast.warning("Product price and discount must be greater than 0");
           }
         else {
@@ -68,6 +68,8 @@ function AddFood() {
                     priceDiscount: formInput.priceDiscount ? Number(formInput.priceDiscount) : 0,
                     price: Number(formInput.price),
                     image: images,
+                    isDeleted:false,
+                    isShow:true,
                     idUser: JSON.parse(localStorage.getItem('user')).id,
                 });
                 navigation("/food");
@@ -77,40 +79,6 @@ function AddFood() {
             }
         }
     }
-    // const createProduct = async () => {
-    //     if (document.getElementById('name').value === '') {
-    //         toast.error("You have not entered all the information!")
-    //     } else if (document.getElementById('image').value === '') {
-    //         toast.error("You have not entered all the information!")
-
-    //     }
-    //     else if (document.getElementById('price').value === '') {
-    //         toast.error("You have not entered all the information!")
-
-    //     }
-    //     else if (document.getElementById('desc').value === '') {
-    //         toast.error("You have not entered all the information!")
-    //     }
-    //     else {
-    //         try {
-    //             const newProductRef = await addDoc(productCollectionRef, {
-    //                 ...formInput,
-    //                 sold: 0,
-    //                 quantity: 1,
-    //                 price: Number(formInput.price),
-    //                 image: images,
-    //                 idUser: JSON.parse(localStorage.getItem('user')).id,
-    //             });
-    //             const newProductId = newProductRef.id;
-    //             await updateDoc(doc(productCollectionRef, newProductId), { id: newProductId });
-    //             navigation("/food");
-    //             toast.success("Add product success")
-    //         } catch (error) {
-    //             toast.error("Something wrong", error);
-    //         }
-    //     }
-    // }
-
     const handleChangeCategory = (e) => {
         const item = categories.find(ctg => ctg.id === e.target.value);
         setFormInput({ ...formInput, nameCategory: item.name, idCategory: item.id })

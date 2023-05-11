@@ -80,7 +80,8 @@ function UpdateFood() {
                 price: Number(formInput.price),
                 priceDiscount: Number(formInput.priceDiscount), 
                 priceDiscount: formInput.priceDiscount ? Number(formInput.priceDiscount) : 0,
-                image: image })
+                image: image 
+            })
                 .then(() => {
                     navigation("/food");
                     toast.success("Update product success")

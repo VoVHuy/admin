@@ -11,6 +11,7 @@ function Store() {
     e.preventDefault();
     navigate('/store/update')
   }
+  
   return (
     <div className='w-full'>
       <div className='flex'>
@@ -26,7 +27,7 @@ function Store() {
           <div className=' text-black w-full flex  justify-center mx-10 pt-[80px]'>
             <div className='flex gap-[60px] w-[100%]'>
               <div className='pt-[20px]'>
-                <div><img src="/afood.jpg" alt="" className=' rounded-full w-[80%]' /></div>
+                <div><img src={currentUser?.avatar} alt="" className=' rounded-full w-[80%]' /></div>
                 <div className='w-[20%] pt-[90px] ml-[50px]'>
                   <button type="submit" className=' bg-[#F5FAFC] border rounded-lg py-2  w-20 font-semibold'
                   onClick={handleUpdate}
@@ -37,24 +38,28 @@ function Store() {
               </div>
               <div className='w-[80%] pt-[20px] -mx-[30px]'>
                 <div className='flex' >
-                  <h1 className='w-24 py-4 font-semibold'>Name:</h1>
-                  <p className=' h-10 m-2 w-[55%] p-2 '>{currentUser?.fullName}</p>
+                  <h1 className='w-24  font-semibold'>Name:</h1>
+                  <p className=' w-[55%] '>{currentUser?.fullName}</p>
                 </div>
-                <div className='pt-2 flex '>
-                  <h1 className='w-24 py-4 font-semibold'>Email:</h1>
-                  <p className=' h-10 m-2 w-[55%] p-2 '>{currentUser?.email}</p>
+                <div className='pt-4 flex '>
+                  <h1 className='w-24  font-semibold'>Email:</h1>
+                  <p className='  w-[55%] '>{currentUser?.email}</p>
                 </div>
-                <div className='pt-2 flex' >
-                  <h1 className='w-24 py-4 font-semibold'>Address:</h1>
-                  <p className=' h-10 m-2 w-[55%] p-2 '>{currentUser?.address}</p>
+                <div className='pt-4 flex '>
+                  <h1 className='w-24  font-semibold'>Phone:</h1>
+                  <p className='  w-[55%] '>{currentUser?.phone}</p>
                 </div>
-                <div className='pt-2 flex'>
-                  <h1 className='w-24 py-4 font-semibold'>OpenHour:</h1>
-                  <p className=' h-10 m-2 w-[55%] p-2 '>{currentUser?.openHour}</p>
+                <div className='pt-4 flex' >
+                  <h1 className='w-24  font-semibold'>Address:</h1>
+                  <p className='  w-[55%]  '>{currentUser?.address}</p>
                 </div>
-                <div className='pt-2 flex' >
-                  <h1 className='w-24 py-4 font-semibold'>CloseHour:</h1>
-                  <p className=' h-10 m-2 w-[55%] p-2 '>{currentUser?.closeHour}</p>
+                <div className='pt-4 flex'>
+                  <h1 className='w-24 font-semibold'>OpenHour:</h1>
+                  <p className='  w-[55%] '>{currentUser?.openHour}</p>
+                </div>
+                <div className='pt-4 flex' >
+                  <h1 className='w-24 font-semibold'>CloseHour:</h1>
+                  <p className=' w-[55%] '>{currentUser?.closeHour}</p>
                 </div>
               </div>
             </div>

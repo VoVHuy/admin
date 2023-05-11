@@ -33,14 +33,7 @@ function Voucher() {
         setRecords(vouchers?.slice(firstIndex, lastIndex))
     }, [currentPage, vouchers]);
 
-    const deleteVoucher = async (id) => {
-        const voucherDoc = doc(db, "vouchers", id);
-        await deleteDoc(voucherDoc)
-            .then(() => {
-                getVoucher(); toast.error("Delete voucher success")
-            }).catch((error) =>
-                toast.error("Something wrong:", error))
-    }
+    
     const getVoucher = async () => {
         const data = await getDocs(voucherCollectionRef)
         const docData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
@@ -73,12 +66,12 @@ function Voucher() {
         setRecords(filterVoucher)
     }
     const handleShow = async (e) => {
-        const isUpdateShow = doc(db, 'vouchers', e.id);
+        const isUpdateShow = doc(db, "vouchers", e.id);
         if (e.isShow) {
             await updateDoc(isUpdateShow, {
                 isShow: false
             });
-            toast.success("Open Show Voucher Success");
+            toast.success("Lock Show Voucher Success");
             getVoucher();
 
         } else {
@@ -90,7 +83,32 @@ function Voucher() {
 
         }
     }
-    console.log('recoders', records)
+    // const deleteVoucher = async (id) => {
+    //     const voucherDoc = doc(db, "vouchers", id);
+    //     await deleteDoc(voucherDoc)
+    //         .then(() => {
+    //             getVoucher(); toast.error("Delete voucher success")
+    //         }).catch((error) =>
+    //             toast.error("Something wrong:", error))
+    // }
+    const handleDeleted = async (e) => {
+        const isUpdateDeleted = doc(db, "vouchers", e.id);
+        if (e.isDeleted === false) {
+          await updateDoc(isUpdateDeleted, {
+            isDeleted: true
+          });
+          toast.success("Lock Voucher Success");
+          getVoucher();
+    
+        } else if(e.isDeleted === true) {
+          await updateDoc(isUpdateDeleted, {
+            isDeleted: false
+          });
+          toast.success("Unlock Voucher Success");
+          getVoucher();
+    
+        }
+      }
     return (
         <div className='w-full'>
             <div className='flex'>
@@ -115,31 +133,31 @@ function Voucher() {
                         </div>
                         <div className=" bg-white text-gray-800 pt-2 [&>*:nth-child(odd)]:bg-[#F2f2f2] mx-3 ">
                             <div className="font-semibold flex justify-between bg-[#F5FAFC] h-[40px] py-2">
-                                <div className="flex ml-3 gap-[70px]">
-                                    <div className="flex items-center gap-[75px]">
+                                <div className="flex ml-3 gap-[130px]">
+                                    <div className="flex items-center gap-[65px]">
                                         <label >Id</label>
                                         <label >Name</label>
                                     </div>
-                                    <div className='flex gap-[80px]'>
+                                    <div className='flex gap-[70px]'>
                                         <label >Code</label>
                                         <label >EndDate</label>
                                         <div>
-                                            <div className='flex gap-[70px]'>
+                                            <div className='flex gap-[60px]'>
                                                 <label >Image</label>
                                                 <label >Description</label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="mr-[220px]">
+                                <div className="mr-[110px]">
                                     <p>Action</p>
                                 </div>
                             </div>
                             {records?.map((voucher, idx) => (
                                 <div key={idx} className=" py-2 flex justify-between ">
-                                    <div className='flex items-center gap-[40px] ml-3'>
+                                    <div className='flex items-center gap-[30px] ml-3'>
                                         <p className='w-[50px] truncate'>{voucher.id}</p>
-                                        <p className='w-[70px] truncate '>{voucher.name}</p>
+                                        <p className='w-[140px]  '>{voucher.name}</p>
                                         <p className='w-[80px] '>{voucher.code}</p>
                                         <p className='w-[100px] truncate'>{voucher.endDate}</p>
                                         <img src={voucher.image} alt="" className=' h-[50px] w-[80px] ' />
@@ -154,8 +172,8 @@ function Voucher() {
                                             onClick={() => navigate(`/voucher/update/${voucher.id}`)}
                                         >Update</button>
                                         <button className=" rounded-lg bg-[#f86060] border h-7 w-[70px] font-semibold "
-                                            onClick={() => { deleteVoucher(voucher.id) }}
-                                        >Delete</button>
+                                            onClick={() => handleDeleted(voucher) }
+                                        >{voucher.isDeleted === true ? "UnLock" : "Lock"}</button>
                                     </div>
                                 </div>
                             )

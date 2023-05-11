@@ -1,15 +1,32 @@
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/sidebar/Sidebar'
 import React, { useState, useEffect } from 'react';
-import { db } from '../../firebase';
+import { db, storage } from '../../firebase';
 import { doc, updateDoc } from 'firebase/firestore';
+import { ref as refUploadImgs, uploadBytes, getDownloadURL, ref } from 'firebase/storage'
 import { toast } from 'react-toastify';
 import validator from 'validator';
+import { v1 as uuidv1 } from 'uuid';
 function UpdateStore() {
     const [currentUser, setCurrentUser] = useState()
     const [form, setForm] = useState()
+    const [image, setImage] = useState([])
     const navigation = useNavigate()
     console.log(currentUser);
+    const handleImageChange = (e) => {
+        if (e.target.files[0]) {
+            const id = uuidv1()
+            const imageRef = ref(storage, "/imageStore/" + id);
+            uploadBytes(imageRef, e.target.files[0])
+                .then(() => {
+                    getDownloadURL(imageRef).then((url) => {
+                        setImage(url)
+                    }).catch(error => {
+                        console.log(error.message, "err");
+                    });
+                })
+        }
+    }
 
     useEffect(() => {
         setCurrentUser(JSON.parse(localStorage.getItem('user')))
@@ -20,9 +37,11 @@ function UpdateStore() {
             setForm({
                 fullName: currentUser.fullName,
                 email: currentUser.email,
+                phone: currentUser.phone,
                 address: currentUser.address,
                 openHour: currentUser.openHour,
                 closeHour: currentUser.closeHour
+                
             })
         }
     }, [currentUser])
@@ -34,7 +53,10 @@ function UpdateStore() {
             toast.error("You have not entered all the information!")
         }else if ( form.email ==="") {
             toast.error("You have not entered all the information!")
-        }else if (form.openHour ==="") {
+        }else if ( form.phone ==="") {
+            toast.error("You have not entered all the information!")
+        }
+        else if (form.openHour ==="") {
             toast.error("You have not entered all the information!")
         }else if (form.closeHour ==="") {
             toast.error("You have not entered all the information!")
@@ -67,7 +89,10 @@ function UpdateStore() {
                     <div className=' text-black w-full flex  justify-center mx-10 pt-[80px]'>
                         <div className='flex gap-[60px]'>
                             <div className='pt-[20px]'>
-                                <div><img src="/afood.jpg" alt="" className=' rounded-full w-[80%]' /></div>
+                                <div>
+                                <input type="file" onChange={(e) => handleImageChange(e)}  name=""/>
+                                <img src={image} alt=""  className='rounded-full w-[70%]' />
+                                </div>
                                 <div className='w-[20%] pt-[90px] ml-[50px]'>
                                     <button onClick={handleUpdate} type="submit" className=' bg-[#d0f2ff] text-gray-700 border rounded-lg py-2 w-[150px] font-semibold'>
                                             Update Profile
@@ -82,6 +107,10 @@ function UpdateStore() {
                                 <div className='pt-2 flex '>
                                     <label className='w-24 py-4 font-semibold'>Email</label>
                                     <input type="email" id='txt_email' defaultValue={currentUser?.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className=' border outline-none h-10 m-2 w-[60%] p-3' />
+                                </div>
+                                <div className='pt-2 flex '>
+                                    <label className='w-24 py-4 font-semibold'>Phone</label>
+                                    <input type="phone" id='txt_phone' defaultValue={currentUser?.phone} onChange={(e) => setForm({ ...form, email: e.target.value })} className=' border outline-none h-10 m-2 w-[60%] p-3' />
                                 </div>
                                 <div className='pt-2 flex' >
                                     <label className='w-24 py-4 font-semibold'>Address</label>

@@ -4,7 +4,7 @@ import { HiOutlineSelector } from "react-icons/hi";
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../../firebase'
-import { collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { toast } from 'react-toastify'
 function Food() {
   const [products, setProducts] = useState([])
@@ -36,14 +36,6 @@ function Food() {
     setRecords(products?.slice(firstIndex, lastIndex))
   }, [currentPage, products]);
 
-  const deleteProduct = async (id) => {
-    const productDoc = doc(db, "products", id);
-    await deleteDoc(productDoc)
-      .then(() => {
-        getProduct(); toast.error("Delete product success")
-      }).catch((error) =>
-        toast.error("Something wrong:", error))
-  }
   const getProduct = async () => {
     const data = await getDocs(productCollectionRef)
     const docData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
@@ -74,7 +66,50 @@ function Food() {
       }
     })
     setRecords(filterProduct)
+  }
+  const handleShow = async (e) => {
+    const isUpdateShow = doc(db, "products", e.id);
+    if (e.isShow) {
+      await updateDoc(isUpdateShow, {
+        isShow: false
+      });
+      toast.success("Lock Show Food Success");
+      getProduct();
 
+    } else {
+      await updateDoc(isUpdateShow, {
+        isShow: true
+      });
+      toast.success("Open Show Food Success");
+      getProduct();
+
+    }
+  }
+  // const deleteProduct = async (id) => {
+  //   const productDoc = doc(db, "products", id);
+  //   await deleteDoc(productDoc)
+  //     .then(() => {
+  //       getProduct(); toast.error("Delete product success")
+  //     }).catch((error) =>
+  //       toast.error("Something wrong:", error))
+  // }
+  const handleDeleted = async (e) => {
+    const isUpdateDeleted = doc(db, "products", e.id);
+    if (e.isDeleted === false) {
+      await updateDoc(isUpdateDeleted, {
+        isDeleted: true
+      });
+      toast.success("Lock Food Success");
+      getProduct();
+
+    } else if(e.isDeleted === true) {
+      await updateDoc(isUpdateDeleted, {
+        isDeleted: false
+      });
+      toast.success("Unlock Food Success");
+      getProduct();
+
+    }
   }
   return (
     <div className='w-full'>
@@ -100,49 +135,52 @@ function Food() {
             </div>
             <div className=" bg-white text-gray-800 pt-2 [&>*:nth-child(odd)]:bg-[#F2f2f2] mx-3 ">
               <div className="font-semibold uppercase flex justify-between bg-[#F5FAFC] h-[40px] py-2">
-                <div className="flex gap-[70px] ml-3">
+                <div className="flex gap-[63px] ml-3">
                   <div className="flex items-center">
                     <p>id</p>
                     <HiOutlineSelector size={15} />
                   </div>
-                 <div className='flex gap-[177px]'>
-                 <div className='flex gap-[70px]'>
-                  <p>category</p>
-                  <p>name</p>
+                  <div className='flex gap-[128px]'>
+                    <div className='flex gap-[57px]'>
+                      <p>category</p>
+                      <p>name</p>
+                    </div>
+                    <div className='flex gap-[58px]'>
+                      <p>images</p>
+                      <div className='flex gap-[42px]'>
+                        <p>price</p>
+                        <p>discount</p>
+                      </div>
+                    </div>
                   </div>
-                  <div className='flex gap-[70px]'>
-                    <p>images</p>
-                    <div className='flex gap-[50px]'>
-                    <p>price</p>
-                    <p>discount</p>
-                  </div>
-                  </div>
-                 </div>
                 </div>
                 <div className="mr-[100px]">
                   <p>Action</p>
                 </div>
               </div>
               {records?.map((product, idx) => (
-                  <div key={idx} className=" py-2 flex justify-between ">
-                    <div className='flex items-center gap-[45px] ml-3'>
-                      <p className='w-[60px] truncate'>{product.id}</p>
-                      <p className='w-[100px] '>{product.nameCategory}</p>
-                      <p className='w-[180px]'>{product.name}</p>
-                      <img src={product.image}  alt="" className=' h-[50px] w-[80px] object-cover' />
-                      <p className='w-[50px]'>{product.price}</p>
-                      <p className='w-[50px]'>{product.priceDiscount}</p>
-                    </div>
-                    <div className="flex gap-2 mr-3 items-center">
-                      <button className=" rounded-lg bg-[#F5FAFC] border h-7 w-[70px] font-semibold  "
-                        onClick={() => navigate(`/food/update/${product.id}`)}
-                      >Update</button>
-                      <button className=" rounded-lg bg-[#f86060] border h-7 w-[70px] font-semibold "
-                        onClick={() => { deleteProduct(product.id) }}
-                      >Delete</button>
-                    </div>
+                <div key={idx} className=" py-2 flex justify-between ">
+                  <div className='flex items-center gap-[35px] ml-3'>
+                    <p className='w-[60px] truncate'>{product.id}</p>
+                    <p className='w-[100px] '>{product.nameCategory}</p>
+                    <p className='w-[140px]'>{product.name}</p>
+                    <img src={product.image} alt="" className=' h-[50px] w-[80px] object-cover' />
+                    <p className='w-[50px]'>{product.price}</p>
+                    <p className='w-[50px]'>{product.priceDiscount}</p>
                   </div>
-                )
+                  <div className="flex gap-2 mr-3 items-center">
+                    <button className=" rounded-lg bg-[#F5FAFC] border h-7 w-[90px] font-semibold "
+                      onClick={() => handleShow(product)}
+                    >{product.isShow ? "Not Show" : "Show"}</button>
+                    <button className=" rounded-lg bg-[#F5FAFC] border h-7 w-[70px] font-semibold  "
+                      onClick={() => navigate(`/food/update/${product.id}`)}
+                    >Update</button>
+                    <button className=" rounded-lg bg-[#f86060] border h-7 w-[70px] font-semibold "
+                      onClick={() => handleDeleted(product) }
+                    >{product.isDeleted === true ? "UnLock" : "Lock"}</button>
+                  </div>
+                </div>
+              )
               )}
               <div className="flex gap-[10px] justify-center py-3">
                 <div className="ml-10">
