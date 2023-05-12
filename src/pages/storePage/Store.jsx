@@ -1,17 +1,26 @@
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/sidebar/Sidebar'
 import React, { useState, useEffect } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../firebase';
 function Store() {
   const [currentUser, setCurrentUser] = useState()
+  console.log(currentUser);
   const navigate = useNavigate()
-  useEffect(() => {
+  const storeCollectionRef = collection(db, "users")
+  const getStore = async () => {
+}
+useEffect(() => {
     setCurrentUser(JSON.parse(localStorage.getItem('user')))
-  }, [])
+}, [])
+useEffect(() => {
+  getStore()
+}, [])
+
   const handleUpdate = (e) => {
     e.preventDefault();
     navigate('/store/update')
   }
-  
   return (
     <div className='w-full'>
       <div className='flex'>
@@ -27,10 +36,10 @@ function Store() {
           <div className=' text-black w-full flex  justify-center mx-10 pt-[80px]'>
             <div className='flex gap-[10px] w-[100%]'>
               <div className='pt-[20px]'>
-                <div><img src="/afood.jpg" alt="" className=' rounded-full w-[60%]' /></div>
+                <div><img src={currentUser?.image} alt="" className=' rounded-full w-[60%]' /></div>
                 <div className='w-[20%] pt-[30px] ml-[30px]'>
                   <button type="submit" className=' bg-[#F5FAFC] border rounded-lg py-2  w-20 font-semibold'
-                  onClick={handleUpdate}
+                    onClick={handleUpdate}
                   >
                     Update
                   </button>

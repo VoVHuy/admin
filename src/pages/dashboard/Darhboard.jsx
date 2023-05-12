@@ -81,16 +81,17 @@ function Dashboard() {
       r[a.idCustomer].push(a);
       return r;
     }, []);
-    let wtf = Object.keys(hehe)?.map((item, index) => {
+    let top = Object.keys(hehe)?.map((item, index) => {
       let totlPay = Object.values(hehe)[index].reduce((r, a) => {
         return r + a.payment;
       }, 0)
       return {
-        name: Object.values(hehe)[0][0].userName,
+        name: Object.values(hehe)[index][0].userName,
         totalPay: totlPay
       }
     })
-    setTopUser(wtf)
+    const result = top?.sort(function (a, b) { return b.totalPay - a.totalPay });
+    setTopUser(result.slice(0, 3));
 
     const listOrderInShop = orderInshop.filter(orderIn => orderIn.listProduct[0].idUser === currentUser.id);
     let totalRevenueShop = 0;

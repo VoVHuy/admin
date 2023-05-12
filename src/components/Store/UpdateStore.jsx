@@ -41,7 +41,7 @@ function UpdateStore() {
                 address: currentUser.address,
                 openHour: currentUser.openHour,
                 closeHour: currentUser.closeHour
-                
+
             })
         }
     }, [currentUser])
@@ -49,30 +49,31 @@ function UpdateStore() {
     //
 
     const handleUpdate = async () => {
-        if (form.fullName ==="") {
+        if (form.fullName === "") {
             toast.error("You have not entered all the information!")
-        }else if ( form.email ==="") {
+        } else if (form.email === "") {
             toast.error("You have not entered all the information!")
-        }else if ( form.phone ==="") {
+        } else if (form.phone === "") {
             toast.error("You have not entered all the information!")
         }
-        else if (form.openHour ==="") {
+        else if (form.openHour === "") {
             toast.error("You have not entered all the information!")
-        }else if (form.closeHour ==="") {
+        } else if (form.closeHour === "") {
             toast.error("You have not entered all the information!")
-        }else if (!validator.isEmail(form.email)) {
+        } else if (!validator.isEmail(form.email)) {
             toast.warning("Please enter a valid email address.");
-          }
+        }
         else {
+            console.log(image);
             const newRef = doc(db, "users", currentUser.id);
-            await updateDoc(newRef, form).then((e) => {
+            await updateDoc(newRef, { ...form, avatar: image }).then((e) => {
                 navigation("/store");
-                toast.success("Update store success");
-                localStorage.setItem('user', JSON.stringify({ ...currentUser, ...form }))
+                toast.success("Update store success"); 
             }).catch((error) =>
                 alert("Something wrong:", error));
         }
     }
+
 
     return (
         <div className='w-full'>
@@ -90,11 +91,12 @@ function UpdateStore() {
                         <div className='flex gap-[60px]'>
                             <div className='pt-[20px]'>
                                 <div>
-                                <img src="/afood.jpg" alt=""  className='rounded-full w-[70%]' />
+                                    <input type="file" onChange={handleImageChange} />
+                                    <img src={image} alt="" className='rounded-full w-[70%]' />
                                 </div>
                                 <div className='w-[20%] pt-[100px] ml-[10px]'>
                                     <button onClick={handleUpdate} type="submit" className=' bg-[#d0f2ff] text-gray-700 border rounded-lg py-2 w-[150px] font-semibold'>
-                                            Update Profile
+                                        Update Profile
                                     </button>
                                 </div>
                             </div>
