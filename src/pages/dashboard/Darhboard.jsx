@@ -26,6 +26,7 @@ function Dashboard() {
   }
 
 
+
   const getUsers = async () => {
     const users = await getDocs(userCollectionRef)
     let docData = users.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
@@ -46,25 +47,51 @@ function Dashboard() {
         id: Object.keys(formatOrder)[index],
         value: Object.values(formatOrder)[index]
       }
-    }) 
+    })
+    const currentUser = JSON.parse(localStorage.getItem('user'))
+
+    const orderPaymentShop = orderInshop.filter(ois => {
+      if (ois.listProduct[0].idUser === currentUser.id) {
+
+        return {
+          ...ois,
+          idShop: ois.listProduct[0].idUser
+        };
+      }
+    });
 
     const formatDataFilter = users?.filter(
       (item) => ordersWithCusomer.some((itemUsr) => itemUsr.id == item.id)
     );
-    const isSold = ordersWithCusomer?.map((item, index) => {
-      let totalSold = 0;
-      item?.value.map(sold => {
-        totalSold += +sold.totalPrice;
-      })
+
+    console.log(orderPaymentShop);
+    const isSold = orderPaymentShop?.map((item, index) => {
+      let isUser = users.find(us => us.id === item.idCustomer)
       return {
-        idUser: item.id,
-        name: formatDataFilter[index]?.fullName ,
-        totalPay: totalSold
+        idCustomer: item.idCustomer,
+        idShop: item.listProduct[0].idUser,
+        userName: isUser?.fullName,
+        payment: item.totalPrice,
       }
-      
+    });
+
+
+    const hehe = isSold?.reduce(function (r, a) {
+      r[a.idCustomer] = r[a.idCustomer] || [];
+      r[a.idCustomer].push(a);
+      return r;
+    }, []);
+    let wtf = Object.keys(hehe)?.map((item, index) => {
+      let totlPay = Object.values(hehe)[index].reduce((r, a) => {
+        return r + a.payment;
+      }, 0)
+      return {
+        name: Object.values(hehe)[0][0].userName,
+        totalPay: totlPay
+      }
     })
-    setTopUser(isSold.slice(0, 3));
-    const currentUser = JSON.parse(localStorage.getItem('user'))
+    setTopUser(wtf)
+
     const listOrderInShop = orderInshop.filter(orderIn => orderIn.listProduct[0].idUser === currentUser.id);
     let totalRevenueShop = 0;
     listOrderInShop.map(item => {
@@ -82,7 +109,7 @@ function Dashboard() {
 
   useEffect(() => {
     getOrder()
-  },[users])
+  }, [users])
 
   return (
     <div>
@@ -136,16 +163,16 @@ function Dashboard() {
                 </div>
                 <div className=' justify-between items-center'>
                   <div className='mx-3'>
-                  {topuser?.map(item => (
-                    <div key={item?.id} className=' flex pt-[5px]  gap-[30px]'>
-                      <div className='w-[170px]'>{item?.name}</div>
-                      <div className='w-[70px]'>{item?.totalPay}</div>
-                    </div>
-                  ))}
+                    {topuser?.map(item => (
+                      <div key={item?.id} className=' flex pt-[5px]  gap-[30px]'>
+                        <div className='w-[170px]'>{item?.name}</div>
+                        <div className='w-[70px]'>{item?.totalPay}</div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
-              <div className='w-[40%] h-[150px]  font-semibold'>
+              <div className='w-[30%] h-[150px]  font-semibold'>
                 <div className='flex justify-between pt-7 mx-10  h-[150px] rounded-lg border'>
                   <div className='mx-5'>
                     <p className='text-2xl'>$ {totalRevenue ? totalRevenue : ""}</p>

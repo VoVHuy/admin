@@ -90,16 +90,15 @@ function UpdateStore() {
                         <div className='flex gap-[60px]'>
                             <div className='pt-[20px]'>
                                 <div>
-                                <input type="file" onChange={(e) => handleImageChange(e)}  name=""/>
-                                <img src={image} alt=""  className='rounded-full w-[70%]' />
+                                <img src="/afood.jpg" alt=""  className='rounded-full w-[70%]' />
                                 </div>
-                                <div className='w-[20%] pt-[90px] ml-[50px]'>
+                                <div className='w-[20%] pt-[100px] ml-[10px]'>
                                     <button onClick={handleUpdate} type="submit" className=' bg-[#d0f2ff] text-gray-700 border rounded-lg py-2 w-[150px] font-semibold'>
                                             Update Profile
                                     </button>
                                 </div>
                             </div>
-                            <div className='w-[80%] pt-[20px]' >
+                            <div className='w-[80%] pt-[10px]' >
                                 <div className='flex' >
                                     <label className='w-24 py-4 font-semibold'>Name</label>
                                     <input type="name" id='txt_fullname' defaultValue={currentUser?.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} className=' border outline-none h-10 m-2 w-[60%] p-3 ' />
