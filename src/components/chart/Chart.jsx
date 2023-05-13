@@ -1,9 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { BarChart,Bar,LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { database } from '../../firebase'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { db } from '../../firebase'
 import moment from 'moment/moment';
-import { onValue } from 'firebase/database';
-import { ref } from 'firebase/storage';
+import { collection, getDocs } from 'firebase/firestore';
 
 
 const Chart = () => {
@@ -11,265 +10,276 @@ const Chart = () => {
   const [revenueData, setRevenueData] = useState([])
   const [dateFrom, setDateFrom] = useState('')
   const [dataTo, setDateTo] = useState('')
-
+  const [type, setType] = useState('')
   const [data, setData] = useState([])
-  const handleReadData = () => {
-    onValue(ref(database, '/orders'), (snapshot) => {
-        setRevenueData([])
-        const data = snapshot.val();
-        if(data !==null){
-          Object.values(data).map((order) => {
-            setRevenueData((prev) => [...prev, order])
-          })
-        }
-    })
+  const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')))
+  const handleReadData = async () => {
+    await getDocs(collection(db, "/orders"))
+      .then((querySnapshot) => {
+        const newData = querySnapshot.docs
+          .map((doc) => ({ ...doc.data(), id: doc.id }));
+        const filterData = newData.filter(item => {
+          if (item.listProduct[0].idUser === currentUser.id) {
+            return item;
+          }
+        })
+        setRevenueData(filterData);
+      })
   }
 
   useEffect(() => {
     handleReadData()
-},[])
+  }, [])
 
 
-const computedDataTypeYear = useMemo(() => {
-  return revenueData.reduce((prevObj, data)=>{
-    const dateStr = data.time_order;
-    const parts = dateStr.split(' | ');
-    const date = parts[0];
-    const time = parts[1];
-    const [day, month, year] = date.split('/');
-    const [hour, minute] = time.split(':');
-    const isoDateStr = `${year}-${month}-${day}T${hour}:${minute}`;
 
+  const computedDataTypeYear = useMemo(() => {
+    return revenueData.reduce((prevObj, data) => {
+      const dateStr = data.timePeding;
+      const parts = dateStr.split(' ');
+      const date = parts[1];
+      const time = parts[0];
+      const [day, month, year] = date.split('/');
+      const [hour, minute] = time.split(':');
+      const isoDateStr = `${year}-${month}-${day}T${hour}:${minute}`;
 
-    const Month = new Date(isoDateStr).getMonth() + 1
+      const Month = new Date(isoDateStr).getMonth() + 1
 
-    if(Month === 1) {
-      return {
-        ...prevObj,
-        Thang1: (prevObj.Thang1 || 0) + data.total_cart
-      }
-    }
-    if(Month === 2) {
-      return {
-        ...prevObj,
-        Thang2: (prevObj.Thang2 || 0) + data.total_cart
-      }
-    }
-    if(Month === 3) {
-      return {
-        ...prevObj,
-        Thang3: (prevObj.Thang3 || 0) + data.total_cart
-      }
-    }
-    if(Month === 4) {
-      return {
-        ...prevObj,
-        Thang4: (prevObj.Thang4 || 0) + data.total_cart
-      }
-    }
-    if(Month === 5) {
-      return {
-        ...prevObj,
-        Thang5: (prevObj.Thang5 || 0) + data.total_cart
-      }
-    }
-    if(Month === 6) {
-      return {
-        ...prevObj,
-        Thang6: (prevObj.Thang6 || 0) + data.total_cart
-      }
-    }
-    if(Month === 7) {
-      return {
-        ...prevObj,
-        Thang7: (prevObj.Thang7 || 0) + data.total_cart
-      }
-    }
-    if(Month === 8) {
-      return {
-        ...prevObj,
-        Thang8: (prevObj.Thang8 || 0) + data.total_cart
-      }
-    }
-    if(Month === 9) {
-      return {
-        ...prevObj,
-        Thang9: (prevObj.Thang9 || 0) + data.total_cart
-      }
-    }
-    if(Month === 10) {
-      return {
-        ...prevObj,
-        Thang10: (prevObj.Thang10 || 0) + data.total_cart
-      }
-    }
-    if(Month === 11) {
-      return {
-        ...prevObj,
-        Thang11: (prevObj.Thang11 || 0) + data.total_cart
-      }
-    }
-    if(Month === 12) {
-      return {
-        ...prevObj,
-        Thang12: (prevObj.Thang12 || 0) + data.total_cart
-      }
-    }
-  }, {})
-}, [revenueData])
+      if (Month === 1) {
+        return {
+          ...prevObj,
+          Thang1: (prevObj.Thang1 || 0) + data.totalPrice
+        }
 
-const computedDataTypeMonth = useMemo(() => {
+      }
+      if (Month === 2) {
+        return {
+          ...prevObj,
+          Thang2: (prevObj.Thang2 || 0) + data.totalPrice
+        }
+      }
+      if (Month === 3) {
+        return {
+          ...prevObj,
+          Thang3: (prevObj.Thang3 || 0) + data.totalPrice
+        }
+      }
+      if (Month === 4) {
+        return {
+          ...prevObj,
+          Thang4: (prevObj.Thang4 || 0) + data.totalPrice
+        }
+      }
+      if (Month === 5) {
+        return {
+          ...prevObj,
+          Thang5: (prevObj.Thang5 || 0) + data.totalPrice
+        }
+      }
+      if (Month === 6) {
+        return {
+          ...prevObj,
+          Thang6: (prevObj.Thang6 || 0) + data.totalPrice
+        }
+      }
+      if (Month === 7) {
+        return {
+          ...prevObj,
+          Thang7: (prevObj.Thang7 || 0) + data.totalPrice
+        }
+      }
+      if (Month === 8) {
+        return {
+          ...prevObj,
+          Thang8: (prevObj.Thang8 || 0) + data.totalPrice
+        }
+      }
+      if (Month === 9) {
+        return {
+          ...prevObj,
+          Thang9: (prevObj.Thang9 || 0) + data.totalPrice
+        }
+      }
+      if (Month === 10) {
+        return {
+          ...prevObj,
+          Thang10: (prevObj.Thang10 || 0) + data.totalPrice
+        }
+      }
+      if (Month === 11) {
+        return {
+          ...prevObj,
+          Thang11: (prevObj.Thang11 || 0) + data.totalPrice
+        }
+      }
+      if (Month === 12) {
+        return {
+          ...prevObj,
+          Thang12: (prevObj.Thang12 || 0) + data.totalPrice
+        }
+      }
+    }, {})
+  }, [revenueData])
+
+  const computedDataTypeMonth = useMemo(() => {
     const nowMonth = new Date().getMonth() + 1
     const nowYear = new Date().getFullYear()
     const dailySales = {}
     revenueData.forEach(sale => {
-      const dateStr = sale.time_order;
-      const parts = dateStr.split(' | ');
-      const date = parts[0];
+      const dateStr = sale.timePeding;
+      const parts = dateStr.split(' ');
+      const date = parts[1];
       const [day, month, year] = date.split('/');
       const isoDateStr = `${year}-${month}-${day}`;
-
       const Month = new Date(isoDateStr).getMonth() + 1
       const Year = new Date(isoDateStr).getFullYear()
-      
-      if(Month == nowMonth && Year == nowYear) {
-      
+
+      if (Month == nowMonth && Year == nowYear) {
+
         if (dailySales[isoDateStr]) {
-          dailySales[isoDateStr] += sale.total_cart;
-        } 
+          dailySales[isoDateStr] += sale.totalPrice;
+
+        }
         else {
-          dailySales[isoDateStr] = sale.total_cart;
+          dailySales[isoDateStr] = sale.totalPrice;
+
         }
       }
     });
     return dailySales
-}, [revenueData])
+  }, [revenueData])
 
-const computedBookingTypeToDay = useMemo(() => {
-  return revenueData.reduce((prevObj, data) => {
-    const now = new Date().getDate()
-    const nowMonth = new Date().getMonth() + 1
-    const nowYear = new Date().getFullYear()
+  const computedBookingTypeToDay = useMemo(() => {
+    return revenueData.reduce((prevObj, data) => {
+      const now = new Date().getDate()
+      const nowMonth = new Date().getMonth() + 1
+      const nowYear = new Date().getFullYear()
+      const dateStr = data.timePeding;
+      const parts = dateStr.split(' ');
+      const date = parts[1];
+      const [day, month, year] = date.split('/');
+      const isoDateStr = `${year}-${month}-${day}`;
+      const ngay = new Date(isoDateStr).getDate();
+      const Month = new Date(isoDateStr).getMonth() + 1
+      const Year = new Date(isoDateStr).getFullYear()
 
-    const dateStr = data.time_order;
-    const parts = dateStr.split(' | ');
-    const date = parts[0];
-    const [day, month, year] = date.split('/');
-    const isoDateStr = `${year}-${month}-${day}`;
-
-    const ngay =  new Date(isoDateStr).getDate();
-    const Month = new Date(isoDateStr).getMonth() + 1
-    const Year = new Date(isoDateStr).getFullYear()
-
-    if(ngay === now && Month === nowMonth && Year === nowYear) {
-      return {
-        ...prevObj,
-        homNay: (prevObj.homNay || 0) + data.total_cart
+      if (ngay === now && Month === nowMonth && Year === nowYear) {
+        return {
+          ...prevObj,
+          today: (prevObj.today || 0) + data.totalPrice
+        }
       }
+      return prevObj
+    }, {})
+
+  }, [revenueData])
+
+  const filterRevenueByDate = () => {
+    const result = {};
+    const eee = revenueData.filter(data => {
+      const dateStr = data.timePeding;
+
+      const parts = dateStr.split(' ');
+
+      const date = parts[1];
+
+      const [day, month, year] = date.split('/');
+
+      const isoDateStr = `${year}-${month}-${day}`;
+
+      const revenueDataDate = moment(isoDateStr);
+
+      return revenueDataDate.isBetween(dateFrom, dataTo, null, []);
+    }).forEach(sale => {
+      const dateStr = sale.timePeding;
+      const parts = dateStr.split(' ');
+      const date = parts[1];
+      const [day, month, year] = date.split('/');
+      const isoDateStr = `${year}-${month}-${day}`;
+
+      const ngay = isoDateStr
+      if (sale.statusOrder === "DONE" && result[ngay]) {
+        result[ngay] += sale.totalPrice;
+      }
+      else {
+        result[ngay] = sale.totalPrice;
+      }
+    })
+    const _data = []
+    for (let key in result) {
+      _data.push({ name: key, total: result[key] })
     }
-    return prevObj
-  },{})
+    setData(_data)
 
-}, [revenueData])
 
-const filterRevenueByDate = () => {
-  const result = {}
-  revenueData.filter(data => {
-    const dateStr = data.time_order;
-    const parts = dateStr.split(' | ');
-    const date = parts[0];
-    const [day, month, year] = date.split('/');
-    const isoDateStr = `${year}-${month}-${day}`;
+  }
 
-    const revenueDataDate = moment(isoDateStr);
-    return revenueDataDate.isBetween(dateFrom, dataTo, null, []);
-  }).forEach(sale => {
-    const dateStr = sale.time_order;
-    const parts = dateStr.split(' | ');
-    const date = parts[0];
-    const [day, month, year] = date.split('/');
-    const isoDateStr = `${year}-${month}-${day}`;
-
-    const ngay = isoDateStr
-    if (result[ngay]) {
-      result[ngay] += sale.total_cart;
-    }
-    else {
-      result[ngay] = sale.total_cart;
-    }
-  })
-  const _data = []
-  for(let key in result) {
-    _data.push({name: key, total: result[key]})
-  }   
- setData(_data)
-}
-useEffect(() => {
-  filterRevenueByDate()
- },[dataTo])
+  useEffect(() => {
+    filterRevenueByDate()
+  }, [dataTo])
 
   const handleFilterByDate = (filter) => {
     let result = []
-    switch(filter){
-      case 'homnay':
+    switch (filter) {
+      case 'today':
         result = [{
           name: 'Hôm nay',
-          total: computedBookingTypeToDay?.homNay
+          total: computedBookingTypeToDay?.today
         }]
         break;
-      case 'thangnay':
-        for(let key in computedDataTypeMonth) {
-          result.push({name: key, total: computedDataTypeMonth[key]})
+      case 'thisMonth':
+        for (let key in computedDataTypeMonth) {
+          result.push({ name: key, total: computedDataTypeMonth[key] })
         }
         break;
-      case 'namnay':
+      case 'thisYear':
         result = [
           {
-            name: 'Tháng 1',
+            name: 'January',
             total: computedDataTypeYear.Thang1,
           },
           {
-            name: 'Tháng 2',
+            name: 'February',
             total: computedDataTypeYear.Thang2,
           },
           {
-            name: 'Tháng 3',
+            name: 'March',
             total: computedDataTypeYear.Thang3,
           },
           {
-            name: 'Tháng 4',
+            name: 'April',
             total: computedDataTypeYear.Thang4,
           },
           {
-            name: 'Tháng 5',
+            name: 'May',
             total: computedDataTypeYear.Thang5,
           },
           {
-            name: 'Tháng 6',
+            name: 'June',
             total: computedDataTypeYear.Thang6,
           },
           {
-            name: 'Tháng 7',
+            name: 'July',
             total: computedDataTypeYear.Thang7,
           },
           {
-            name: 'Tháng 8',
+            name: 'August',
             total: computedDataTypeYear.Thang8,
           },
           {
-            name: 'Tháng 9',
+            name: 'September',
             total: computedDataTypeYear.Thang9,
           },
           {
-            name: 'Tháng 10',
+            name: 'October',
             total: computedDataTypeYear.Thang10,
           },
           {
-            name: 'Tháng 11',
+            name: 'November',
             total: computedDataTypeYear.Thang11,
           },
           {
-            name: 'Tháng 12',
+            name: 'December',
             total: computedDataTypeYear.Thang12,
           },
         ];
@@ -279,48 +289,49 @@ useEffect(() => {
     }
     setData(result)
   }
-  console.log(data);
+
+
   return (
     <div className=''>
-      {/* <form >
-        <div className='ml-[300px] pt-5 gap-10 flex '>
+      <form >
+        <div className='ml-[275px] pt-5 gap-10 flex  '>
           <div className=''>
-              <label>Từ Ngày</label>
-              <input type="date" className='ml-5 border py-2 p-2 outline-none border-black' value={dateFrom} onChange={(e) => setDateFrom(e.target.value)}/>
+            <label>From</label>
+            <input type="date" className='ml-5 border py-2 p-2 outline-none ' value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
           </div>
           <div className='date-input'>
-              <label>Đến Ngày</label>
-              <input type="date" className='ml-5 border py-2 p-2 border-black outline-none' value={dataTo} onChange={(e) => setDateTo(e.target.value)}/>
+            <label>To</label>
+            <input type="date" className='ml-5 border py-2 p-2  outline-none' value={dataTo} onChange={(e) => setDateTo(e.target.value)} />
           </div>
         </div>
-      </form> */}
-      <div className='select-container flex pt-2 ml-[300px] gap-4 text-black'>
-        <label>Lọc Theo</label>
-        <select className='date-select pt-5px pb-10px w-[120px] border border-[#e9f8ff] py-2 p-2 outline-none'  onChange={(e) => handleFilterByDate(e.target.value)}>
-            <option value="homnay">Hôm nay</option>
-            <option value="thangnay">Tháng Này</option>
-            <option value="namnay">Năm nay</option>
+      </form>
+      <div className='select-container flex pt-2 ml-[332px] gap-4 text-black'>
+        <select className='date-select  pb-10px w-[120px] border  py-2 p-2 outline-none' value={type} onChange={(e) => handleFilterByDate(e.target.value)}>
+          <option >Filter</option>
+          <option value="today">Today</option>
+          <option value="thisMonth">This Month</option>
+          <option value="thisYear">This Year</option>
         </select>
       </div>
-      <ResponsiveContainer width="70%" height={300} className='ml-[300px]'>
-      <BarChart
-           width={500}
-           height={300}
-           data={data}
-           margin={{
-             top: 5,
-             right: 30,
-             left: 20,
-             bottom: 5,
-           }}
-           barSize={20}
+      <ResponsiveContainer width="75%" height={300} className='ml-[193px]'>
+        <BarChart
+          width={500}
+          height={300}
+          data={data}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+          barSize={20}
         >
           <XAxis dataKey="name" scale="point" padding={{ left: 10, right: 10 }} />
-          <YAxis/>
+          <YAxis />
           <Tooltip />
           <Legend />
           <CartesianGrid strokeDasharray="3 3" />
-          <Bar dataKey="total" fill="#FFB26B" background={{ fill: '#eee' }} />
+          <Bar dataKey="total" fill="#67ccf7" background={{ fill: '#eee' }} />
         </BarChart>
       </ResponsiveContainer>
     </div>

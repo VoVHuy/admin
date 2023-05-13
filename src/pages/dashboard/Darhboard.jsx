@@ -97,7 +97,7 @@ function Dashboard() {
     let totalRevenueShop = 0;
     listOrderInShop.map(item => {
       if (item.statusOrder === 'DONE') {
-        totalRevenueShop += +item.totalPrice - item.shipPrice;
+        totalRevenueShop += +item.totalPrice ;
       }
     })
     setTotalRevenue(totalRevenueShop)
@@ -116,17 +116,17 @@ function Dashboard() {
     <div>
       <div className='w-full'>
         <div className='flex'>
-          <div className='w-[25%]'>
+          <div className='w-[20%]'>
             <Sidebar />
           </div>
-          <div className=' text-black w-full'>
+          <div className=' text-black w-[80%]'>
             <div className='h-[70px] fixed text-[#09132C] w-full px-6 py-4 bg-[#fafafa] flex items-center' >
               <div className='font-normal max-md:text-sm max-w-[400px]'>
                 <p className='font-bold text-2xl mx-3'>Dashboard</p>
               </div>
             </div>
-            <div className='flex pt-[80px]'>
-              <div className='w-[35%] h-[150px] font-semibold mx-3 border rounded-lg '>
+            <div className='flex pt-[80px] ml-5'>
+              <div className='w-[30%] h-[150px] font-semibold ml-3 border rounded-lg '>
                 <div className='ml-3 '>
                   <label>Top Most Ordered Dishes</label>
                 </div>
@@ -152,12 +152,12 @@ function Dashboard() {
                   </div>
                 </div>
               </div>
-              <div className='w-[27%] border rounded-lg h-[150px]  font-semibold'>
+              <div className='w-[27%] border rounded-lg h-[150px] ml-3  font-semibold'>
                 <div className='ml-3 '>
                   <label>Top users who put the most</label>
                 </div>
                 <div className='flex bg-[#F2f2f2] items-center'>
-                  <div className='ml-3 flex gap-[136px]'>
+                  <div className='ml-3 flex gap-[130px]'>
                     <label>Name</label>
                     <label >Total</label>
                   </div>
@@ -173,8 +173,8 @@ function Dashboard() {
                   </div>
                 </div>
               </div>
-              <div className='w-[30%] h-[150px]  font-semibold'>
-                <div className='flex justify-between pt-7 mx-10  h-[150px] rounded-lg border'>
+              <div className='w-[25%] h-[150px]  font-semibold'>
+                <div className='flex justify-between pt-7 ml-3  h-[150px] rounded-lg border'>
                   <div className='mx-5'>
                     <p className='text-2xl'>$ {totalRevenue ? totalRevenue : ""}</p>
                     <p className='py-2'>Revenue</p>
@@ -185,8 +185,8 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        <div className='text-black w-full'>
-          {/* <Chart /> */}
+        <div className='text-black w-full   '>
+          <Chart />
         </div>
       </div>
     </div>

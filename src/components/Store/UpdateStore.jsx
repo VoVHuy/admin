@@ -10,7 +10,7 @@ import { v1 as uuidv1 } from 'uuid';
 function UpdateStore() {
     const [currentUser, setCurrentUser] = useState()
     const [form, setForm] = useState()
-    const [image, setImage] = useState([])
+    const [image, setImage] = useState()
     const navigation = useNavigate()
     console.log(currentUser);
     const handleImageChange = (e) => {
@@ -34,44 +34,39 @@ function UpdateStore() {
     }, [])
     useEffect(() => {
         if (currentUser) {
-            setForm({
-                fullName: currentUser.fullName,
-                email: currentUser.email,
-                phone: currentUser.phone,
-                address: currentUser.address,
-                openHour: currentUser.openHour,
-                closeHour: currentUser.closeHour
-
-            })
+            setForm({ ...currentUser })
         }
     }, [currentUser])
-
+    console.log(form);
     //
 
     const handleUpdate = async () => {
         if (form.fullName === "") {
             toast.error("You have not entered all the information!")
-        } else if (form.email === "") {
-            toast.error("You have not entered all the information!")
-        } else if (form.phone === "") {
-            toast.error("You have not entered all the information!")
-        }
-        else if (form.openHour === "") {
-            toast.error("You have not entered all the information!")
-        } else if (form.closeHour === "") {
-            toast.error("You have not entered all the information!")
-        } else if (!validator.isEmail(form.email)) {
-            toast.warning("Please enter a valid email address.");
-        }
-        else {
-            console.log(image);
-            const newRef = doc(db, "users", currentUser.id);
-            await updateDoc(newRef, { ...form, avatar: image }).then((e) => {
-                navigation("/store");
-                toast.success("Update store success"); 
-            }).catch((error) =>
-                alert("Something wrong:", error));
-        }
+        } else
+            if (form.email === "") {
+                toast.error("You have not entered all the information!")
+            } else if (form.phone === "") {
+                toast.error("You have not entered all the information!")
+            }
+            else if (form.openHour === "") {
+                toast.error("You have not entered all the information!")
+            } else if (form.closeHour === "") {
+                toast.error("You have not entered all the information!")
+            } else if (!validator.isEmail(form.email)) {
+                toast.warning("Please enter a valid email address.");
+            }
+            else {
+                console.log(form.avatar, image);
+                const newRef = doc(db, "users", form.id);
+                await updateDoc(newRef, { ...form, avatar: image || form.avatar }).then((e) => {
+                    navigation("/store");
+                    console.log(e);
+                    toast.success("Update store success");
+                }).catch((error) =>
+                    alert("Something wrong:", error));
+                localStorage.setItem('user', JSON.stringify({ ...form,avatar: image || form.avatar }));
+            }
     }
 
 
@@ -81,20 +76,20 @@ function UpdateStore() {
                 <div className='w-[20%]'>
                     <Sidebar />
                 </div>
-                <div className=''>
+                <div className='w-[80%]'>
                     <div className='h-[70px] fixed text-[#09132C] w-full px-6 py-4 bg-[#fafafa] flex items-center' >
                         <div className='font-normal max-md:text-sm max-w-[400px]'>
                             <p className="font-bold text-2xl mx-3">Update Store</p>
                         </div>
                     </div>
-                    <div className=' text-black w-full flex  justify-center mx-10 pt-[80px]'>
-                        <div className='flex gap-[60px]'>
-                            <div className='pt-[20px]'>
+                    <div className=' text-black w-full flex pt-[80px]'>
+                        <div className='flex  w-[100%]'>
+                            <div className='pt-[20px] ml-10 w-[30%]'>
                                 <div>
-                                    <input type="file" onChange={handleImageChange} />
-                                    <img src={image} alt="" className='rounded-full w-[70%]' />
+                                    <input type="file" onChange={(e) => handleImageChange(e)} />
+                                    <img src={currentUser?.avatar} alt="" className='rounded-full h-[160px] w-[60%]' />
                                 </div>
-                                <div className='w-[20%] pt-[100px] ml-[10px]'>
+                                <div className='w-[20%] pt-[130px] ml-[10px]'>
                                     <button onClick={handleUpdate} type="submit" className=' bg-[#d0f2ff] text-gray-700 border rounded-lg py-2 w-[150px] font-semibold'>
                                         Update Profile
                                     </button>
