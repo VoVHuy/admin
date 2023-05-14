@@ -125,8 +125,8 @@ function Dashboard() {
                 <p className='font-bold text-2xl mx-3'>Dashboard</p>
               </div>
             </div>
-            <div className='flex pt-[80px] ml-5'>
-              <div className='w-[30%] h-[150px] font-semibold ml-3 border rounded-lg '>
+            <div className='flex pt-[80px] ml-[73px]'>
+              <div className='w-[34%] h-[150px] font-semibold ml-3 border rounded-lg '>
                 <div className='ml-3 '>
                   <label>Top Most Ordered Dishes</label>
                 </div>
@@ -152,7 +152,7 @@ function Dashboard() {
                   </div>
                 </div>
               </div>
-              <div className='w-[27%] border rounded-lg h-[150px] ml-3  font-semibold'>
+              <div className='w-[29%] border rounded-lg h-[150px] ml-3  font-semibold'>
                 <div className='ml-3 '>
                   <label>Top users who put the most</label>
                 </div>
@@ -165,7 +165,7 @@ function Dashboard() {
                 <div className=' justify-between items-center'>
                   <div className='mx-3'>
                     {topuser?.map(item => (
-                      <div key={item?.id} className=' flex pt-[5px]  gap-[30px]'>
+                      <div key={item?.id} className=' flex pt-[5px]  gap-[23px]'>
                         <div className='w-[170px]'>{item?.name}</div>
                         <div className='w-[70px]'>{item?.totalPay}</div>
                       </div>
@@ -185,7 +185,7 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        <div className='text-black w-full   '>
+        <div className='text-black w-full    '>
           <Chart />
         </div>
       </div>

@@ -1,7 +1,7 @@
 import Sidebar from '../sidebar/Sidebar'
 import React, { useEffect, useState } from 'react';
 import { db, storage } from '../../firebase'
-import {  collection, doc, getDocs, setDoc} from 'firebase/firestore';
+import { collection, doc, getDocs, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { ref as refUploadImgs, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { toast } from 'react-toastify'
@@ -43,20 +43,15 @@ function AddFood() {
             toast.error("You have not entered all the information!")
         } else if (document.getElementById('image').value === '') {
             toast.error("You have not entered all the information!")
-
-        }
-        else if (document.getElementById('price').value === '') {
+        } else if (document.getElementById('price').value === '') {
             toast.error("You have not entered all the information!")
-
-        }
-        else if (document.getElementById('desc').value === '') {
+        } else if (document.getElementById('desc').value === '') {
             toast.error("You have not entered all the information!")
-        } else if (formInput.priceDiscount && formInput.priceDiscount >= formInput.price) {
+        } else if (formInput.priceDiscount && Number(formInput.priceDiscount) >= Number(formInput.price)) {
             toast.warning("Price discount cannot be greater than or equal to product price");
-          }else if (formInput.price <= 0 || formInput.priceDiscount && formInput.priceDiscount <= 0) {
+        } else if (Number(formInput.price) <= 0 || formInput.priceDiscount && Number(formInput.priceDiscount) <= 0) {
             toast.warning("Product price and discount must be greater than 0");
-          }
-        else {
+        } else {
             try {
                 const newProductRef = doc(productCollectionRef);
                 await setDoc(newProductRef, {
@@ -68,8 +63,8 @@ function AddFood() {
                     priceDiscount: formInput.priceDiscount ? Number(formInput.priceDiscount) : 0,
                     price: Number(formInput.price),
                     image: images,
-                    isDeleted:false,
-                    isShow:true,
+                    isDeleted: false,
+                    isShow: true,
                     idUser: JSON.parse(localStorage.getItem('user')).id,
                 });
                 navigation("/food");
@@ -127,10 +122,10 @@ function AddFood() {
                             <input id='price' type="price" defaultValue={formInput?.price} onChange={(e) => setFormInput({ ...formInput, price: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div>
-                        <div className=' pt-2'>
-                            <p className=' font-semibold uppercase'>priceDiscount</p>
-                            <input id='priceDis' type="priceDiscound" defaultValue={formInput?.priceDiscount} onChange={(e) => setFormInput({ ...formInput, priceDiscount: e.target.value })} className=' border p-2 w-full outline-none' />
-                        </div>
+                            <div className=' pt-2'>
+                                <p className=' font-semibold uppercase'>priceDiscount</p>
+                                <input id='priceDis' type="priceDiscound" defaultValue={formInput?.priceDiscount} onChange={(e) => setFormInput({ ...formInput, priceDiscount: e.target.value })} className=' border p-2 w-full outline-none' />
+                            </div>
                         </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>description</p>

@@ -292,28 +292,28 @@ const Chart = () => {
 
 
   return (
-    <div className=''>
-      <form >
-        <div className='ml-[275px] pt-5 gap-10 flex  '>
-          <div className=''>
-            <label>From</label>
-            <input type="date" className='ml-5 border py-2 p-2 outline-none ' value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
+    <div >
+      <div className=' flex'>
+          <div className='ml-[330px] pt-5 gap-10 flex  '>
+            <div className=''>
+              <label>From</label>
+              <input type="date" className='ml-5 border py-2 p-2 outline-none ' value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
+            </div>
+            <div className='date-input'>
+              <label>To</label>
+              <input type="date" className='ml-5 border py-2 p-2  outline-none' value={dataTo} onChange={(e) => setDateTo(e.target.value)} />
+            </div>
           </div>
-          <div className='date-input'>
-            <label>To</label>
-            <input type="date" className='ml-5 border py-2 p-2  outline-none' value={dataTo} onChange={(e) => setDateTo(e.target.value)} />
-          </div>
+        <div className='select-container pt-5 flex text-black'>
+          <select className='date-select h-[43px]   ml-14 border  outline-none' value={type} onChange={(e) => handleFilterByDate(e.target.value)}>
+            <option >Filter</option>
+            <option value="today">Today</option>
+            <option value="thisMonth">This Month</option>
+            <option value="thisYear">This Year</option>
+          </select>
         </div>
-      </form>
-      <div className='select-container flex pt-2 ml-[332px] gap-4 text-black'>
-        <select className='date-select  pb-10px w-[120px] border  py-2 p-2 outline-none' value={type} onChange={(e) => handleFilterByDate(e.target.value)}>
-          <option >Filter</option>
-          <option value="today">Today</option>
-          <option value="thisMonth">This Month</option>
-          <option value="thisYear">This Year</option>
-        </select>
       </div>
-      <ResponsiveContainer width="75%" height={300} className='ml-[193px]'>
+      <ResponsiveContainer width="75%" height={300} className='ml-[250px] pt-2'>
         <BarChart
           width={500}
           height={300}

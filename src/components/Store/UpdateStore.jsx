@@ -43,30 +43,28 @@ function UpdateStore() {
     const handleUpdate = async () => {
         if (form.fullName === "") {
             toast.error("You have not entered all the information!")
-        } else
-            if (form.email === "") {
-                toast.error("You have not entered all the information!")
-            } else if (form.phone === "") {
-                toast.error("You have not entered all the information!")
-            }
-            else if (form.openHour === "") {
-                toast.error("You have not entered all the information!")
-            } else if (form.closeHour === "") {
-                toast.error("You have not entered all the information!")
-            } else if (!validator.isEmail(form.email)) {
-                toast.warning("Please enter a valid email address.");
-            }
-            else {
-                console.log(form.avatar, image);
-                const newRef = doc(db, "users", form.id);
-                await updateDoc(newRef, { ...form, avatar: image || form.avatar }).then((e) => {
-                    navigation("/store");
-                    console.log(e);
-                    toast.success("Update store success");
-                }).catch((error) =>
-                    alert("Something wrong:", error));
-                localStorage.setItem('user', JSON.stringify({ ...form,avatar: image || form.avatar }));
-            }
+        } else if (form.email === "") {
+            toast.error("You have not entered all the information!")
+        }else if (!validator.isEmail(form.email)) {
+            toast.warning("Please enter a valid email address.");
+        }else if (form.phone === "") {
+            toast.error("You have not entered all the information!")
+        } else if (form.openHour === "") {
+            toast.error("You have not entered all the information!")
+        } else if (form.closeHour === "") {
+            toast.error("You have not entered all the information!")
+        } 
+        else {
+            console.log(form.avatar, image);
+            const newRef = doc(db, "users", form.id);
+            await updateDoc(newRef, { ...form, avatar: image || form.avatar }).then((e) => {
+                navigation("/store");
+                console.log(e);
+                toast.success("Update store success");
+            }).catch((error) =>
+                alert("Something wrong:", error));
+            localStorage.setItem('user', JSON.stringify({ ...form, avatar: image || form.avatar }));
+        }
     }
 
 
@@ -87,7 +85,7 @@ function UpdateStore() {
                             <div className='pt-[20px] ml-10 w-[30%]'>
                                 <div>
                                     <input type="file" onChange={(e) => handleImageChange(e)} />
-                                    <img src={currentUser?.avatar} alt="" className='rounded-full h-[160px] w-[60%]' />
+                                    <img src={currentUser?.avatar} alt="" className='rounded-full h-[170px] w-[60%]' />
                                 </div>
                                 <div className='w-[20%] pt-[130px] ml-[10px]'>
                                     <button onClick={handleUpdate} type="submit" className=' bg-[#d0f2ff] text-gray-700 border rounded-lg py-2 w-[150px] font-semibold'>

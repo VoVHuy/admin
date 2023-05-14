@@ -1,8 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/sidebar/Sidebar'
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../firebase';
 function Store() {
   const [currentUser, setCurrentUser] = useState()
   const navigate = useNavigate()
@@ -46,7 +44,7 @@ function Store() {
                 </div>
                 <div className='pt-4 flex '>
                   <h1 className='w-24  font-semibold'>Email:</h1>
-                  <p className='  w-[55%] '>{currentUser?.email}</p>
+                  <p className=' w-[80%] '>{currentUser?.email}</p>
                 </div>
                 <div className='pt-4 flex '>
                   <h1 className='w-24  font-semibold'>Phone:</h1>
@@ -54,7 +52,7 @@ function Store() {
                 </div>
                 <div className='pt-4 flex' >
                   <h1 className='w-24  font-semibold'>Address:</h1>
-                  <p className='  w-[55%]  '>{currentUser?.address}</p>
+                  <p className='  w-[80%]  '>{currentUser?.address}</p>
                 </div>
                 <div className='pt-4 flex'>
                   <h1 className='w-24 font-semibold'>OpenHour:</h1>
