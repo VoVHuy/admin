@@ -37,24 +37,15 @@ function UpdateStore() {
             setForm({ ...currentUser })
         }
     }, [currentUser])
-    console.log(form);
-    //
 
     const handleUpdate = async () => {
-        if (form.fullName === "") {
+        if (document.getElementById('txt_fullname').value === '') {
             toast.error("You have not entered all the information!")
-        } else if (form.email === "") {
+        }else if (form.phone === '') {
             toast.error("You have not entered all the information!")
-        }else if (!validator.isEmail(form.email)) {
-            toast.warning("Please enter a valid email address.");
-        }else if (form.phone === "") {
-            toast.error("You have not entered all the information!")
-        } else if (form.openHour === "") {
-            toast.error("You have not entered all the information!")
-        } else if (form.closeHour === "") {
-            toast.error("You have not entered all the information!")
-        } 
-        else {
+        }else if ( form.phone.length !=10) {
+            toast.warning("Phone Number is not valid!")
+        }else {
             console.log(form.avatar, image);
             const newRef = doc(db, "users", form.id);
             await updateDoc(newRef, { ...form, avatar: image || form.avatar }).then((e) => {
@@ -67,7 +58,12 @@ function UpdateStore() {
         }
     }
 
-
+        //} 
+        // else if (form.email === "") {
+        //     toast.error("You have not entered all the information!")
+        // }
+        // else if (!validator.isEmail(form.email)) {
+        //     toast.warning("Please enter a valid email address.");
     return (
         <div className='w-full'>
             <div className='flex'>
@@ -99,24 +95,24 @@ function UpdateStore() {
                                     <input type="name" id='txt_fullname' defaultValue={currentUser?.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} className=' border outline-none h-10 m-2 w-[60%] p-3 ' />
                                 </div>
                                 <div className='pt-2 flex '>
-                                    <label className='w-24 py-4 font-semibold'>Email</label>
-                                    <input type="email" id='txt_email' defaultValue={currentUser?.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className=' border outline-none h-10 m-2 w-[60%] p-3' />
+                                    <label className='w-24 py-4 font-semibold'>Phone</label>
+                                    <input type="phone" id='txt_phone' defaultValue={currentUser?.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className=' border outline-none h-10 m-2 w-[60%] p-3' />
+                                </div>
+                                <div className='pt-2 flex'>
+                                    <label className='w-24 py-4 font-semibold'>OpenHour</label>
+                                    <input type="time" name="" id="" defaultValue={currentUser?.openHour} onChange={(e) => setForm({ ...form, openHour: e.target.value })} className=' border outline-none h-10 m-2 w-[60%] p-3'/>
+                                </div>
+                                <div className='pt-2 flex' >
+                                    <label className='w-24 py-4 font-semibold'>CloseHour</label>
+                                    <input type="time" name="" id="" defaultValue={currentUser?.closeHour} onChange={(e) => setForm({ ...form, closeHour: e.target.value })} className=' border outline-none h-10 m-2 w-[60%] p-3' />
                                 </div>
                                 <div className='pt-2 flex '>
-                                    <label className='w-24 py-4 font-semibold'>Phone</label>
-                                    <input type="phone" id='txt_phone' defaultValue={currentUser?.phone} onChange={(e) => setForm({ ...form, email: e.target.value })} className=' border outline-none h-10 m-2 w-[60%] p-3' />
+                                    <label className='w-24 py-4 font-semibold'>Email</label>
+                                    <input type="email" id='txt_email' value={currentUser?.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className='  outline-none h-10 m-2 w-[60%] p-3' />
                                 </div>
                                 <div className='pt-2 flex' >
                                     <label className='w-24 py-4 font-semibold'>Address</label>
                                     <input type="address" id='txt_address' value={currentUser?.address} onChange={(e) => setForm({ ...form, address: e.target.value })} className=' outline-none h-10 m-2 w-[60%] p-3' />
-                                </div>
-                                <div className='pt-2 flex'>
-                                    <label className='w-24 py-4 font-semibold'>OpenHour</label>
-                                    <input type="openHour" id='txt_openhour' defaultValue={currentUser?.openHour} onChange={(e) => setForm({ ...form, openHour: e.target.value })} className=' border outline-none h-10 m-2 w-[60%] p-3' />
-                                </div>
-                                <div className='pt-2 flex' >
-                                    <label className='w-24 py-4 font-semibold'>CloseHour</label>
-                                    <input type="closeHour" id='txt_closehour' defaultValue={currentUser?.closeHour} onChange={(e) => setForm({ ...form, closeHour: e.target.value })} className=' border outline-none h-10 m-2 w-[60%] p-3' />
                                 </div>
                             </div>
                         </div>

@@ -42,80 +42,79 @@ const Chart = () => {
       const [day, month, year] = date.split('/');
       const [hour, minute] = time.split(':');
       const isoDateStr = `${year}-${month}-${day}T${hour}:${minute}`;
-
-      const Month = new Date(isoDateStr).getMonth() + 1
+      const Month = new Date(isoDateStr).getMonth() + 1;
 
       if (Month === 1) {
         return {
           ...prevObj,
-          Thang1: (prevObj.Thang1 || 0) + data.totalPrice
+          Thang1: (prevObj.Thang1 || 0) + data.totalPrice - data.shipPrice
         }
 
       }
       if (Month === 2) {
         return {
           ...prevObj,
-          Thang2: (prevObj.Thang2 || 0) + data.totalPrice
+          Thang2: (prevObj.Thang2 || 0) + data.totalPrice - data.shipPrice
         }
       }
       if (Month === 3) {
         return {
           ...prevObj,
-          Thang3: (prevObj.Thang3 || 0) + data.totalPrice
+          Thang3: (prevObj.Thang3 || 0) + data.totalPrice - data.shipPrice
         }
       }
       if (Month === 4) {
         return {
           ...prevObj,
-          Thang4: (prevObj.Thang4 || 0) + data.totalPrice
+          Thang4: (prevObj.Thang4 || 0) + data.totalPrice - data.shipPrice
         }
       }
       if (Month === 5) {
         return {
           ...prevObj,
-          Thang5: (prevObj.Thang5 || 0) + data.totalPrice
+          Thang5: (prevObj.Thang5 || 0) + data.totalPrice - data.shipPrice
         }
       }
       if (Month === 6) {
         return {
           ...prevObj,
-          Thang6: (prevObj.Thang6 || 0) + data.totalPrice
+          Thang6: (prevObj.Thang6 || 0) + data.totalPrice - data.shipPrice
         }
       }
       if (Month === 7) {
         return {
           ...prevObj,
-          Thang7: (prevObj.Thang7 || 0) + data.totalPrice
+          Thang7: (prevObj.Thang7 || 0) + data.totalPrice - data.shipPrice
         }
       }
       if (Month === 8) {
         return {
           ...prevObj,
-          Thang8: (prevObj.Thang8 || 0) + data.totalPrice
+          Thang8: (prevObj.Thang8 || 0) + data.totalPrice - data.shipPrice
         }
       }
       if (Month === 9) {
         return {
           ...prevObj,
-          Thang9: (prevObj.Thang9 || 0) + data.totalPrice
+          Thang9: (prevObj.Thang9 || 0) + data.totalPrice - data.shipPrice
         }
       }
       if (Month === 10) {
         return {
           ...prevObj,
-          Thang10: (prevObj.Thang10 || 0) + data.totalPrice
+          Thang10: (prevObj.Thang10 || 0) + data.totalPrice - data.shipPrice
         }
       }
       if (Month === 11) {
         return {
           ...prevObj,
-          Thang11: (prevObj.Thang11 || 0) + data.totalPrice
+          Thang11: (prevObj.Thang11 || 0) + data.totalPrice - data.shipPrice
         }
       }
       if (Month === 12) {
         return {
           ...prevObj,
-          Thang12: (prevObj.Thang12 || 0) + data.totalPrice
+          Thang12: (prevObj.Thang12 || 0) + data.totalPrice - data.shipPrice
         }
       }
     }, {})
@@ -134,14 +133,14 @@ const Chart = () => {
       const Month = new Date(isoDateStr).getMonth() + 1
       const Year = new Date(isoDateStr).getFullYear()
 
-      if (Month == nowMonth && Year == nowYear) {
+      if (Month === nowMonth && Year === nowYear) {
 
         if (dailySales[isoDateStr]) {
-          dailySales[isoDateStr] += sale.totalPrice;
+          dailySales[isoDateStr] += sale.totalPrice - sale.shipPrice ;
 
         }
         else {
-          dailySales[isoDateStr] = sale.totalPrice;
+          dailySales[isoDateStr] = sale.totalPrice - sale.shipPrice ;
 
         }
       }
@@ -166,7 +165,7 @@ const Chart = () => {
       if (ngay === now && Month === nowMonth && Year === nowYear) {
         return {
           ...prevObj,
-          today: (prevObj.today || 0) + data.totalPrice
+          today: (prevObj.today || 0) + data.totalPrice 
         }
       }
       return prevObj
@@ -175,8 +174,8 @@ const Chart = () => {
   }, [revenueData])
 
   const filterRevenueByDate = () => {
-    const result = {};
-    const eee = revenueData.filter(data => {
+    const result = {}
+    revenueData.filter(data => {
       const dateStr = data.timePeding;
 
       const parts = dateStr.split(' ');
@@ -198,11 +197,11 @@ const Chart = () => {
       const isoDateStr = `${year}-${month}-${day}`;
 
       const ngay = isoDateStr
-      if (sale.statusOrder === "DONE" && result[ngay]) {
-        result[ngay] += sale.totalPrice;
+      if ( result[ngay]) {
+        result[ngay] += +sale.totalPrice - sale.shipPrice ;
       }
       else {
-        result[ngay] = sale.totalPrice;
+        result[ngay] = sale.totalPrice - sale.shipPrice;
       }
     })
     const _data = []

@@ -67,29 +67,42 @@ function Dashboard() {
     console.log(orderPaymentShop);
     const isSold = orderPaymentShop?.map((item, index) => {
       let isUser = users.find(us => us.id === item.idCustomer)
+      
       return {
         idCustomer: item.idCustomer,
         idShop: item.listProduct[0].idUser,
         userName: isUser?.fullName,
         payment: item.totalPrice,
+        statusOrder: item.statusOrder
+
       }
+
     });
 
 
     const hehe = isSold?.reduce(function (r, a) {
       r[a.idCustomer] = r[a.idCustomer] || [];
-      r[a.idCustomer].push(a);
+      console.log(a.statusOrder);
+      if (a.statusOrder=='DONE') { 
+        r[a.idCustomer].push(a);
+      }
       return r;
     }, []);
     let top = Object.keys(hehe)?.map((item, index) => {
+
       let totlPay = Object.values(hehe)[index].reduce((r, a) => {
-        return r + a.payment;
+         return r + a.payment;
       }, 0)
+
+      console.log(totlPay);
       return {
         name: Object.values(hehe)[index][0].userName,
         totalPay: totlPay
       }
     })
+    
+    console.log(top);
+
     const result = top?.sort(function (a, b) { return b.totalPay - a.totalPay });
     setTopUser(result.slice(0, 3));
 
@@ -97,7 +110,7 @@ function Dashboard() {
     let totalRevenueShop = 0;
     listOrderInShop.map(item => {
       if (item.statusOrder === 'DONE') {
-        totalRevenueShop += +item.totalPrice ;
+        totalRevenueShop += +item.totalPrice - item.shipPrice;
       }
     })
     setTotalRevenue(totalRevenueShop)
