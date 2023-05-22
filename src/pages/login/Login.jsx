@@ -12,19 +12,18 @@ function Login() {
     const getUser = async () => {
         const data = await getDocs(userCollectionRef)
         const Users = (data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        const user = Users.find((u) => u.email === email)
+        const user = Users.find(u=>u.email===email && bcrypt.compareSync(password, u.passWord) && u.typeUser == "STORE")
         if (user && user.typeUser ==='STORE') {
             if (bcrypt.compareSync(password, user.passWord) && user.typeUser ==='STORE') 
-                toast.success('Login is fucking success!')
+                toast.success('Logged in Successfully')
                 localStorage.setItem("user",JSON.stringify(user))
                 navigate("/")
         } else {
-            toast.warning('You have entered the wrong email or password!!!')
+            toast.error('Email or password is incorrect')
         }
     }
     const handleLogin = (e) => {
         e.preventDefault();
-        console.log(e);
         getUser()
     }
     return (
@@ -81,13 +80,7 @@ function Login() {
                                         <span className='text-center font-semibold max-md:w-[50%] '>Login</span>
                                     </button>
                                 </div>
-                            </form>
-                            {/* create account & reset password */}
-                            <div className='w-[100%] flex text-[15px] pt-3 justify-center'>
-                                <p className='w-[50%] text-end pr-1 text-[#0070F0] hover:text-[#234bb9] cursor-pointer'>Create Account </p>
-                                <p className='mx-1 text-[#0070F0]' >|</p>
-                                <p className='w-[45%] pl-1  text-[#0070F0] hover:text-[#234bb9] cursor-pointer'>Reset Password</p>
-                            </div>
+                            </form>                       
                         </div>
                     </div>
 

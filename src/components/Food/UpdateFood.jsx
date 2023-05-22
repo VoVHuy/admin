@@ -69,7 +69,7 @@ function UpdateFood() {
             toast.error("You have not entered all the information!")
         }else if (formInput.description ==="") {
             toast.error("You have not entered all the information!")
-        }else if (formInput.priceDiscount && Number(formInput.priceDiscount) >= Number(formInput.price)) {
+        }else if (Number(formInput.priceDiscount) >= Number(formInput.price)) {
             toast.warning("Price discount cannot be greater than or equal to product price");
         } else if (Number(formInput.price) <= 0 || formInput.priceDiscount && Number(formInput.priceDiscount) <= 0) {
             toast.warning("Product price and discount must be greater than 0");
@@ -78,8 +78,7 @@ function UpdateFood() {
             await updateDoc(newRef, { 
                 ...formInput, 
                 price: Number(formInput.price),
-                priceDiscount: Number(formInput.priceDiscount), 
-                priceDiscount: formInput.priceDiscount ? Number(formInput.priceDiscount) : 0,
+                priceDiscount: Number(formInput.priceDiscount) || formInput.priceDiscount ? Number(formInput.priceDiscount) : 0, 
                 image: image 
             })
                 .then(() => {

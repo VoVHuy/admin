@@ -1,7 +1,7 @@
 import Sidebar from '../sidebar/Sidebar'
-import React, {  useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import { db, storage } from '../../firebase'
-import {  collection, doc, setDoc} from 'firebase/firestore';
+import {  collection, doc, getDocs, setDoc} from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import {  uploadBytes, getDownloadURL, ref } from 'firebase/storage'
 import { toast } from 'react-toastify'
@@ -10,6 +10,8 @@ function AddVoucher() {
     const voucherCollectionRef = collection(db, "vouchers")
     const navigation = useNavigate()
     const [image, setImage] = useState([])
+    const [currentUser, setCurrentUser] = useState()
+    const [vouchers, setVouchers] = useState([])
     const [voucher,setVoucher] = useState([])
     const handleImageChange = (e) => {
         if (e.target.files[0]) {
@@ -25,11 +27,30 @@ function AddVoucher() {
                 })
         }
     }
+
+    const getVoucher = async () => {
+        const data = await getDocs(voucherCollectionRef)
+        const docData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        setVouchers(docData.filter((e) => e.idUser === currentUser.id))
+    }
+    useEffect(() => {
+        setCurrentUser(JSON.parse(localStorage.getItem('user')))
+    }, [])
+
+    useEffect(() => {
+        if (currentUser) {
+            getVoucher()
+        }
+
+    }, [currentUser])
+
     const createVoucher = async () => {
         if (document.getElementById('name').value === '') {
             toast.error("You have not entered all the information!")
         }else if (document.getElementById('code').value === '') {
             toast.error("You have not entered all the information!")
+        }else if(vouchers.some(item=> item.code===voucher.code)){
+            toast.error("Code Already Exists")
         }else if (document.getElementById('enddate').value === '') {
             toast.error("You have not entered all the information!")
         }else if (document.getElementById('discount').value === '') {
@@ -42,6 +63,8 @@ function AddVoucher() {
             toast.error("You have not entered all the information!")
         }else if (document.getElementById('image').value === '') {
             toast.error("You have not entered all the information!")
+        } else if (Number(voucher.discountMoney) <= 0 || Number(voucher.minOrderPrice) <= 0 || Number(voucher.limitMax) <= 0) {
+            toast.warning("Voucher discountMoney, minOrderPrice and limitMax must be greater than 0");
         }
         else {
             try {

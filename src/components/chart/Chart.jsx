@@ -31,7 +31,13 @@ const Chart = () => {
     handleReadData()
   }, [])
 
-
+  const price = (price) => {
+    if (price.statusOrder === 'DONE') {
+      return price.totalPrice - price.shipPrice
+    } else {
+      return 0;
+    }
+  }
 
   const computedDataTypeYear = useMemo(() => {
     return revenueData.reduce((prevObj, data) => {
@@ -47,74 +53,74 @@ const Chart = () => {
       if (Month === 1) {
         return {
           ...prevObj,
-          Thang1: (prevObj.Thang1 || 0) + data.totalPrice - data.shipPrice
+          Thang1: (prevObj.Thang1 || 0) +  price(data)
         }
 
       }
       if (Month === 2) {
         return {
           ...prevObj,
-          Thang2: (prevObj.Thang2 || 0) + data.totalPrice - data.shipPrice
+          Thang2: (prevObj.Thang2 || 0) +  price(data)
         }
       }
       if (Month === 3) {
         return {
           ...prevObj,
-          Thang3: (prevObj.Thang3 || 0) + data.totalPrice - data.shipPrice
+          Thang3: (prevObj.Thang3 || 0) +  price(data)
         }
       }
       if (Month === 4) {
         return {
           ...prevObj,
-          Thang4: (prevObj.Thang4 || 0) + data.totalPrice - data.shipPrice
+          Thang4: (prevObj.Thang4 || 0) +  price(data)
         }
       }
       if (Month === 5) {
         return {
           ...prevObj,
-          Thang5: (prevObj.Thang5 || 0) + data.totalPrice - data.shipPrice
+          Thang5: (prevObj.Thang5 || 0) + price(data)
         }
       }
       if (Month === 6) {
         return {
           ...prevObj,
-          Thang6: (prevObj.Thang6 || 0) + data.totalPrice - data.shipPrice
+          Thang6: (prevObj.Thang6 || 0) +  price(data)
         }
       }
       if (Month === 7) {
         return {
           ...prevObj,
-          Thang7: (prevObj.Thang7 || 0) + data.totalPrice - data.shipPrice
+          Thang7: (prevObj.Thang7 || 0) +  price(data)
         }
       }
       if (Month === 8) {
         return {
           ...prevObj,
-          Thang8: (prevObj.Thang8 || 0) + data.totalPrice - data.shipPrice
+          Thang8: (prevObj.Thang8 || 0) +  price(data)
         }
       }
       if (Month === 9) {
         return {
           ...prevObj,
-          Thang9: (prevObj.Thang9 || 0) + data.totalPrice - data.shipPrice
+          Thang9: (prevObj.Thang9 || 0) +  price(data)
         }
       }
       if (Month === 10) {
         return {
           ...prevObj,
-          Thang10: (prevObj.Thang10 || 0) + data.totalPrice - data.shipPrice
+          Thang10: (prevObj.Thang10 || 0) +  price(data)
         }
       }
       if (Month === 11) {
         return {
           ...prevObj,
-          Thang11: (prevObj.Thang11 || 0) + data.totalPrice - data.shipPrice
+          Thang11: (prevObj.Thang11 || 0) +  price(data)
         }
       }
       if (Month === 12) {
         return {
           ...prevObj,
-          Thang12: (prevObj.Thang12 || 0) + data.totalPrice - data.shipPrice
+          Thang12: (prevObj.Thang12 || 0) +  price(data)
         }
       }
     }, {})
@@ -136,11 +142,11 @@ const Chart = () => {
       if (Month === nowMonth && Year === nowYear) {
 
         if (dailySales[isoDateStr]) {
-          dailySales[isoDateStr] += sale.totalPrice - sale.shipPrice ;
+          dailySales[isoDateStr] += price(sale);
 
         }
         else {
-          dailySales[isoDateStr] = sale.totalPrice - sale.shipPrice ;
+          dailySales[isoDateStr] = price(sale);
 
         }
       }
@@ -165,7 +171,7 @@ const Chart = () => {
       if (ngay === now && Month === nowMonth && Year === nowYear) {
         return {
           ...prevObj,
-          today: (prevObj.today || 0) + data.totalPrice 
+          today: (prevObj.today || 0) + price(data)
         }
       }
       return prevObj
@@ -197,11 +203,11 @@ const Chart = () => {
       const isoDateStr = `${year}-${month}-${day}`;
 
       const ngay = isoDateStr
-      if ( result[ngay]) {
-        result[ngay] += +sale.totalPrice - sale.shipPrice ;
+      if (result[ngay]) {
+        result[ngay] += price(sale);
       }
       else {
-        result[ngay] = sale.totalPrice - sale.shipPrice;
+        result[ngay] = price(sale);
       }
     })
     const _data = []
@@ -209,8 +215,6 @@ const Chart = () => {
       _data.push({ name: key, total: result[key] })
     }
     setData(_data)
-
-
   }
 
   useEffect(() => {
@@ -222,7 +226,7 @@ const Chart = () => {
     switch (filter) {
       case 'today':
         result = [{
-          name: 'Hôm nay',
+          name: 'Today',
           total: computedBookingTypeToDay?.today
         }]
         break;
@@ -293,16 +297,16 @@ const Chart = () => {
   return (
     <div >
       <div className=' flex'>
-          <div className='ml-[330px] pt-5 gap-10 flex  '>
-            <div className=''>
-              <label>From</label>
-              <input type="date" className='ml-5 border py-2 p-2 outline-none ' value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
-            </div>
-            <div className='date-input'>
-              <label>To</label>
-              <input type="date" className='ml-5 border py-2 p-2  outline-none' value={dataTo} onChange={(e) => setDateTo(e.target.value)} />
-            </div>
+        <div className='ml-[330px] pt-5 gap-10 flex  '>
+          <div className=''>
+            <label>From</label>
+            <input type="date" className='ml-5 border py-2 p-2 outline-none ' value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
           </div>
+          <div className='date-input'>
+            <label>To</label>
+            <input type="date" className='ml-5 border py-2 p-2  outline-none' value={dataTo} onChange={(e) => setDateTo(e.target.value)} />
+          </div>
+        </div>
         <div className='select-container pt-5 flex text-black'>
           <select className='date-select h-[43px]   ml-14 border  outline-none' value={type} onChange={(e) => handleFilterByDate(e.target.value)}>
             <option >Filter</option>

@@ -29,9 +29,7 @@ function UpdateVoucher() {
     const editVoucher = async () => {
         if (voucher.name === "") {
             toast.error("You have not entered all the information!")
-        } else if (voucher.code === "") {
-            toast.error("You have not entered all the information!")
-        } else if (voucher.endDate === "") {
+        }else if (voucher.endDate === "") {
             toast.error("You have not entered all the information!")
         } else if (voucher.discountMoney === "") {
             toast.error("You have not entered all the information!")
@@ -39,6 +37,8 @@ function UpdateVoucher() {
             toast.error("You have not entered all the information!")
         } else if (voucher.limitMax === "") {
             toast.error("You have not entered all the information!")
+        } else if (Number(voucher.discountMoney) <= 0 || Number(voucher.minOrderPrice) <= 0 || Number(voucher.limitMax) <= 0) {
+            toast.warning("Product price and discount must be greater than 0");
         } else if (voucher.description === "") {
             toast.error("You have not entered all the information!")
         }
@@ -93,7 +93,7 @@ function UpdateVoucher() {
                         </div>
                         <div className=''>
                             <p className=' font-semibold uppercase'>Code</p>
-                            <input   defaultValue={voucher?.code} onChange={(e) => setVoucher({ ...voucher, code: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input type='code' value={voucher?.code}  className='  p-2 w-full outline-none' />
                         </div>
                         <div className=''>
                             <p className=' font-semibold uppercase'>End Date</p>

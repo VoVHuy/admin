@@ -43,10 +43,9 @@ function UpdateStore() {
             toast.error("You have not entered all the information!")
         }else if (form.phone === '') {
             toast.error("You have not entered all the information!")
-        }else if ( form.phone.length !=10) {
+        }else if ( form.phone.length !==10) {
             toast.warning("Phone Number is not valid!")
         }else {
-            console.log(form.avatar, image);
             const newRef = doc(db, "users", form.id);
             await updateDoc(newRef, { ...form, avatar: image || form.avatar }).then((e) => {
                 navigation("/store");

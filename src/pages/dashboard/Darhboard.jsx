@@ -83,7 +83,7 @@ function Dashboard() {
     const hehe = isSold?.reduce(function (r, a) {
       r[a.idCustomer] = r[a.idCustomer] || [];
       console.log(a.statusOrder);
-      if (a.statusOrder=='DONE') { 
+      if (a.statusOrder==='DONE') { 
         r[a.idCustomer].push(a);
       }
       return r;
@@ -157,7 +157,7 @@ function Dashboard() {
                     {topSeller?.map(item => (
 
                       <div key={item.id} className='flex gap-[20px]'>
-                        <div className='w-[150px]'>{item.name}</div>
+                        <div className='w-[150px] truncate'>{item.name}</div>
                         <img src={item.image} alt="" className='w-[50px] object-cover h-[30px]' />
                         <div className='w-[10%]'>{item.sold}</div>
                       </div>
