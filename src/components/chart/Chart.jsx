@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { db } from '../../firebase'
 import moment from 'moment/moment';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, endAt, getDocs } from 'firebase/firestore';
 
 
 const Chart = () => {

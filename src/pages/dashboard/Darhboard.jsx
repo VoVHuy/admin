@@ -63,8 +63,6 @@ function Dashboard() {
     const formatDataFilter = users?.filter(
       (item) => ordersWithCusomer.some((itemUsr) => itemUsr.id == item.id)
     );
-
-    console.log(orderPaymentShop);
     const isSold = orderPaymentShop?.map((item, index) => {
       let isUser = users.find(us => us.id === item.idCustomer)
       
@@ -80,32 +78,26 @@ function Dashboard() {
     });
 
 
-    const hehe = isSold?.reduce(function (r, a) {
+    const customer = isSold?.reduce(function (r, a) {
       r[a.idCustomer] = r[a.idCustomer] || [];
-      console.log(a.statusOrder);
       if (a.statusOrder==='DONE') { 
         r[a.idCustomer].push(a);
       }
       return r;
     }, []);
-    let top = Object.keys(hehe)?.map((item, index) => {
+    let top = Object.keys(customer)?.map((item, index) => {
 
-      let totlPay = Object.values(hehe)[index].reduce((r, a) => {
+      let totlPay = Object.values(customer)[index].reduce((r, a) => {
          return r + a.payment;
       }, 0)
-
-      console.log(totlPay);
       return {
-        name: Object.values(hehe)[index][0].userName,
+        name: Object.values(customer)[index][0].userName,
         totalPay: totlPay
       }
     })
-    
-    console.log(top);
-
     const result = top?.sort(function (a, b) { return b.totalPay - a.totalPay });
     setTopUser(result.slice(0, 3));
-
+    
     const listOrderInShop = orderInshop.filter(orderIn => orderIn.listProduct[0].idUser === currentUser.id);
     let totalRevenueShop = 0;
     listOrderInShop.map(item => {
