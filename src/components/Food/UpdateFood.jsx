@@ -63,11 +63,7 @@ function UpdateFood() {
     }, [])
 
     const editProduct = async () => {
-        if (formInput.name ==="") {
-            toast.error("You have not entered all the information!")
-        }else if ( formInput.price ==="") {
-            toast.error("You have not entered all the information!")
-        }else if (formInput.description ==="") {
+        if (document.getElementById('name').value === '' || document.getElementById('price').value === '' || document.getElementById('desc').value === '') {
             toast.error("You have not entered all the information!")
         }else if (Number(formInput.priceDiscount) >= Number(formInput.price)) {
             toast.warning("Price discount cannot be greater than or equal to product price");
@@ -111,7 +107,7 @@ function UpdateFood() {
 
                         <div className=''>
                             <p className=' font-semibold uppercase'>name</p>
-                            <input type="name" defaultValue={formInput?.name} onChange={(e) => setFormInput({ ...formInput, name: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input id='name' type="name" defaultValue={formInput?.name} onChange={(e) => setFormInput({ ...formInput, name: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>category</p>
@@ -143,7 +139,7 @@ function UpdateFood() {
                         </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>price</p>
-                            <input type="price" defaultValue={formInput?.price} onChange={(e) => setFormInput({ ...formInput, price: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input id='price' type="price" defaultValue={formInput?.price} onChange={(e) => setFormInput({ ...formInput, price: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>priceDiscount</p>
@@ -151,7 +147,7 @@ function UpdateFood() {
                         </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>description</p>
-                            <textarea name="" defaultValue={formInput?.description} onChange={(e) => setFormInput({ ...formInput, description: e.target.value })} className=' border h-[100px]  p-2 w-full outline-none' ></textarea>
+                            <textarea id='desc' name="" defaultValue={formInput?.description} onChange={(e) => setFormInput({ ...formInput, description: e.target.value })} className=' border h-[100px]  p-2 w-full outline-none' ></textarea>
                         </div>
                     <div className='pt-2 justify-end flex mr-10'>
                     <button className=" rounded-lg bg-[#d0f2ff] text-gray-700 border h-10 w-[150px] font-semibold"

@@ -13,6 +13,24 @@ const Chart = () => {
   const [type, setType] = useState('')
   const [data, setData] = useState([])
   const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')))
+  let now = new Date().getDate()
+    function checkDate() 
+      {
+        if (now < 10) {
+          now = "0" + now;
+        }
+        return now;
+      }
+    let nowMonth = new Date().getMonth() + 1;
+    function checkTime() 
+      {
+        if (nowMonth < 10) {
+          nowMonth = "0" + nowMonth;
+        }
+        return nowMonth;
+      }
+    const nowYear = new Date().getFullYear()
+    const maxDate = `${nowYear}-${checkTime()}-${checkDate()}`;
   const handleReadData = async () => {
     await getDocs(collection(db, "/orders"))
       .then((querySnapshot) => {
@@ -231,9 +249,20 @@ const Chart = () => {
         }]
         break;
       case 'thisMonth':
-        for (let key in computedDataTypeMonth) {
-          result.push({ name: key, total: computedDataTypeMonth[key] })
+        case 'thisMonth':
+        for (let i = 1; i <= now; i++){
+          for(let key in computedDataTypeMonth) { 
+            const layngay = key.split('-')
+            const ngay = layngay[2]
+            if (i == ngay) {
+              result.push({name: key, total: computedDataTypeMonth[key]})
+              break;
+            }
+          }
         }
+        // for (let key in computedDataTypeMonth) {
+        //   result.push({ name: key, total: computedDataTypeMonth[key] })
+        // }
         break;
       case 'thisYear':
         result = [
@@ -300,11 +329,11 @@ const Chart = () => {
         <div className='ml-[330px] pt-5 gap-10 flex  '>
           <div className=''>
             <label>From</label>
-            <input type="date" className='ml-5 border py-2 p-2 outline-none ' value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
+            <input type="date" className='ml-5 border py-2 p-2 outline-none ' min="2023-01-01" max={maxDate} value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
           </div>
           <div className='date-input'>
             <label>To</label>
-            <input type="date" className='ml-5 border py-2 p-2  outline-none' value={dataTo} onChange={(e) => setDateTo(e.target.value)} />
+            <input type="date" className='ml-5 border py-2 p-2  outline-none' min="2023-01-01" max={maxDate} value={dataTo} onChange={(e) => setDateTo(e.target.value)} />
           </div>
         </div>
         <div className='select-container pt-5 flex text-black'>

@@ -27,22 +27,11 @@ function UpdateVoucher() {
         }
     }
     const editVoucher = async () => {
-        if (voucher.name === "") {
-            toast.error("You have not entered all the information!")
-        }else if (voucher.endDate === "") {
-            toast.error("You have not entered all the information!")
-        } else if (voucher.discountMoney === "") {
-            toast.error("You have not entered all the information!")
-        } else if (voucher.minOrderPrice === "") {
-            toast.error("You have not entered all the information!")
-        } else if (voucher.limitMax === "") {
+        if (document.getElementById('name').value === '' || document.getElementById('discount').value === '' || document.getElementById('minorder').value === '' ||document.getElementById('litmitmax').value === '') {
             toast.error("You have not entered all the information!")
         } else if (Number(voucher.discountMoney) <= 0 || Number(voucher.minOrderPrice) <= 0 || Number(voucher.limitMax) <= 0) {
             toast.warning("Product price and discount must be greater than 0");
-        } else if (voucher.description === "") {
-            toast.error("You have not entered all the information!")
-        }
-        else {
+        }else {
             const newRef = doc(db, "vouchers", id);
             await updateDoc(newRef, {
                 ...voucher,
@@ -89,11 +78,11 @@ function UpdateVoucher() {
                     <div className=' pt-[80px] h-screen ml-5 mr-5 '>
                         <div className=''>
                             <p className=' font-semibold uppercase'>name</p>
-                            <input  defaultValue={voucher?.name} onChange={(e) => setVoucher({ ...voucher, name: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input id='name' defaultValue={voucher?.name} onChange={(e) => setVoucher({ ...voucher, name: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=''>
                             <p className=' font-semibold uppercase'>Code</p>
-                            <input type='code' value={voucher?.code}  className='  p-2 w-full outline-none' />
+                            <input id='code' type='code' value={voucher?.code}  className='  p-2 w-full outline-none' />
                         </div>
                         <div className=''>
                             <p className=' font-semibold uppercase'>End Date</p>
@@ -101,15 +90,15 @@ function UpdateVoucher() {
                         </div>
                         <div className=''>
                             <p className=' font-semibold uppercase'>Discount Money</p>
-                            <input  defaultValue={voucher?.discountMoney} onChange={(e) => setVoucher({ ...voucher, discountMoney: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input  id='discount'  defaultValue={voucher?.discountMoney} onChange={(e) => setVoucher({ ...voucher, discountMoney: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=''>
                             <p className=' font-semibold uppercase'>Min Order Price</p>
-                            <input defaultValue={voucher?.minOrderPrice} onChange={(e) => setVoucher({ ...voucher, minOrderPrice: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input id='minorder' defaultValue={voucher?.minOrderPrice} onChange={(e) => setVoucher({ ...voucher, minOrderPrice: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=''>
                             <p className=' font-semibold uppercase'>Limit Max</p>
-                            <input  defaultValue={voucher?.limitMax} onChange={(e) => setVoucher({ ...voucher, limitMax: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input id='litmitmax'  defaultValue={voucher?.limitMax} onChange={(e) => setVoucher({ ...voucher, limitMax: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>description</p>

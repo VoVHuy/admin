@@ -39,18 +39,12 @@ function AddFood() {
         }
     }
     const createProduct = async () => {
-        if (document.getElementById('name').value === '') {
+        if (document.getElementById('name').value === '' || document.getElementById('image').value === '' || document.getElementById('price').value === '' || document.getElementById('desc').value === '') {
             toast.error("You have not entered all the information!")
-        } else if (document.getElementById('image').value === '') {
-            toast.error("You have not entered all the information!")
-        } else if (document.getElementById('price').value === '') {
-            toast.error("You have not entered all the information!")
-        } else if (document.getElementById('desc').value === '') {
-            toast.error("You have not entered all the information!")
-        } else if ( Number(formInput.priceDiscount) >= Number(formInput.price)) {
-            toast.warning("Price discount cannot be greater than or equal to product price");
-        } else if (Number(formInput.price) <= 0 || Number(formInput.priceDiscount) <= 0) {
+        }else if (Number(formInput.price) <= 0 || formInput.priceDiscount && Number(formInput.priceDiscount) <= 0) {
             toast.warning("Product price and discount must be greater than 0");
+        }else if ( Number(formInput.priceDiscount) >= Number(formInput.price)) {
+            toast.warning("Price discount cannot be greater than or equal to product price");
         } else {
             try {
                 const newProductRef = doc(productCollectionRef);

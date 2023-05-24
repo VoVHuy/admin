@@ -39,9 +39,7 @@ function UpdateStore() {
     }, [currentUser])
 
     const handleUpdate = async () => {
-        if (document.getElementById('txt_fullname').value === '') {
-            toast.error("You have not entered all the information!")
-        }else if (form.phone === '') {
+        if (document.getElementById('txt_fullname').value === '' || document.getElementById('txt_phone').value === '') {
             toast.error("You have not entered all the information!")
         }else if ( form.phone.length !==10) {
             toast.warning("Phone Number is not valid!")

@@ -33,7 +33,7 @@ function Voucher() {
         setRecords(vouchers?.slice(firstIndex, lastIndex))
     }, [currentPage, vouchers]);
 
-    
+
     const getVoucher = async () => {
         const data = await getDocs(voucherCollectionRef)
         const docData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
@@ -92,23 +92,32 @@ function Voucher() {
     //             toast.error("Something wrong:", error))
     // }
     const handleDeleted = async (e) => {
-        const isUpdateDeleted = doc(db, "vouchers", e.id);
+        // const isUpdateDeleted = doc(db, "vouchers", e.id);
+        // if (e.isDeleted === false) {
+        //   await updateDoc(isUpdateDeleted, {
+        //     isDeleted: true
+        //   });
+        //   toast.success("Lock Voucher Success");
+        //   getVoucher();
+
+        // } else if(e.isDeleted === true) {
+        //   await updateDoc(isUpdateDeleted, {
+        //     isDeleted: false
+        //   });
+        //   toast.success("Unlock Voucher Success");
+        //   getVoucher();
+
+        // }
         if (e.isDeleted === false) {
-          await updateDoc(isUpdateDeleted, {
-            isDeleted: true
-          });
-          toast.success("Lock Voucher Success");
-          getVoucher();
-    
-        } else if(e.isDeleted === true) {
-          await updateDoc(isUpdateDeleted, {
-            isDeleted: false
-          });
-          toast.success("Unlock Voucher Success");
-          getVoucher();
-    
+            const user = doc(db, "/vouchers", e.id);
+            await updateDoc(user, {
+                isShow: false,
+                isDeleted: true
+            });
+            toast.success("Delete Voucher Success");
         }
-      }
+        getVoucher();
+    }
     return (
         <div className='w-full'>
             <div className='flex'>
@@ -164,17 +173,19 @@ function Voucher() {
                                         <p className='w-[70px] truncate'>{voucher.description}</p>
 
                                     </div>
-                                    <div className="flex gap-2 mr-3 items-center">
-                                        <button className=" rounded-lg bg-[#F5FAFC] border h-7 w-[100px] font-semibold "
-                                            onClick={() => handleShow(voucher)}
-                                        >{voucher.isShow ? "Not Show" : "Show"}</button>
-                                        <button className=" rounded-lg bg-[#F5FAFC] border h-7 w-[70px] font-semibold  "
-                                            onClick={() => navigate(`/voucher/update/${voucher.id}`)}
-                                        >Update</button>
-                                        <button className=" rounded-lg bg-[#f86060] border h-7 w-[70px] font-semibold "
-                                            onClick={() => handleDeleted(voucher) }
-                                        >{voucher.isDeleted === true ? "UnLock" : "Lock"}</button>
-                                    </div>
+                                    {voucher.isDeleted === true? "":
+                                        <div className="flex gap-2 mr-3 items-center">
+                                            <button className=" rounded-lg bg-[#F5FAFC] border h-7 w-[100px] font-semibold "
+                                                onClick={() => handleShow(voucher)}
+                                            >{voucher.isShow ? "Not Show" : "Show"}</button>
+                                            <button className=" rounded-lg bg-[#F5FAFC] border h-7 w-[70px] font-semibold  "
+                                                onClick={() => navigate(`/voucher/update/${voucher.id}`)}
+                                            >Update</button>
+                                            <button className=" rounded-lg bg-[#f86060] border h-7 w-[70px] font-semibold "
+                                                onClick={() => handleDeleted(voucher)}
+                                            >Delete</button>
+                                        </div>
+                                    }
                                 </div>
                             )
                             )}
