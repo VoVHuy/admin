@@ -241,6 +241,7 @@ const Chart = () => {
 
   const handleFilterByDate = (filter) => {
     let result = []
+    let nowdate = new Date().getDate()
     switch (filter) {
       case 'today':
         result = [{
@@ -250,7 +251,7 @@ const Chart = () => {
         break;
       case 'thisMonth':
         case 'thisMonth':
-        for (let i = 1; i <= now; i++){
+        for (let i = 1; i <= nowdate; i++){
           for(let key in computedDataTypeMonth) { 
             const layngay = key.split('-')
             const ngay = layngay[2]
@@ -326,7 +327,7 @@ const Chart = () => {
   return (
     <div >
       <div className=' flex'>
-        <div className='ml-[330px] pt-5 gap-10 flex  '>
+        <div className='ml-[360px] pt-5 gap-10 flex  '>
           <div className=''>
             <label>From</label>
             <input type="date" className='ml-5 border py-2 p-2 outline-none ' min="2023-01-01" max={maxDate} value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
@@ -345,7 +346,7 @@ const Chart = () => {
           </select>
         </div>
       </div>
-      <ResponsiveContainer width="75%" height={300} className='ml-[250px] pt-2'>
+      <ResponsiveContainer width="75%" height={300} className='ml-[280px] pt-2'>
         <BarChart
           width={500}
           height={300}

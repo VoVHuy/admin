@@ -27,7 +27,7 @@ function Store() {
             <div className='flex gap-[10px] w-[100%]'>
               <div className='pt-[20px] w-[40%]'>
                 <div >
-                    <img src={currentUser?.avatar} alt="" className=' rounded-full h-[160px] w-[60%]' />
+                    <img src={currentUser?.avatar} alt="" className=' rounded-full h-[180px] w-[60%]' />
                 </div>
                 <div className='w-[20%] pt-[30px] ml-[40px]'>
                   <button type="submit" className=' bg-[#F5FAFC] border rounded-lg py-2  w-20 font-semibold'

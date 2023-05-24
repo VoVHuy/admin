@@ -158,7 +158,7 @@ function Voucher() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="mr-[110px]">
+                                <div className="mr-[220px]">
                                     <p>Action</p>
                                 </div>
                             </div>
@@ -170,7 +170,7 @@ function Voucher() {
                                         <p className='w-[80px] '>{voucher.code}</p>
                                         <p className='w-[100px] truncate'>{voucher.endDate}</p>
                                         <img src={voucher.image} alt="" className=' h-[50px] w-[80px] ' />
-                                        <p className='w-[70px] truncate'>{voucher.description}</p>
+                                        <p className='w-[120px] truncate'>{voucher.description}</p>
 
                                     </div>
                                     {voucher.isDeleted === true? "":

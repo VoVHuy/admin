@@ -135,11 +135,11 @@ function Dashboard() {
                 <div className='ml-3 '>
                   <label>Top Most Ordered Dishes</label>
                 </div>
-                <div className='flex gap-[125px] bg-[#F2f2f2] items-center'>
+                <div className='flex gap-[130px] bg-[#F2f2f2] items-center'>
                   <div className='ml-3'>
                     <label>Name</label>
                   </div>
-                  <div className='flex gap-[25px]'>
+                  <div className='flex gap-[30px]'>
                     <label>Image</label>
                     <label >Sold</label>
                   </div>
@@ -148,7 +148,7 @@ function Dashboard() {
                   <div className='mx-3'>
                     {topSeller?.map(item => (
 
-                      <div key={item.id} className='flex gap-[20px]'>
+                      <div key={item.id} className='flex gap-[25px]'>
                         <div className='w-[150px] truncate'>{item.name}</div>
                         <img src={item.image} alt="" className='w-[50px] object-cover h-[30px]' />
                         <div className='w-[10%]'>{item.sold}</div>
@@ -162,7 +162,7 @@ function Dashboard() {
                   <label>Top users who put the most</label>
                 </div>
                 <div className='flex bg-[#F2f2f2] items-center'>
-                  <div className='ml-3 flex gap-[130px]'>
+                  <div className='ml-3 flex gap-[150px]'>
                     <label>Name</label>
                     <label >Total</label>
                   </div>

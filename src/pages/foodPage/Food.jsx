@@ -140,21 +140,21 @@ function Food() {
                     <p>id</p>
                     <HiOutlineSelector size={15} />
                   </div>
-                  <div className='flex gap-[128px]'>
+                  <div className='flex gap-[150px]'>
                     <div className='flex gap-[57px]'>
                       <p>category</p>
                       <p>name</p>
                     </div>
                     <div className='flex gap-[58px]'>
                       <p>images</p>
-                      <div className='flex gap-[42px]'>
+                      <div className='flex gap-[70px]'>
                         <p>price</p>
                         <p>discount</p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="mr-[100px]">
+                <div className="mr-[195px]">
                   <p>Action</p>
                 </div>
               </div>
@@ -163,10 +163,10 @@ function Food() {
                   <div className='flex items-center gap-[35px] ml-3'>
                     <p className='w-[60px] truncate'>{product.id}</p>
                     <p className='w-[100px] '>{product.nameCategory}</p>
-                    <p className='w-[140px]'>{product.name}</p>
+                    <p className='w-[163px]'>{product.name}</p>
                     <img src={product.image} alt="" className=' h-[50px] w-[80px] object-cover' />
-                    <p className='w-[50px]'>{product.price}</p>
-                    <p className='w-[50px]'>{product.priceDiscount}</p>
+                    <p className='w-[80px]'>{product.price}</p>
+                    <p className='w-[80px]'>{product.priceDiscount}</p>
                   </div>
                   <div className="flex gap-2 mr-3 items-center">
                     <button className=" rounded-lg bg-[#F5FAFC] border h-7 w-[90px] font-semibold "
