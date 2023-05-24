@@ -199,6 +199,7 @@ const Chart = () => {
 
   const filterRevenueByDate = () => {
     const result = {}
+    let nowdate = new Date().getDate()
     revenueData.filter(data => {
       const dateStr = data.timePeding;
 
@@ -229,9 +230,19 @@ const Chart = () => {
       }
     })
     const _data = []
-    for (let key in result) {
-      _data.push({ name: key, total: result[key] })
+    for (let i = 1; i <= nowdate; i++){
+      for(let key in result) { 
+        const layngay = key.split('-')
+        const ngay = layngay[2]
+        if (i == ngay) {
+          _data.push({name: key, total: result[key]})
+          break;
+        }
+      }
     }
+    // for (let key in result) {
+    //   _data.push({ name: key, total: result[key] })
+    // }
     setData(_data)
   }
 
@@ -268,19 +279,19 @@ const Chart = () => {
       case 'thisYear':
         result = [
           {
-            name: 'January',
+            name: 'Jan',
             total: computedDataTypeYear.Thang1,
           },
           {
-            name: 'February',
+            name: 'Feb',
             total: computedDataTypeYear.Thang2,
           },
           {
-            name: 'March',
+            name: 'Mar',
             total: computedDataTypeYear.Thang3,
           },
           {
-            name: 'April',
+            name: 'Apr',
             total: computedDataTypeYear.Thang4,
           },
           {
@@ -288,31 +299,31 @@ const Chart = () => {
             total: computedDataTypeYear.Thang5,
           },
           {
-            name: 'June',
+            name: 'Jun',
             total: computedDataTypeYear.Thang6,
           },
           {
-            name: 'July',
+            name: 'Jul',
             total: computedDataTypeYear.Thang7,
           },
           {
-            name: 'August',
+            name: 'Aug',
             total: computedDataTypeYear.Thang8,
           },
           {
-            name: 'September',
+            name: 'Sep',
             total: computedDataTypeYear.Thang9,
           },
           {
-            name: 'October',
+            name: 'Oct',
             total: computedDataTypeYear.Thang10,
           },
           {
-            name: 'November',
+            name: 'Nov',
             total: computedDataTypeYear.Thang11,
           },
           {
-            name: 'December',
+            name: 'Dec',
             total: computedDataTypeYear.Thang12,
           },
         ];
