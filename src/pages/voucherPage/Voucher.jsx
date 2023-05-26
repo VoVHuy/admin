@@ -83,31 +83,7 @@ function Voucher() {
 
         }
     }
-    // const deleteVoucher = async (id) => {
-    //     const voucherDoc = doc(db, "vouchers", id);
-    //     await deleteDoc(voucherDoc)
-    //         .then(() => {
-    //             getVoucher(); toast.error("Delete voucher success")
-    //         }).catch((error) =>
-    //             toast.error("Something wrong:", error))
-    // }
     const handleDeleted = async (e) => {
-        // const isUpdateDeleted = doc(db, "vouchers", e.id);
-        // if (e.isDeleted === false) {
-        //   await updateDoc(isUpdateDeleted, {
-        //     isDeleted: true
-        //   });
-        //   toast.success("Lock Voucher Success");
-        //   getVoucher();
-
-        // } else if(e.isDeleted === true) {
-        //   await updateDoc(isUpdateDeleted, {
-        //     isDeleted: false
-        //   });
-        //   toast.success("Unlock Voucher Success");
-        //   getVoucher();
-
-        // }
         if (e.isDeleted === false) {
             const user = doc(db, "/vouchers", e.id);
             await updateDoc(user, {
@@ -173,7 +149,7 @@ function Voucher() {
                                         <p className='w-[120px] truncate'>{voucher.description}</p>
 
                                     </div>
-                                    {voucher.isDeleted === true? "":
+                                    {voucher.isDeleted === true ? "" :
                                         <div className="flex gap-2 mr-3 items-center">
                                             <button className=" rounded-lg bg-[#F5FAFC] border h-7 w-[100px] font-semibold "
                                                 onClick={() => handleShow(voucher)}

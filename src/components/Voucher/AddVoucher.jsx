@@ -1,9 +1,9 @@
 import Sidebar from '../sidebar/Sidebar'
-import React, {  useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { db, storage } from '../../firebase'
-import {  collection, doc, getDocs, setDoc} from 'firebase/firestore';
+import { collection, doc, getDocs, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-import {  uploadBytes, getDownloadURL, ref } from 'firebase/storage'
+import { uploadBytes, getDownloadURL, ref } from 'firebase/storage'
 import { toast } from 'react-toastify'
 import { v1 as uuidv1 } from 'uuid';
 function AddVoucher() {
@@ -12,7 +12,7 @@ function AddVoucher() {
     const [image, setImage] = useState([])
     const [currentUser, setCurrentUser] = useState()
     const [vouchers, setVouchers] = useState([])
-    const [voucher,setVoucher] = useState([])
+    const [voucher, setVoucher] = useState([])
     const handleImageChange = (e) => {
         if (e.target.files[0]) {
             const id = uuidv1()
@@ -47,21 +47,21 @@ function AddVoucher() {
     const createVoucher = async () => {
         if (document.getElementById('name').value === '') {
             toast.error("You have not entered all the information!")
-        }else if (document.getElementById('code').value === '') {
+        } else if (document.getElementById('code').value === '') {
             toast.error("You have not entered all the information!")
-        }else if(vouchers.some(item=> item.code===voucher.code)){
+        } else if (vouchers.some(item => item.code === voucher.code)) {
             toast.error("Code Already Exists")
-        }else if (document.getElementById('enddate').value === '') {
+        } else if (document.getElementById('enddate').value === '') {
             toast.error("You have not entered all the information!")
-        }else if (document.getElementById('discount').value === '') {
+        } else if (document.getElementById('discount').value === '') {
             toast.error("You have not entered all the information!")
-        }else if (document.getElementById('minorder').value === '') {
+        } else if (document.getElementById('minorder').value === '') {
             toast.error("You have not entered all the information!")
-        }else if (document.getElementById('litmitmax').value === '') {
+        } else if (document.getElementById('litmitmax').value === '') {
             toast.error("You have not entered all the information!")
-        }else if (document.getElementById('desc').value === '') {
+        } else if (document.getElementById('desc').value === '') {
             toast.error("You have not entered all the information!")
-        }else if (document.getElementById('image').value === '') {
+        } else if (document.getElementById('image').value === '') {
             toast.error("You have not entered all the information!")
         } else if (Number(voucher.discountMoney) <= 0 || Number(voucher.minOrderPrice) <= 0 || Number(voucher.limitMax) <= 0) {
             toast.warning("Voucher discountMoney, minOrderPrice and limitMax must be greater than 0");
@@ -76,9 +76,9 @@ function AddVoucher() {
                     minOrderPrice: Number(voucher.minOrderPrice),
                     limitMax: Number(voucher.limitMax),
                     image: image,
-                    listCustomer:[],
-                    isDeleted:false,
-                    isShow:true,
+                    listCustomer: [],
+                    isDeleted: false,
+                    isShow: true,
                     idUser: JSON.parse(localStorage.getItem('user')).id,
                 });
                 navigation("/voucher");
@@ -114,7 +114,7 @@ function AddVoucher() {
                         </div>
                         <div className=''>
                             <p className=' font-semibold uppercase'>End Date</p>
-                            <input type="datetime-local" name="" id="enddate"  defaultValue={voucher?.endDate} onChange={(e) => setVoucher({ ...voucher, endDate: e.target.value })} className=' border p-2 w-full outline-none' />
+                            <input type="datetime-local" name="" id="enddate" defaultValue={voucher?.endDate} onChange={(e) => setVoucher({ ...voucher, endDate: e.target.value })} className=' border p-2 w-full outline-none' />
                         </div>
                         <div className=''>
                             <p className=' font-semibold uppercase'>Discount Money</p>
@@ -135,7 +135,7 @@ function AddVoucher() {
                         <div className=' pt-2'>
                             <p className=' font-semibold uppercase'>image</p>
                             <input id='image' type="file" onChange={(e) => handleImageChange(e)} />
-                                    <img src={image} alt="" className='h-[80px] w-[120px]' />
+                            <img src={image} alt="" className='h-[80px] w-[120px]' />
                         </div>
                         <div className=' pt-2 justify-end flex mr-10'>
                             <button className=" rounded-lg bg-[#d0f2ff] text-gray-700  border h-10 w-[170px] font-semibold mr-2 "

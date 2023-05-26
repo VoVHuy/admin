@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import {  db } from '../../firebase';
+import { db } from '../../firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 function Login() {
@@ -12,12 +12,12 @@ function Login() {
     const getUser = async () => {
         const data = await getDocs(userCollectionRef)
         const Users = (data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
-        const user = Users.find(u=>u.email===email && bcrypt.compareSync(password, u.passWord) && u.typeUser == "STORE")
-        if (user && user.typeUser ==='STORE') {
-            if (bcrypt.compareSync(password, user.passWord) && user.typeUser ==='STORE') 
+        const user = Users.find(u => u.email === email && bcrypt.compareSync(password, u.passWord) && u.typeUser == "STORE")
+        if (user && user.typeUser === 'STORE') {
+            if (bcrypt.compareSync(password, user.passWord) && user.typeUser === 'STORE')
                 toast.success('Logged in Successfully')
-                localStorage.setItem("user",JSON.stringify(user))
-                navigate("/")
+            localStorage.setItem("user", JSON.stringify(user))
+            navigate("/")
         } else {
             toast.error('Email or password is incorrect')
         }
@@ -54,7 +54,6 @@ function Login() {
                                 <p>Login with email</p>
                             </div>
                             <form onSubmit={handleLogin}>
-                                {/* input email */}
                                 <div className='w-[100%] flex justify-center mb-4'>
                                     <input type="phone" placeholder='Email'
                                         value={email}
@@ -62,7 +61,6 @@ function Login() {
                                         className='h-10 text-black gap-3 flex justify-center items-center w-[215px] py-3  border-[1px] border-slate-400  bg-white focus:outline-none pl-4 rounded-[12px] max-md:w-[100%] max-md:py-0 max-lg:py-2'
                                     />
                                 </div>
-                                {/* input password */}
                                 <div className='w-[100%] justify-center flex mb-4'>
                                     <input
                                         type='password'
@@ -72,7 +70,6 @@ function Login() {
                                         className='h-10 text-black gap-3 flex justify-center items-center w-[215px] py-3 border-[1px] border-slate-400  bg-white focus:outline-none pl-4 rounded-[12px] max-md:w-[100%] max-md:py-0 max-lg:py-2'
                                     />
                                 </div>
-                                {/* booton login */}
                                 <div className='w-[100%] flex justify-center items-center'>
                                     <button
                                         className='  h-11 text-white gap-3 flex justify-center items-center w-[215px] py-3 bg-[#0070F0] rounded-[12px] max-md:w-[100%] max-md:py-0 max-lg:py-2  hover:bg-[#3b8deb] '
@@ -80,7 +77,7 @@ function Login() {
                                         <span className='text-center font-semibold max-md:w-[50%] '>Login</span>
                                     </button>
                                 </div>
-                            </form>                       
+                            </form>
                         </div>
                     </div>
 

@@ -172,7 +172,7 @@ const Chart = () => {
     return dailySales
   }, [revenueData])
 
-  const computedBookingTypeToDay = useMemo(() => {
+  const computedTypeToDay = useMemo(() => {
     return revenueData.reduce((prevObj, data) => {
       const now = new Date().getDate()
       const nowMonth = new Date().getMonth() + 1
@@ -257,7 +257,7 @@ const Chart = () => {
       case 'today':
         result = [{
           name: 'Today',
-          total: computedBookingTypeToDay?.today
+          total: computedTypeToDay?.today
         }]
         break;
       case 'thisMonth':

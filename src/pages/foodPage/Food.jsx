@@ -15,7 +15,6 @@ function Food() {
   const [currentPage, setCurrenPage] = useState(1)
   const [records, setRecords] = useState([])
   const [numbers, setNumbers] = useState([])
-  // const router = useRoutes()
   const recordsPerPage = 5;
   const lastIndex = currentPage * recordsPerPage;
   const firstIndex = lastIndex - recordsPerPage;
@@ -85,14 +84,7 @@ function Food() {
 
     }
   }
-  // const deleteProduct = async (id) => {
-  //   const productDoc = doc(db, "products", id);
-  //   await deleteDoc(productDoc)
-  //     .then(() => {
-  //       getProduct(); toast.error("Delete product success")
-  //     }).catch((error) =>
-  //       toast.error("Something wrong:", error))
-  // }
+
   const handleDeleted = async (e) => {
     const isUpdateDeleted = doc(db, "products", e.id);
     if (e.isDeleted === false) {
@@ -102,7 +94,7 @@ function Food() {
       toast.success("Lock Food Success");
       getProduct();
 
-    } else if(e.isDeleted === true) {
+    } else if (e.isDeleted === true) {
       await updateDoc(isUpdateDeleted, {
         isDeleted: false
       });
@@ -176,7 +168,7 @@ function Food() {
                       onClick={() => navigate(`/food/update/${product.id}`)}
                     >Update</button>
                     <button className=" rounded-lg bg-[#f86060] border h-7 w-[70px] font-semibold "
-                      onClick={() => handleDeleted(product) }
+                      onClick={() => handleDeleted(product)}
                     >{product.isDeleted === true ? "UnLock" : "Lock"}</button>
                   </div>
                 </div>
